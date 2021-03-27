@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="page">
+
+	<!-- resultMap: 페이지 + 워크스페이스명 -->
+	<resultMap type="page" id="pageMap">
+		<id column="page_no" property="pageNo"/>
+		<result column="workspace_no" property="workspaceNo"/>
+		<result column="page_writer" property="pageWriter"/>
+		<result column="page_name" property="pageName"/>
+		<result column="page_desc" property="pageDesc"/>
+		<result column="page_cover_code" property="pageCoverCode"/>
+		<result column="page_date" property="pageDate"/>
+		<result column="workspace_name" property="workspaceName"/>
+		<result column="workspace_cover_code" property="workspaceCoverCode"/>
+		<result column="workspace_type" property="workspaceType"/>
+		<result column="member_id" property="memberId"/>
+		<result column="role_code" property="roleCode"/>
+		<result column="favorites_no" property="favoritesNo"/>
+		<result column="p_favorite_yn" property="pFavoriteYn"/>
+	</resultMap>
+	
+	<!-- resultMap: 특정 페이지의 포스트 리스트 + 포스트별 댓글 수 + 포스트 작성자 이미지 이름 -->
+	<resultMap type="post" id="postMap">
+		<id column="post_no" property="postNo" />
+		<result column="page_no" property="pageNo" />
+		<result column="post_sort_code" property="postSortCode" />
+		<result column="post_content" property="postContent" />
+		<result column="post_original_filename" property="postOriginalFilename" />
+		<result column="post_renamed_filename" property="postRenamedFilename" />
+		<result column="post_writer" property="postWriter" />
+		<result column="post_date" property="postDate" />
+		<result column="post_pinned_yn" property="postPinnedYn" />
+		<result column="post_pinned_person" property="postPinnedPerson" />
+		<result column="comment_count" property="commentCount" />
+		<result column="profile_renamed_filename" property="profileRenamedFilename" />
+	</resultMap>
+	
+	<!-- resultMap: 포스트 코멘트 + 코멘트 작성자 프로필 이미지 -->
+	<resultMap type="postComment" id="postCommentMap">
+		<id column="post_comment_no" property="postCommentNo" />
+		<result column="page_no" property="pageNo" />
+		<result column="post_no" property="postNo" />
+		<result column="post_comment_writer" property="postCommentWriter" />
+		<result column="post_comment_level" property="postCommentLevel" />
+		<result column="post_comment_content" property="postCommentContent" />
+		<result column="post_comment_date" property="postCommentDate" />
+		<result column="post_comment_ref" property="postCommentRef" />
+		<result column="profile_renamed_filename" property="profileRenamedFilename" />
+		<result column="post_comment_ref_writer" property="postCommentRefWriter" />
+	</resultMap>
+	
+	<!-- 페이지 생성 -->
+	<!-- selectKey로 생성된 페이지 번호 조회 -->
+	<insert id="insertPage">
+		insert into page values(seq_page_no.nextval, #{workspaceNo}, #{pageWriter}, #{pageName}, #{pageDesc}, default , default)
+		<selectKey keyProperty="pageNo" resultType="_int" order="AFTER">
+			select seq_page_no.currval from dual
+		</selectKey>
+	</insert>
+	
+	<!-- 페이지 + 워크스페이스 이름, 커버색, 타입 + 사용자 아이디 + 사용자 ws 권한 + 페이지 즐겨찾기 여부 조회 (by pageNo, memberId) -->
+	<select id="selectOnePage" resultMap="pageMap">		
+		select V.*, F.favorites_no, decode(F.favorites_type, 'P', 'Y', 'N') p_favorite_yn
+		from (select P.*, W.workspace_name, W.workspace_cover_code, W.workspace_type, WM.member_id, WM.role_code
+		      from page P left join workspace W on P.workspace_no = W.workspace_no
+		                   left join workspace_member WM on P.workspace_no = WM.workspace_no
+		      where page_no = #{pageNo} and member_id = #{memberId}) V
+		      left join (select *
+		               from favorites
+		               where page_no = #{pageNo} and member_id = #{memberId}) F
+		               on V.member_id = F.member_id
+	</select>
+	
+	<!-- 페이지 커버 색 변경 -->
+	<update id="updatePageCoverColor">
+		update page 
+		set page_cover_code = #{pageCoverCode}
+		where page_no = #{pageNo}
+	</update>
+	
+	<!-- 페이지 수정 -->
+	<update id="updatePage">
+		update page
+		set page_name = #{pageName}, page_Desc = #{pageDesc}
+		where page_no = #{pageNo}
+	</update>
+	
+	<!-- 페이지 삭제 -->
+	<delete id="deletePage">
+		delete from page
+		where page_no = #{pageNo}
+	</delete>	
+	
+	<!-- 포스트 추가 -->
+	<insert id="insertPost">
+		insert into post values(seq_post_no.nextval, #{pageNo}, #{postSortCode}, #{postContent}, #{postOriginalFilename}, #{postRenamedFilename}, #{postWriter}, default, default, null)
+		<selectKey keyProperty="postNo" resultType="int" order="AFTER">
+			select seq_post_no.currval from dual
+		</selectKey>
+	</insert>
+	
+	<!-- 특정 포스트 조회 (by postNo) -->
+	<!-- 특정 포스트 + 포스트 댓글 수 + 포스트 작성자 이름 (by postNo) -->
+	<select id="selectOnePost" resultMap="postMap">
+		select V.comment_count, M.profile_renamed_filename, P.*
+		from (select post_no, sum(comment_count) comment_count
+		      from (select P.post_no, decode(post_comment_no, null, 0, 1) comment_count
+		            from post P left join post_comment C on P.post_no = C.post_no)
+		      group by post_no) V right join post P on V.post_no = P.post_no
+		                        left join member M on post_writer = M.member_id
+		where P.post_no = #{postNo}
+	</select>
+	
+	<!-- 특정 페이지의 포스트 리스트 + 포스트별 댓글 수 + 포스트 작성자 이미지 이름 (by pageNo) -->
+	<select id="selectPostListByPageNo" resultMap="postMap">
+		select P.*, nvl(V.count, 0) comment_count, M.profile_renamed_filename
+		from (select post_no, count(*) count
+		      from (select P.post_no, post_comment_no
+		            from post P left join post_comment C on P.post_no = C.post_no
+		            where post_comment_no is not null)
+		      group by(post_no)) V right join post P on V.post_no = P.post_no
+		                          left join member M on post_writer = M.member_id
+		where page_no = #{pageNo}
+		order by P.post_no
+	</select>
+	
+	<!-- 포스트 고정 / 고정 해제 -->
+	<update id="updatePostPinnedYn">
+		update post set post_pinned_yn = #{postPinnedYn}, post_pinned_person = #{postPinnedPerson}
+		where post_no = #{postNo}
+	</update>
+	
+	<!-- 포스트 수정 -->
+	<update id="updatePost">
+		update post set post_content = #{postContent}, post_original_filename = #{postOriginalFilename}, post_renamed_filename = #{postRenamedFilename}, post_date = to_char(sysdate, 'MM.DD HH24:MI')
+		where post_no = #{postNo}
+	</update>
+	
+	<!-- 포스트 삭제 -->
+	<delete id="deletePost">
+		delete from post where post_no = #{postNo}
+	</delete>
+	
+	<!-- 포스트 코멘트 조회 (포스트 코멘트 + 코멘트 작성자 프로필 이미지) -->
+	<select id="selectPostCommentList" resultMap="postCommentMap">	
+		select PC.*, M.profile_renamed_filename
+		from post_comment PC left join member M on PC.post_comment_writer = M.member_id
+		where post_no = #{postNo}
+		order by post_comment_no
+	</select>
+	
+	<!-- 포스트 코멘트 작성 -->
+	<insert id="insertPostComment">
+		insert into post_comment
+		<choose>
+			<!-- 댓글 레벨이 1일 경우 -->
+			<when test="postCommentLevel == 1">
+				values(seq_post_comment_no.nextval, #{pageNo}, #{postNo}, #{postCommentWriter}, #{postCommentLevel}, #{postCommentContent}, default, null, null)
+			</when>
+			<otherwise>
+				values(seq_post_comment_no.nextval, #{pageNo}, #{postNo}, #{postCommentWriter}, #{postCommentLevel}, #{postCommentContent}, default, #{postCommentRef}, #{postCommentRefWriter})
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<!-- 포스트 코멘트 삭제 -->
+	<delete id="deletePostComment">
+		delete from post_comment where post_comment_no = #{commentNo}
+	</delete>
+	
+	<!-- 포스트 코멘트 수정 -->
+	<update id="updatePostComment">
+		update post_comment set post_comment_content = #{commentContent} where post_comment_no = #{commentNo}
+	</update>	
+	
+	<!-- 종류별 포스트 리스트 조회 (첨부파일 / 고정 포스트) -->
+	<select id="selectPostListBySort" resultMap="postMap">
+		select P.*, nvl(V.count, 0) comment_count, M.profile_renamed_filename
+		from (select post_no, count(*) count
+		      from (select P.post_no, post_comment_no
+		            from post P left join post_comment C on P.post_no = C.post_no
+		            where post_comment_no is not null)
+		      group by(post_no)) V right join post P on V.post_no = P.post_no
+		                          left join member M on post_writer = M.member_id
+		<choose>
+			<!-- 첨부파일 포스트 조회인 경우 -->
+			<when test="postSort == 'files'">
+				where page_no = #{pageNo} and post_sort_code = 'P2'
+			</when>
+			<otherwise> <!-- 고정 포스트 조회인 경우 -->
+				where page_no = #{pageNo} and post_pinned_yn = 'Y'
+			</otherwise>
+		</choose>
+		order by P.post_no
+	</select>
+
+</mapper>
