@@ -36,5 +36,5 @@ public class Page implements Serializable {
 	private String memberId;
 	private String roleCode;
 	private int favoritesNo;
-	private String pFavoriteYn;
+
 }
