@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="workspace">
+
+	<!-- resultMap: 워크스페이스 + 페이지 -->
+	<resultMap type="workspace" id="workspacePageMap">
+ 		<id column="workspace_no" property="workspaceNo"/>
+		<result column="workspace_writer" property="workspaceWriter"/>
+		<result column="workspace_type" property="workspaceType"/>
+		<result column="workspace_name" property="workspaceName"/>
+		<result column="workspace_desc" property="workspaceDesc"/>
+		<result column="workspace_cover_code" property="workspaceCoverCode"/>
+		<result column="workspace_date" property="workspaceDate"/>
+		<result column="role_code" property="roleCode"/>
+		<result column="page_no" property="pageNo"/>
+		<result column="workspace_no_1" property="workspaceNo1"/>
+		<result column="page_writer" property="pageWriter"/>
+		<result column="page_name" property="pageName"/>
+		<result column="page_desc" property="pageDesc"/>
+		<result column="page_cover_code" property="pageCoverCode"/>
+		<result column="page_date" property="pageDate"/>
+	</resultMap>
+	
+	<!-- resultMap: 워크스페이스 + 권한 코드 + ws즐겨찾기 여부-->
+	<resultMap type="workspace" id="workspaceMap">
+ 		<id column="workspace_no" property="workspaceNo"/>
+		<result column="workspace_writer" property="workspaceWriter"/>
+		<result column="workspace_type" property="workspaceType"/>
+		<result column="workspace_name" property="workspaceName"/>
+		<result column="workspace_desc" property="workspaceDesc"/>
+		<result column="workspace_cover_code" property="workspaceCoverCode"/>
+		<result column="workspace_date" property="workspaceDate"/>
+		<result column="member_id" property="memberId"/>
+		<result column="role_code" property="roleCode"/>
+		<result column="favorites_no" property="favoritesNo"/>
+		<result column="ws_favorite_yn" property="wsFavoriteYn"/>
+	</resultMap>
+
+	<!-- resultMap: 즐겨찾기 + ws(번호, 이름) + page(번호, 이름) + ws_member(권한) -->
+	<resultMap type="favorites" id="favoritesMap">
+ 		<id column="favorites_no" property="favoritesNo"/>
+		<result column="member_id" property="memberId"/>
+		<result column="favorites_type" property="favoritesType"/>
+		<result column="workspace_no" property="workspaceNo"/>
+		<result column="page_no" property="pageNo"/>
+		<result column="favorites_date" property="favoritesDate"/>
+		<result column="workspace_name" property="workspaceName"/>
+		<result column="workspace_writer" property="workspaceWriter"/>
+		<result column="workspace_desc" property="workspaceDesc"/>
+		<result column="page_name" property="pageName"/>
+		<result column="page_writer" property="pageWriter"/>
+		<result column="page_desc" property="pageDesc"/>
+		<result column="role_code" property="roleCode"/>
+	</resultMap>
+	
+	<!-- resultMap: workspce_member + member(member_name, profile_renamed_filename) -->
+	<resultMap type="workspaceMember" id="wsMemberMap">
+		<id column="workspace_member_no" property="workspaceMemberNo"/>
+		<result column="workspace_no" property="workspaceNo"/>
+		<result column="member_id" property="memberId"/>
+		<result column="role_code" property="roleCode"/>
+		<result column="workspace_type" property="workspaceType"/>
+		<result column="member_name" property="memberName"/>
+		<result column="profile_renamed_filename" property="profileRenamedFilename"/>
+	</resultMap>
+	
+	
+	<!-- 즐겨찾기 리스트 + 권한 조회 -->
+	<select id="selectAllFavorites" resultMap="favoritesMap">
+		select V.*, WM.role_code
+		from view_favorites_ws_p V left join workspace_member WM on V.workspace_no = WM.workspace_no
+		where WM.member_id = V.member_id and V.member_id = #{memberId}
+		order by favorites_no
+	</select>
+	
+	<!-- 즐겨찾기 리스트 조회(W) -->
+<!-- 	<select id="selectWorkspaceFavoritesList" resultMap="favoritesMap">
+		select * 
+		from view_favoritesWsP 
+		where member_id = #{memberId} and favorites_type = 'W'
+		order by favorites_date
+	</select> -->
+	
+	<!-- 즐겨찾기 리스트 조회(P) -->
+<!-- 	<select id="selectPageFavoritesList" resultMap="favoritesMap">
+		select * 
+		from view_favoritesWsP 
+		where member_id = #{memberId} and favorites_type = 'P'
+		order by favorites_date
+	</select> -->
+
+	<!-- 워크스페이스 리스트 + 권한 코드 조회-->
+	<select id="selectWorkspaceList" resultMap="workspaceMap">
+		select W.*, role_code
+		from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
+		where WM.member_id = #{memberId}
+		order by W.workspace_no
+	</select>
+	
+	<!-- 워크스페이스 + 권한 코드 + 페이지 리스트 조회 -->
+	<select id="selectWorkspacePageList" resultMap="workspacePageMap">
+		select W.*, role_code, P.*
+		from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
+                  		 left join page P on W.workspace_no = P.workspace_no
+		where WM.member_id = #{memberId} and page_no is not null
+		order by W.workspace_no, page_no
+	</select>
+	
+	<!-- 공유 워크스페이스 리스트 조회 -->
+<!-- 	<select id="selectSharedWorkspaceList" resultType="workspace">
+		select *
+		from workspace
+		where workspace_writer = #{memberId} and workspace_type = 'S'
+		order by workspace_date
+	</select> -->
+	
+	<!-- 개인 워크스페이스 리스트 조회 -->
+<!-- 	<select id="selectPrivateWorkspaceList" resultType="workspace">
+		select *
+		from workspace
+		where workspace_writer = #{memberId} and workspace_type = 'P'
+		order by workspace_date
+	</select> -->
+	
+	<!-- 공유 워크스페이스 + 페이지 리스트 조회 -->
+<!-- 	<select id="selectSWorkspacePageList" resultMap="workspaceMap">
+		select *
+		from view_workspacePage
+		where workspace_writer = #{memberId} and workspace_type = 'S'
+		order by page_date
+	</select> -->
+
+	<!-- 개인 워크스페이스 + 페이지 리스트  조회-->
+<!-- 	<select id="selectPWorkspacePageList" resultMap="workspaceMap">
+		select *
+		from view_workspacePage
+		where workspace_writer = #{memberId} and workspace_type = 'P'
+		order by page_date
+	</select> -->
+
+	<!-- 가장 처음 생성된 워크스페이스 조회 (by memberId, workspaceType) -->
+ 	<select id="selectFirstWorkspace" resultType="workspace">
+		select *
+		from (select W.* 
+		      from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
+		      where WM.member_id = #{memberId} and WM.workspace_type = #{workspaceType}
+		      order by WM.workspace_no)
+		where rownum = 1
+	</select>
+	
+	<!-- 가입 시 생성되는 기본 워크스페이스의 페이지 리스트 조회 -->
+<!-- 	<select id="selectDefaultWsPageList" resultType="page">
+		select *
+		from page
+		where workspace_no = (select W.workspace_no
+		                      from(select *
+		                           from workspace
+		                           where workspace_writer = #{memberId} 
+		                           order by workspace_date) W
+		                       where rownum = 1)
+	</select> -->
+	
+	<!-- 워크스페이스 생성 -->
+	<!-- selectKey로 생성된 워크스페이스 번호 조회 -->
+	<insert id="insertWorkspace">
+		insert into workspace values (seq_workspace_no.nextval, #{workspaceWriter}, #{workspaceType}, #{workspaceName}, #{workspaceDesc}, default, default)
+		<selectKey keyProperty="workspaceNo" resultType="_int" order="AFTER">
+			select seq_workspace_no.currval from dual
+		</selectKey>
+	</insert>
+	
+	<!-- 하나의 워크스페이스 + 사용자 아이디 + 사용자의 ws 권한 + ws즐겨찾기 여부 조회 (by workspaceNo, memberId) -->
+	<select id="selectOneWorkspace" resultMap="workspaceMap">
+		select V.*, F.favorites_no, decode(F.favorites_type, 'W', 'Y', 'N') ws_favorite_yn
+		from (select W.*, WM.member_id, WM.role_code
+		      from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
+		      where W.workspace_no = #{workspaceNo} and WM.member_id = #{memberId}) V
+		      left join (select *
+		               from favorites
+		               where workspace_no = #{workspaceNo} and member_id = #{memberId}) F
+		               on V.member_id = F.member_id
+	</select>
+	
+	<!-- 특정 워크스페이스의 페이지 리스트 조회 (by workspaceNo) -->
+	<select id="selectPageList" resultType="page">
+		select *
+		from page
+		where workspace_no = #{workspaceNo}
+		order by page_no
+	</select>
+	
+	<!-- 워크스페이스 커버 색 변경 -->
+	<update id="updateWorkspaceCoverColor">
+		update workspace
+		set workspace_cover_code = #{workspaceCoverCode}
+		where workspace_no = #{workspaceNo}
+	</update>
+	
+	<!-- 워크스페이스 수정 -->
+	<update id="updateWorkspace">
+		update workspace
+		set workspace_name = #{workspaceName}, workspace_desc = #{workspaceDesc}
+		where workspace_no = #{workspaceNo}
+	</update>
+	
+	<!-- 워크스페이스 삭제 -->
+	<delete id="deleteWorkspace">
+		delete from workspace where workspace_no = #{workspaceNo}
+	</delete>
+	
+	<!-- 특정 워크스페이스 타입 조회 -->
+	<select id="selectWorkspaceType" resultType="string">
+		select workspace_type
+		from workspace
+		where workspace_no = #{workspaceNo}
+	</select>
+	
+	<!-- 워크스페이스 멤버 추가 -->
+	<insert id="insertWorkspaceMember">
+		insert into workspace_member values(seq_workspace_member_no.nextval, #{workspaceNo}, #{memberId}, #{roleCode}, #{workspaceType})       
+	</insert>
+	
+	<!-- 특정 워크스페이스 멤버에 속하지 않는 회원 리스트 불러오기 -->
+	<select id="selectNotWsMemberList" resultType="member">
+		select *
+		from member
+		where member_id not in (select member_id from workspace_member where workspace_no = #{workspaceNo})
+	</select>
+	
+	<!-- 특정 워크스페이스 멤버 리스트 불러오기 -->
+	<select id="selectWsMemberList" resultMap="wsMemberMap">
+		select WM.*, M.member_name, M.profile_renamed_filename
+		from workspace_member WM left join member M on WM.member_id = M.member_id
+		where workspace_no = #{workspaceNo}
+		order by workspace_member_no
+	</select>
+	
+	<!-- 특정 워크스페이스의 멤버 수 조회 -->
+	<select id="selectWsMemberCnt" resultType="int">
+		select count(*) from workspace_member W where workspace_no = #{workspaceNo}
+	</select>
+	
+	<!-- 특정 워크스페이스의 한 멤버 조회 -->
+	<select id="selectOneWsMember" resultMap="wsMemberMap">
+		select WM.*, M.member_name, M.profile_renamed_filename
+		from workspace_member WM left join member M on WM.member_id = M.member_id
+		where workspace_no = #{workspaceNo} and WM.member_id = #{memberId}
+		order by workspace_member_no
+	</select>
+	
+	<!-- 특정 워크스페이스의 멤버들의 권한 수정 -->
+	<update id="updateWorkspaceMemberRole">
+		update workspace_member 
+		set role_code = #{roleCode}
+		where workspace_member_no = #{workspaceMemberNo} 
+	</update>
+	
+	<!-- 특정 워크스페이스 멤버 삭제 -->
+	<delete id="deleteWorkspaceMember">
+		delete from workspace_member
+		where workspace_member_no = #{workspaceMemberNo}
+	</delete>
+
+</mapper>
