@@ -1,0 +1,396 @@
+/* z-index 
+#header: 100;
+#header-workspace-name: 100;
+#header-icons: 11000;
+#more-menu-list: 1000;
+#btn-add-post: 10;
+#sidebar: 10000;
+#profile-area: 15000;
+*/
+
+img {width: 100%;}
+#main .inner img{border-radius: 0.4rem;}
+a{text-decoration: none; border: 0;}
+
+/* 상단바 헤더 */
+div#header {z-index: 100; position: fixed; width: 100%; height: 2.8rem; background: white;}
+
+#header-workspace-name {z-index: 100; position: absolute; height: 2.8rem; left: 16rem; font-size: 1rem; width: 40rem;}
+
+#header-workspace-name ul li {margin-top: .4rem; float: left; text-align: center;}
+#header-workspace-name ul li:not(.span):hover {cursor: pointer; background: rgb(236, 236, 236);}
+#header-workspace-name li.hover {padding: 0.3rem; border-radius: .15rem;}
+#header-workspace-name li.span {margin: .6rem .5rem 0 .5rem; color: darkgray;}
+#header-workspace-name a {color: black;}
+#header-workspace-name li.hover>i {margin-right: .5rem;}
+#header-workspace-name li.toggle {margin-left: .5rem; margin-right: .3rem; border-radius: .15rem; font-size: 1.2rem; color: darkgray;}
+#left-toggle-button {padding: 0.5rem;}
+
+
+/* 헤더 우측 아이콘 */
+nav#header-icons{position: fixed; z-index: 11000; right: 1rem; height: 2.8rem;}
+#header-icons li {float: left; cursor: pointer; margin-left: 0.2rem; line-height: 2.8rem; font-size: 1.1rem;}
+#header-icons i:not(#btn-view-member):hover {background: rgb(236, 236, 236); border-radius: 0.1rem;}
+#header-icons i {padding: 0.4rem;}
+
+#btn-view-member {border-radius: 0.2rem; color: white; background: rgb(243, 190, 208); margin-right: .3rem;}
+#btn-view-member:hover {font-size: 1.2rem;}
+#btn-star.fas {color: #FFD966;}
+#btn-star.far {color: darkgray;}
+#btn-more-menu {color: rgb(110, 110, 110);}
+#btn-bell, #btn-add-member {color: gray;}
+
+/* 상단 우측 헤더 드롭다운 메뉴 */
+#more-menu-list {width: 15rem; position: fixed; right: 1.5rem; top: 2.5rem; z-index: 1000; padding: 0; font-size: 93%;}
+#more-menu-list li {cursor: pointer;}
+#more-menu-list li:hover {background: rgb(236, 236, 236);}
+#more-menu-search {width: 12rem;}
+/* #search-tab {padding: 0 1rem 0 0.2rem; color:gray;} */
+#classification-tab {font-size: 1rem; width: 8rem; background: white; border: 1px solid rgb(220, 220, 220); margin: 0 auto; display: block; height: 1.7rem; padding: 0 0.5rem;}
+
+/* 워크스페이스 멤버 검색 */
+#view-ws-member-list button.role-dropdown {margin-left: 1rem; font-weight: bold;}
+
+/*페이지 커버*/
+#page-cover {cursor: pointer; width: 100%; height: 15rem; position: relative;}
+#btn-change-cover-color {position: absolute; bottom: 10%; right: 2rem;}
+#page-cover:hover #color-header {visibility: visible;}
+#color-header {font-size: .8rem; background: white; color: darkgray; padding: .3rem 1rem; border-radius: .2rem; font-weight: bold; visibility: hidden;}
+#color-header>i {margin-right: .5rem;}
+#color-header:hover {color: black;}
+#page-cover .color-menu {left: -5rem !important;}
+
+/* 포스트 */
+div.post-content {margin-left: .4rem;}
+div.page-post-area.P2 div.file-area{border: 1.5px solid lightgray; border-radius: .5rem; width: 35%; padding: .5rem; text-align: center; margin-left: .3rem; font-weight: bold;}
+div.page-post-area.P2 div.file-area i{font-size: 2rem; margin-right: 1rem;}
+
+/* 좌측 사이드바 */
+#sidebar{height: 100%;}
+#sidebar-header {width: 100%; height: 4rem; padding-left: 1.5rem; line-height: 4rem; font-weight: bold;}
+#sidebar-header:hover {cursor: pointer; background: rgb(236, 236, 236);}
+#sidebar-header img {width: 2rem; height: 2rem; vertical-align: middle; border-radius: .2rem; margin-right: .8rem;}
+/* #sidebar-content {width: 100%;} */
+#sidebar-content:hover {background: rgb(236, 236, 236);}
+#btn-add-s-workspace, #btn-add-p-workspace, #sidebar .btn-add-page, #sidebar .btn-settings {font-size: 1.3rem; vertical-align: middle; float: right; color: darkgray; visibility: hidden;}
+#btn-add-s-workspace:hover, #btn-add-p-workspace:hover, #sidebar .btn-add-page:hover, #sidebar .btn-settings:hover {color: black;}
+#sidebar .menu-settings>div.item {height: 2rem; font-size: 1rem; padding-bottom: 1.6rem !important;}
+#sidebar .menu-settings i{visibility: visible !important;}
+#sidebar .menu-profile {left: 5rem;}
+#sidebar .menu-profile>div.item {padding-left: 2rem !important; padding-right: 2rem !important;}
+#sidebar li.ws-name a, #sidebar li.p-name a {font-weight: bold; color: #595959;}
+
+/* 코멘트 바 */
+#comments-bar{top: 2.8rem; width: 25rem;}
+#comments-bar .img-writer{width: 2.3rem !important; height: 2.3rem !important;}
+#comment-overflow {height: 85%; overflow-x: hidden; padding-bottom: 1rem;}
+#commentsbar-header {font-weight: bold; font-size: 1.1rem;}
+#btn-close-comments {cursor: pointer; color: gray;}
+#btn-close-comments:hover {color: black;}
+#comment-content div.file-area{border: 1.5px solid lightgray; border-radius: .5rem; padding: .5rem; text-align: center; margin-left: .3rem; font-weight: bold;}
+#comment-content div.file-area i{font-size: 2rem; margin-right: 1rem;}
+#post-comment-area {margin-bottom: 1rem;}
+#post-comment-area div.comments {padding: .5em 0em 0em 1em;}
+div.ui.comments {margin: 0; padding-bottom: 0 !important;}
+div#comment-summernote-area {padding: .5rem 1rem;}
+div#reply-area span {display: inline-block; margin-bottom: .5rem; font-weight: bold; font-size: 13px; color: gray;}
+div#reply-area #cancle-reply {float: right; color:gray; padding: .2rem;}
+div#reply-area #cancle-reply:hover {color: black; cursor: pointer;}
+#post-comment-area a.reply:hover {color:black; cursor:pointer;}
+/* 코멘트 관리 메뉴 
+- transform: 관리 메뉴 고정(bootstrap에서 스크롤 위치에 따라 자동 위치 조정되는 기능 제거) */
+#post-comment-area div.comment-management {position: absolute; right: 0; top: .5rem;}
+#post-comment-area div.comments div.comment-management {top: 0;}
+#post-comment-area div.comment-management i {padding: 0 .3rem; color: gray;}
+#post-comment-area div.comment-management i:hover {cursor: pointer; color: black;}
+div.comment-management .comment-menu {transform: unset !important; left: -7.2rem !important; min-width: 100%;}
+.comment-menu .dropdown-item:hover {cursor: pointer;}
+
+
+/* 테두리 없애기, 그림자 없애기, 새로고침 시 닫히지 않기 */
+
+/* summernote */
+form.post-form {display: none;}
+.btn-submit-summernote {color: darkgray; background: white; border: 0; border-radius: 0.2rem; padding: 0.6rem; float: right; margin-top: 5px; margin-right: 5px; font-size: 1rem;}
+.btn-submit-summernote:hover {background: rgb(228, 140, 169); color: white;}
+.btn-close-post-form {cursor: pointer; color: darkgray; border-radius: 0.2rem; padding: 0.2rem 0.5rem; float: right; margin-top: 0.2rem; margin-right: 0.3rem; font-size: 1.1rem;}
+.btn-close-post-form:hover {background: rgb(228, 140, 169); color: white;}
+
+/* 워크스페이스 페이지 */
+#workspace-name {height: 6rem; line-height: 6rem; font-size: 2.6rem; font-weight: 1000; padding-left: 5rem; margin-top: 1.5rem;}
+#workspace-description {margin-bottom: 1rem; font-weight: 600; padding-left: 5.5rem; font-size: 1.2rem; color: gray;}
+#page-list {padding-left: 5.5rem; margin-top: 1.5rem; font-size: 1.1rem; width: 90%;}
+#page-list div {cursor: pointer; margin-bottom: .5rem; padding: .5rem;}
+#page-list div:hover {background: rgb(236, 236, 236);}
+#page-list i {margin-right: .8rem; color: gray;}
+#page-list span {font-weight: bold;}
+
+
+/* 페이지 구역 */
+#page-name {height: 6rem; line-height: 6rem; font-size: 3rem; font-weight: 1000; padding-left: 3rem; margin-top: 1.5rem;}
+#page-description {margin-bottom: 1rem; font-weight: 600; padding-left: 3.5rem; font-size: 1.1rem; color: gray;}
+.page-post-area {position: relative; padding: 0 2rem;}
+.page-post{padding: 1rem; border-radius: 0.2rem;}
+
+/* 포스트 호버 시 */
+.page-post-area:hover .page-post{background: rgb(241, 241, 241);}
+.page-post-area:hover i.btn-post-management {display: inline-block;}
+.icon-pin {visibility: hidden; margin-bottom: .5rem; font-weight: 600; color: gray;}
+.icon-pin>i {padding-left: .5rem; margin-right: .5rem; color: #FFD966;}
+.page-post-area:hover .icon-pin {visibility: visible;}
+
+/* 포스트 관리 */
+.post-dropdown {position: absolute; right: -2rem;}
+i.btn-post-management {
+  display: none; position: absolute; top: 1rem; right: 2.5rem; width: 1.5rem; height: 1.5rem; 
+  padding-top: 0.2rem; text-align: center; border-radius: 0.2rem; color: gray; cursor: pointer;
+}
+i.btn-post-management:hover {background: rgb(241, 241, 241); color: black;}
+.post-menu .divider {margin: 0rem !important;}
+.ui.dropdown .menu.post-menu {top: 2rem !important; left: -2rem !important;}
+.comment-cnt {background: rgb(243, 190, 208) !important; margin-left: .5rem !important; color: white !important; padding: .4rem .5rem !important;}
+
+/* 포스트 추가  */
+#list-add-post .add-post {padding: .5rem 0 .5rem 1.8rem;}
+.add-post:hover {font-weight: 600;}
+#btn-add-post{cursor: pointer; position: fixed; right: 2rem; top: 4rem; z-index: 10; font-size: 2rem; color: gray;}
+#btn-add-post:hover {color: black;}
+#add-post-area{padding: 2.5rem;}
+
+/* 포스트 작성자 */
+/* .post-writer {display: none; margin-bottom: 0 !important;} */
+.post-writer {display: inline-block; margin-bottom: .5rem !important;}
+.post-writer .img-writer{width: 2.3rem !important; height: 2.3rem !important; margin-top: -.2rem !important; margin-right: -.2rem !important;}
+
+/* 사이드바 */
+#sidebar {
+    -moz-flex-grow: 0;
+    -webkit-flex-grow: 0;
+    -ms-flex-grow: 0;
+    flex-grow: 0;
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    -ms-flex-shrink: 0;
+    flex-shrink: 0;
+    -moz-transition: margin-left 0.5s ease, box-shadow 0.5s ease;
+    -webkit-transition: margin-left 0.5s ease, box-shadow 0.5s ease;
+    -ms-transition: margin-left 0.5s ease, box-shadow 0.5s ease;
+    transition: margin-left 0.5s ease, box-shadow 0.5s ease;
+    /* background-color: #f5f6f7; */
+    background: rgb(248, 248, 248);
+    /* 여기서 background를 주면 모달 뜰 때도 배경이 지정이되는데.. 우선 넘어감 */
+    font-size: 0.9em;
+    width: 16rem;
+    
+    position: fixed;
+    z-index: 10000;    
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  #sidebar .inner {
+    padding: 0 0 2rem 0;
+    width: 16rem;
+
+    -webkit-overflow-scrolling: touch;
+    height: 85%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+  }
+  #sidebar.inactive {
+    margin-left: -16rem;
+  }
+  body.is-preload #sidebar {
+    display: none; } 
+
+/* 사이드바 - 메뉴 */
+/* Menu */
+#menu ul {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: rgb(97, 96, 96);
+  font-weight: 400;
+  letter-spacing: 0.075em;
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 0 !important;
+  text-transform: uppercase; }
+  #menu ul span a, #menu ul span, #menu ul.opener2 a{
+    border-bottom: 0;
+    color: rgb(97, 96, 96);
+    cursor: pointer;
+    display: block;
+    font-size: 0.8rem;
+  }  
+  #menu ul span:not(.opener2) a, #menu span:not(.opener2) {
+    padding: .5rem 0 .5rem 3rem;
+  }
+  #menu span.opener2{
+    padding: .4rem 0 .4rem 4.5rem;
+  }
+  /* #menu ul span.opener2 a {
+    padding: .1rem 0 .1rem 2.2rem;
+  } */
+  #menu ul.opener2 > li > span > a {
+    padding: 0 0 0 2rem;
+  }
+
+
+  #menu span.opener2:before {left: 3rem !important;}
+
+    #menu ul a:hover, #menu ul span:hover {
+      background: rgb(236, 236, 236);}
+    #menu ul a, #menu ul span.opener {
+      -moz-transition: color 0.2s ease-in-out;
+      -webkit-transition: color 0.2s ease-in-out;
+      -ms-transition: color 0.2s ease-in-out;
+      transition: color 0.2s ease-in-out;
+      text-decoration: none;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      position: relative; }
+      #menu ul span.opener:before {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        line-height: 1;
+        text-transform: none !important;
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900; }
+      #menu ul span.opener:before {
+        -moz-transition: color 0.2s ease-in-out, -moz-transform 0.2s ease-in-out;
+        -webkit-transition: color 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
+        -ms-transition: color 0.2s ease-in-out, -ms-transform 0.2s ease-in-out;
+        transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        color: #9fa3a6;
+        content: '\f078';
+        position: absolute;
+        left: 1.5rem; top: 0.8rem;}
+      #menu ul span.opener:hover:before {
+        color: rgb(231, 146, 149); }
+      #menu ul span.opener.active + ul {
+        display: block; }
+      #menu ul span.opener.active:before {
+        -moz-transform: rotate(-180deg);
+        -webkit-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg);
+        transform: rotate(-180deg); }
+      #menu > ul > li > ul {
+        display: none;
+      }
+      #menu > ul > li > ul > li > ul{
+        display: none;
+      }
+
+
+/* @media 해결 (확대 축소 시 글꼴 크기 이상한 문제) */
+/* Main */
+#main {
+  -moz-flex-grow: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-grow: 1;
+  flex-grow: 1;
+  -moz-flex-shrink: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-shrink: 1;
+  flex-shrink: 1;
+  width: 100%; }
+  #main > .inner {
+    padding: 0 6em 0.1em 6em ;
+    margin: 0 auto;
+    max-width: 110em; }
+    #main > .inner > section {
+      padding: 0 8em 10em 8em ;
+      border-top: solid 2px rgba(210, 215, 217, 0.75); }
+      #main > .inner > section:first-of-type {
+        border-top: 0 !important; 
+      }
+  @media screen and (max-width: 1200px) {
+    #main > .inner {
+      padding: 0 5em 0.1em 5em ; }
+      #main > .inner > section {
+        padding: 0 2em 10em 2em ; } }
+  @media screen and (max-width: 1024px) {
+    #main > .inner {
+      padding: 0 4em 0.1em 4em ; }
+      #main > .inner > section {
+        padding: 0 1em 10em 1em ; } }
+  @media screen and (max-width: 736px) {
+    #main > .inner {
+      padding: 0 2em 0.1em 2em ; }
+      #main > .inner > section {
+        padding: 0 1em 10em 1em ; } 
+      #page-name {font-size: 2rem;}
+      }
+
+/* 모달 */
+div.modal .modal-header {border: 0; padding: 1.5rem 2rem 1.5rem 2rem;}
+div.modal .modal-footer {height: 6rem; border: 0; padding: 0; text-align: center;}
+/* div.modal .modal-button {background: rgb(243, 190, 208); color: white; width: 5rem; height: 2.5rem; font-weight: bold; line-height: 2.4rem; border-radius: .2rem; float: right; margin: 2rem 2.5rem;} */
+/* div.modal .modal-button:hover {background: rgb(228, 140, 169); cursor: pointer;} */
+div.modal .modal-button {background: #EDB8BA; color: white; width: 5rem; height: 2.5rem; font-weight: bold; line-height: 2.4rem; border-radius: .2rem; float: right; margin: 2rem 2.5rem; border: 0;}
+div.modal .modal-button:hover {background: rgb(231, 146, 149); cursor: pointer;}
+
+
+/* #1. modal-viewMember  */
+#modal-viewMember {top: 5rem;}
+#modal-viewMember .modal-content {width: 25rem; margin: auto;}
+#modal-viewMember .modal-body {height: 15rem; padding: 0;}
+#modal-viewMember .member-search-area {margin: .5rem 1.5rem 2rem 1.5rem;}
+#modal-viewMember img{height: 2rem; width: 2rem; border-radius: .2rem; vertical-align: middle; margin: 0 .8rem 0.3rem 0.5rem;}
+#modal-viewMember .one-member {margin: 0 auto; margin-bottom: .5rem; height: 3rem; line-height: 2.5rem; padding: .3rem 1.5rem; font-weight: bold;}
+#modal-viewMember .one-member:hover {background: rgb(241, 241, 241);}
+#modal-viewMember i.delete {float: right; color: darkgray;}
+#modal-viewMember i.delete:hover {color: black; cursor:pointer;}
+.one-member div.access {margin-left: 1rem;}
+.one-member select.access-select {font-size: small;
+    border-color: rgb(33, 133, 208);
+    color: rgb(33, 133, 208);
+    border-radius: 0.3rem;
+    margin-left: 1rem;
+    padding: 0 1rem;
+    font-weight: bold;}
+
+/* #2. modal-addMember */
+#modal-addMember {top: 10rem;}
+#modal-addMember .modal-content {width: 35rem;}
+#modal-addMember .modal-body {padding: 0 3rem;}
+#modal-addMember div.access-select {min-width: 1rem; float: right;}
+#modal-addMember div.search.selection {min-width: 20rem;}
+
+
+/* #3. 워크스페이스, 페이지 관련 모달
+ modal-add-p-ws / modal-add-s-ws / modal-add-page / modal-update-ws / modal-update-p */
+#modal-add-p-ws, #modal-add-s-ws, #modal-add-page, #modal-update-ws, #modal-update-p {top: 5rem;}
+#modal-add-p-ws .modal-body, #modal-add-s-ws .modal-body, #modal-add-page .modal-body, #modal-update-ws .modal-body, #modal-update-p .modal-body {padding: 0 3rem; font-size: 1rem; font-weight: bold;}
+#modal-add-p-ws .name, #modal-add-p-ws .description, #modal-add-s-ws .name, #modal-add-s-ws .description, #modal-add-page .name, #modal-add-page .description, #modal-update-ws .description, #modal-update-p .description {padding: 1rem 0;}
+#modal-add-p-ws input, #modal-add-s-ws input, #modal-add-page input, #modal-update-ws input, #modal-update-p input {margin-top: .5rem; width: 100%; border: 1px solid rgb(226, 226, 226); border-radius: .3rem; height: 2.5rem;}
+
+/* #4. 포스트 수정 모달 */
+/* #modal-update-post-text, #modal-update-post-file, #modal-update-post-table {top: 5rem;} */
+#modal-update-post-P1 .modal-content, #modal-update-post-P2 .modal-content, #modal-update-post-P3 .modal-content {width: 40rem;}
+#modal-update-post-P1 .modal-body, #modal-update-post-P2 .modal-body, #modal-update-post-P3 .modal-body {padding: 0 3rem; font-size: 1rem; font-weight: bold;}
+#modal-update-post-P1 .name, #modal-update-post-P2 .name, #modal-update-post-P3 .name {padding: 1rem 0;}
+#modal-update-post-P1 .name>div, #modal-update-post-P2 .name>div, #modal-update-post-P3 .name>div {margin-bottom: 1rem;}
+
+
+
+/* 프로필 보기 */
+img.img-writer {cursor: pointer;}
+#modal-view-profile {top: 5rem; left: 6rem;}
+.profile-area {position: absolute; z-index: 15000; top: 50%; left: 50%; width: 100%; height: 100%;}
+#modal-view-profile .modal-body {width: 100%; height: 32rem;}
+#modal-view-profile .modal-content {width: 24rem;}
+#modal-view-profile .content {padding: 2rem 0 0 1.5rem;}
+#btn-close-profile {float: right; padding: .5rem 1rem .5rem 0; font-size: 1.2rem; color: gray;}
+#btn-close-profile:hover {cursor: pointer; color: black;}
+
+
+
+/* #modal-showViewMember img {width: 2rem !important; height: 2rem !important;} */
+/* #modal-view-profile {opacity: 1 !important; display: block !important;} */
