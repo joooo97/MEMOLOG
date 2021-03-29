@@ -219,7 +219,7 @@ public class WorkspaceRestController {
 	
 	// 특정 워크스페이스 멤버 삭제
 	@DeleteMapping("/workspace-members/{workspaceMemberNo}")
-	public void DeleteWorkspaceMember(@PathVariable("workspaceMemberNo") int workspaceMemberNo) {
+	public void deleteWorkspaceMember(@PathVariable("workspaceMemberNo") int workspaceMemberNo) {
 		try {
 			workspaceService.deleteWorkspaceMember(workspaceMemberNo);
 		} catch(Exception e) {
@@ -228,5 +228,14 @@ public class WorkspaceRestController {
 		}
 	}
 
+	@DeleteMapping("/workspace-favorites/{favoritesNo}")
+	public void deleteWsFavorite(@PathVariable("favoritesNo") int favoritesNo) {
+		try {
+			workspaceService.deleteWsFavorite(favoritesNo);
+		} catch(Exception e) {
+			logger.error("워크스페이스 즐겨찾기 해제 오류: ", e);
+			throw new WorkspaceException("워크스페이스 즐겨찾기 해제 오류!", e);
+		}
+	}
 
 }

@@ -25,7 +25,7 @@
 			<!-- <li><i id="btn-bell" class="fas fa-bell"></i></li> -->
 		<c:choose>
 			<c:when test="${workspace.wsFavoriteYn == 'Y'}">
-				<li><i id="btn-star" class="fas fa-star"></i></li>
+				<li><i id="btn-star" class="fas fa-star" onclick="deleteWsFavorite(${workspace.favoritesNo});"></i></li>
 			</c:when>
 			<c:otherwise>
 				<li><i id="btn-star" class="far fa-star"></i></li>
@@ -162,6 +162,23 @@
 					console.log("워크스페이스 커버 색 변경 ajax 요청 실패!", x, s, e);
 				}
 			}); 
+		}
+		
+		// 워크스페이스 즐겨찾기 해제
+		function deleteWsFavorite(favoritesNo) {
+			$.ajax({
+				url: '${pageContext.request.contextPath}/workspace-favorites/'+favoritesNo,
+				type: 'DELETE',
+				success: data => {
+					console.log("워크스페이스 즐겨찾기 해제 성공!");
+					// 즐겨찾기 표시 해제
+					$("#btn-star").attr("class", "far fa-star");
+					
+				},
+				error: (x, s, e) => {
+					console.log("워크스페이스 즐겨찾기 해제 실패!", x, s, e);
+				}
+			});
 		}
 	
 	</script>

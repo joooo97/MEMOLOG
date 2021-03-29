@@ -193,7 +193,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 			throw new WorkspaceException("워크스페이스 멤버 삭제 오류!");
 	}
 
-
+	@Override
+	public void deleteWsFavorite(int favoritesNo) {
+		int result = workspaceDAO.deleteWsFavorite(favoritesNo);
+		
+		if(result == 0)
+			throw new WorkspaceException("워크스페이스 즐겨찾기 해제 오류!");
+	}
 
 
 

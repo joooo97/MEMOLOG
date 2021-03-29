@@ -262,5 +262,11 @@
 		delete from workspace_member
 		where workspace_member_no = #{workspaceMemberNo}
 	</delete>
+	
+	<!-- 워크스페이스 즐겨찾기 해제 -->
+	<delete id="deleteWsFavorite">
+		delete from favorites where favorites_no = #{favoritesNo}
+	</delete>
+	
 
 </mapper>

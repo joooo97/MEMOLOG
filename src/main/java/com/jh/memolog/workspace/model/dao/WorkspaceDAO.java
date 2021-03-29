@@ -47,6 +47,8 @@ public interface WorkspaceDAO {
 
 	int deleteWorkspaceMember(int workspaceMemberNo);
 
+	int deleteWsFavorite(int favoritesNo);
+
 
 
 

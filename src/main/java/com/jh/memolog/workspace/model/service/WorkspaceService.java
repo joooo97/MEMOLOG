@@ -47,6 +47,8 @@ public interface WorkspaceService {
 
 	void deleteWorkspaceMember(int workspaceMemberNo);
 
+	void deleteWsFavorite(int favoritesNo);
+
 
 
 
