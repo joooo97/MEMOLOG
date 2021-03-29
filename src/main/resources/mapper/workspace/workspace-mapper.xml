@@ -268,5 +268,13 @@
 		delete from favorites where favorites_no = #{favoritesNo}
 	</delete>
 	
+	<!-- 워크스페이스 즐겨찾기 추가 (selectKey로 생성된 favoritesNo 조회)-->
+	<insert id="insertWsFavorite">
+		insert into favorites values(seq_favorites_no.nextval, #{memberId}, 'W', #{workspaceNo}, null, sysdate)
+		<selectKey keyProperty="favoritesNo" resultType="_int" order="AFTER">
+			select seq_favorites_no.currval from dual
+		</selectKey>
+	</insert>
+
 
 </mapper>

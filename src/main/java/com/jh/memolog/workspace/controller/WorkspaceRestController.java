@@ -237,5 +237,30 @@ public class WorkspaceRestController {
 			throw new WorkspaceException("워크스페이스 즐겨찾기 해제 오류!", e);
 		}
 	}
+	
+	@PostMapping("/workspace-favorites")
+	public Map<String, Object> insertWsFavorite(@RequestParam int workspaceNo, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> param = new HashMap<>();
+		Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = memberLoggedIn.getMemberId();
+		int createdFavoriteNo = 0;
+		
+		try {
+			param.put("memberId", memberId);
+			param.put("workspaceNo", workspaceNo);
+			
+			// 즐겨찾기 추가 후 추가된 즐겨찾기 번호 조회
+			createdFavoriteNo = workspaceService.insertWsFavorite(param);
+			map.put("createdFavoriteNo", createdFavoriteNo);
+			logger.debug("createdFavoriteNo = {}", createdFavoriteNo);
+			
+		} catch(Exception e) {
+			logger.error("워크스페이스 즐겨찾기 추가 오류: ", e);
+			throw new WorkspaceException("워크스페이스 즐겨찾기 추가 오류!", e);
+		}
+		
+		return map;
+	}
 
 }

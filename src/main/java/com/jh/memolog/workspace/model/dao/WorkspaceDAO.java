@@ -49,6 +49,8 @@ public interface WorkspaceDAO {
 
 	int deleteWsFavorite(int favoritesNo);
 
+	int insertWsFavorite(Map<String, Object> param);
+
 
 
 

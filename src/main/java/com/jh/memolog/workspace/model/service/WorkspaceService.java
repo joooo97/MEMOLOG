@@ -49,6 +49,8 @@ public interface WorkspaceService {
 
 	void deleteWsFavorite(int favoritesNo);
 
+	int insertWsFavorite(Map<String, Object> param);
+
 
 
 

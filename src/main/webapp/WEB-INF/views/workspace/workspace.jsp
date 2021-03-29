@@ -28,7 +28,7 @@
 				<li><i id="btn-star" class="fas fa-star" onclick="deleteWsFavorite(${workspace.favoritesNo});"></i></li>
 			</c:when>
 			<c:otherwise>
-				<li><i id="btn-star" class="far fa-star"></i></li>
+				<li><i id="btn-star" class="far fa-star" onclick="addWsFavorite(${workspace.workspaceNo});"></i></li>
 			</c:otherwise>
 		</c:choose>
 			<li><i id="btn-more-menu" class="fas fa-ellipsis-h"></i></li>
@@ -171,12 +171,33 @@
 				type: 'DELETE',
 				success: data => {
 					console.log("워크스페이스 즐겨찾기 해제 성공!");
+					
 					// 즐겨찾기 표시 해제
-					$("#btn-star").attr("class", "far fa-star");
+					$("#btn-star").attr("class", "far fa-star")
+								  .attr("onclick", "addWsFavorite("+v_nowWorkspaceNo+");");
 					
 				},
 				error: (x, s, e) => {
 					console.log("워크스페이스 즐겨찾기 해제 실패!", x, s, e);
+				}
+			});
+		}
+		
+		// 워크스페이스 즐겨찾기 추가
+		function addWsFavorite(workspaceNo) {
+			$.ajax({
+				url: '${pageContext.request.contextPath}/workspace-favorites',
+				type: 'POST',
+				data: {workspaceNo: workspaceNo},
+				success: data => {
+					console.log("워크스페이스 즐겨찾기 추가 성공!");
+					
+					// 즐겨찾기 표시 (data.createdFavoriteNo: 생성된 즐겨찾기 번호)
+					$("#btn-star").attr("class", "fas fa-star")
+								  .attr("onclick", "deleteWsFavorite("+data.createdFavoriteNo+");");
+				},
+				error: (x, s, e) => {
+					console.log("워크스페이스 즐겨찾기 추가 실패!", x, s, e);
 				}
 			});
 		}

@@ -201,7 +201,18 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 			throw new WorkspaceException("워크스페이스 즐겨찾기 해제 오류!");
 	}
 
-
+	@Override
+	public int insertWsFavorite(Map<String, Object> param) {
+		int result = workspaceDAO.insertWsFavorite(param);
+		int favoritesNo;
+		
+		if(result == 0)
+			throw new WorkspaceException("워크스페이스 즐겨찾기 추가 오류!");
+		else
+			favoritesNo = (int)param.get("favoritesNo");
+		
+		return favoritesNo;
+	}
 
 
 

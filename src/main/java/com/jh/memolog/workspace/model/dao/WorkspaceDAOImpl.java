@@ -114,5 +114,10 @@ public class WorkspaceDAOImpl implements WorkspaceDAO {
 		return sqlSession.delete("workspace.deleteWsFavorite", favoritesNo);
 	}
 
+	@Override
+	public int insertWsFavorite(Map<String, Object> param) {
+		return sqlSession.insert("workspace.insertWsFavorite", param);
+	}
+
 
 }
