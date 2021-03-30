@@ -1061,6 +1061,9 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
  				// 즐겨찾기 표시 해제
  				$("#btn-star").attr("class", "far fa-star")
  							  .attr("onclick", "addPageFavorite("+v_nowWorkspaceNo+", "+v_nowPageNo+");");
+ 				// 사이드바 내 페이지 즐겨찾기 리스트에서 제외
+ 				$("li#favorites-"+favoritesNo+"").remove();
+ 				
  			},
  			error: (x, s, e) => {
  				console.log("페이지 즐겨찾기 해제 실패!", x, s, e);

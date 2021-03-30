@@ -84,10 +84,10 @@
 									</li>
 									<li>
 										<span class="opener opener2 no-click"><a href="#">PAGE</a></span>
-										<ul class="opener2">
+										<ul class="opener2" id="ul-page-favorites">
 											<c:forEach items="${favoritesList}" var="f" varStatus="vs">
 												<c:if test="${f.favoritesType == 'P'}">
-												<li><span><a href="#" class="hover-text">
+												<li id="favorites-${f.favoritesNo}"><span><a href="#" class="hover-text">
 													<button class="hover-text btn-go-page" onclick="goPage(${f.pageNo});">${f.pageName}</button>
 													<div class="ui buttons btn-settings">
 														<i class="ui dropdown fas fa-ellipsis-h">
