@@ -110,8 +110,8 @@ public class WorkspaceDAOImpl implements WorkspaceDAO {
 	}
 
 	@Override
-	public int deleteWsFavorite(int favoritesNo) {
-		return sqlSession.delete("workspace.deleteWsFavorite", favoritesNo);
+	public int deleteFavorite(int favoritesNo) {
+		return sqlSession.delete("workspace.deleteFavorite", favoritesNo);
 	}
 
 	@Override

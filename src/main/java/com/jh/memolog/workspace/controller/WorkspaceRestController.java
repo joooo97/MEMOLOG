@@ -228,13 +228,13 @@ public class WorkspaceRestController {
 		}
 	}
 
-	@DeleteMapping("/workspace-favorites/{favoritesNo}")
-	public void deleteWsFavorite(@PathVariable("favoritesNo") int favoritesNo) {
+	@DeleteMapping("/favorites/{favoritesNo}")
+	public void deleteFavorite(@PathVariable("favoritesNo") int favoritesNo) {
 		try {
-			workspaceService.deleteWsFavorite(favoritesNo);
+			workspaceService.deleteFavorite(favoritesNo);
 		} catch(Exception e) {
-			logger.error("워크스페이스 즐겨찾기 해제 오류: ", e);
-			throw new WorkspaceException("워크스페이스 즐겨찾기 해제 오류!", e);
+			logger.error("워크스페이스 및 페이지 즐겨찾기 해제 오류: ", e);
+			throw new WorkspaceException("워크스페이스 및 페이지 즐겨찾기 해제 오류!", e);
 		}
 	}
 	

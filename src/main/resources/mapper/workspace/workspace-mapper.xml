@@ -263,8 +263,8 @@
 		where workspace_member_no = #{workspaceMemberNo}
 	</delete>
 	
-	<!-- 워크스페이스 즐겨찾기 해제 -->
-	<delete id="deleteWsFavorite">
+	<!-- 워크스페이스 및 페이지 즐겨찾기 해제 -->
+	<delete id="deleteFavorite">
 		delete from favorites where favorites_no = #{favoritesNo}
 	</delete>
 	

@@ -47,7 +47,7 @@ public interface WorkspaceDAO {
 
 	int deleteWorkspaceMember(int workspaceMemberNo);
 
-	int deleteWsFavorite(int favoritesNo);
+	int deleteFavorite(int favoritesNo);
 
 	int insertWsFavorite(Map<String, Object> param);
 

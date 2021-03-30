@@ -47,7 +47,7 @@ public interface WorkspaceService {
 
 	void deleteWorkspaceMember(int workspaceMemberNo);
 
-	void deleteWsFavorite(int favoritesNo);
+	void deleteFavorite(int favoritesNo);
 
 	int insertWsFavorite(Map<String, Object> param);
 

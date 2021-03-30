@@ -167,7 +167,7 @@
 		// 워크스페이스 즐겨찾기 해제
 		function deleteWsFavorite(favoritesNo) {
 			$.ajax({
-				url: '${pageContext.request.contextPath}/workspace-favorites/'+favoritesNo,
+				url: '${pageContext.request.contextPath}/favorites/'+favoritesNo,
 				type: 'DELETE',
 				success: data => {
 					console.log("워크스페이스 즐겨찾기 해제 성공!");
