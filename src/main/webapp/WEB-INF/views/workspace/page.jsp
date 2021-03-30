@@ -34,7 +34,7 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 			<!-- <li><i id="btn-bell" class="fas fa-bell"></i></li> -->
 		<c:choose>
 			<c:when test="${page.PFavoriteYn == 'Y'}">
-				<li><i id="btn-star" class="fas fa-star"></i></li>
+				<li><i id="btn-star" class="fas fa-star" onclick="deletePageFavorite(${page.favoritesNo});"></i></li>
 			</c:when>
 			<c:otherwise>
 				<li><i id="btn-star" class="far fa-star"></i></li>
@@ -1115,6 +1115,24 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
  		}
  		
  	}
+ 	
+ 	// 페이지 즐겨찾기 해제
+ 	function deletePageFavorite(favoritesNo) {
+ 		$.ajax({
+ 			url: '${pageContext.request.contextPath}/favorites/'+favoritesNo,
+ 			type: 'DELETE',
+ 			success: data => {
+ 				console.log("페이지 즐겨찾기 해제 성공!");
+ 				
+ 				// 즐겨찾기 표시 해제
+ 				$("#btn-star").attr("class", "far fa-star");
+ 			},
+ 			error: (x, s, e) => {
+ 				console.log("페이지 즐겨찾기 해제 실패!", x, s, e);
+ 			}
+ 		});
+ 	}
+ 	
 
 	//summernote 함수
 	function summernoteSetting() {
