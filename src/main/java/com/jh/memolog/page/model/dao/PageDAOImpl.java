@@ -96,4 +96,9 @@ public class PageDAOImpl implements PageDAO {
 	public List<Post> selectPostListBySort(Map<String, Object> param) {
 		return sqlSession.selectList("page.selectPostListBySort", param);
 	}
+
+	@Override
+	public int insertPageFavorite(Map<String, Object> param) {
+		return sqlSession.insert("page.insertPageFavorite", param);
+	}
 }

@@ -41,4 +41,6 @@ public interface PageDAO {
 
 	List<Post> selectPostListBySort(Map<String, Object> param);
 
+	int insertPageFavorite(Map<String, Object> param);
+
 }

@@ -196,5 +196,14 @@
 		</choose>
 		order by P.post_no
 	</select>
+	
+	<!-- 페이지 즐겨찾기 추가 후 selectKey로 생성된 favoritesNo 반환 -->
+	<insert id="insertPageFavorite">
+		insert into favorites values(seq_favorites_no.nextval, #{memberId}, 'P', #{workspaceNo}, #{pageNo}, sysdate)
+		<selectKey keyProperty="favoritesNo" resultType="_int" order="AFTER">
+			select seq_favorites_no.currval from dual
+		</selectKey>
+	</insert>
+	
 
 </mapper>

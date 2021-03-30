@@ -37,7 +37,7 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 				<li><i id="btn-star" class="fas fa-star" onclick="deletePageFavorite(${page.favoritesNo});"></i></li>
 			</c:when>
 			<c:otherwise>
-				<li><i id="btn-star" class="far fa-star"></i></li>
+				<li><i id="btn-star" class="far fa-star" onclick="addPageFavorite(${page.workspaceNo}, ${page.pageNo});"></i></li>
 			</c:otherwise>
 		</c:choose>	
 			<li><i id="btn-more-menu" class="fas fa-ellipsis-h"></i></li>
@@ -67,73 +67,7 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 			</div>
 			<!-- 전체 포스트 코멘트 영역 -->
 			<div class="item ui minimal comments">
-			<div id="post-comment-area">
-			
-<%--  			<!-- 여기 아래부터@!@2@@ -->
-  				<!-- 코멘트 1 -->
- 				<div class="comment">
-				  <a class="avatar">
-					<img src="${pageContext.request.contextPath }/resources/images/pic11.jpg" class="img-writer">
-				  </a>
-				  <!-- .content: 코멘트 내용 -->
-				  <div class="content">
-					<a class="author">Elliot Fu</a>
-					<div class="metadata">
-					  <span class="date">Yesterday at 12:30AM</span>
-					  <a class="reply">답글</a>
-					</div>
-					<!-- 코멘트 관리 버튼 -->
-					<div class="dropdown comment-management">
-					  <i class="fas fa-ellipsis-v" data-toggle="dropdown"></i>
-					  <div class="dropdown-menu comment-menu">
-					  	<div class="dropdown-item">댓글 수정</div>
-					  	<div class="dropdown-item">댓글 삭제</div>
-					  </div>
-					</div>
-					<!-- 코멘트 내용 -->
-					<div class="text">
-					  <p>This has been very useful for my research. Thanks as well!</p>
-					</div>
-					<!-- <div class="actions">
-					  <a class="reply">답글</a>
-					</div> -->
-				  </div>
-				  <!-- .comments: 답글 -->
-				  <div class="comments">
-					<div class="comment">
-					  <a class="avatar">
-						<img src="${pageContext.request.contextPath }/resources/images/pic11.jpg"  class="img-writer">
-					  </a>
-					  <div class="content">
-						<a class="author">Jenny Hess</a>
-						<div class="metadata">
-						  <span class="date">Just now</span>
-						  <a class="reply">답글</a>
-						</div>
-						<!-- 코멘트 관리 버튼 -->
-						<div class="dropdown comment-management">
-						  <i class="fas fa-ellipsis-v" data-toggle="dropdown"></i>
-						  <div class="dropdown-menu comment-menu">
-						    <div class="dropdown-item">댓글 수정</div>
-						    <div class="dropdown-item">댓글 삭제</div>
-						  </div>
-						</div>
-						<!-- 코멘트 내용 -->
-						<div class="text">
-						  Elliot you are always so right :)
-						</div>
-						<!-- <div class="actions">
-						  <a class="reply">답글</a>
-						</div> -->
-					  </div>
-					</div>
-				  </div>
-				</div>
-
-  				<!-- 코멘트 2 -->
-				<!-- 여기 위까지@@@ -->	
- --%>				
-				</div> <!-- #post-comment-area -->
+			<div id="post-comment-area"></div> <!-- #post-comment-area -->
 			</div> <!-- div.ui.comments -->
 			
 			<div id="comment-summernote-area">
@@ -1125,10 +1059,30 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
  				console.log("페이지 즐겨찾기 해제 성공!");
  				
  				// 즐겨찾기 표시 해제
- 				$("#btn-star").attr("class", "far fa-star");
+ 				$("#btn-star").attr("class", "far fa-star")
+ 							  .attr("onclick", "addPageFavorite("+v_nowWorkspaceNo+", "+v_nowPageNo+");");
  			},
  			error: (x, s, e) => {
  				console.log("페이지 즐겨찾기 해제 실패!", x, s, e);
+ 			}
+ 		});
+ 	}
+ 	
+ 	// 페이지 즐겨찾기 추가
+ 	function addPageFavorite(workspaceNo, pageNo) {
+ 		$.ajax({
+ 			url: '${pageContext.request.contextPath}/page-favorites',
+ 			type: 'POST',
+ 			data: {workspaceNo: workspaceNo, pageNo: pageNo},
+ 			success: data => {
+ 				console.log("페이지 즐겨찾기 추가 성공!");
+ 				
+ 				// 즐겨찾기 표시 (data.createdFavoriteNo: 생성된 즐겨찾기 번호)
+ 				$("#btn-star").attr("class", "fas fa-star")
+ 					          .attr("onclick", "deletePageFavorite("+data.createdFavoriteNo+");");
+ 			},
+ 			error: (x, s, e) => {
+ 				console.log("페이지 즐겨찾기 추가 실패!", x, s, e);
  			}
  		});
  	}

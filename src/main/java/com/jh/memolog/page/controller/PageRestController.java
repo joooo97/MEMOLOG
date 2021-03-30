@@ -481,5 +481,32 @@ public class PageRestController {
 			throw new PageException("포스트 코멘트 수정 오류!", e);
 		}
 	}
+	
+	// 페이지 즐겨찾기 추가
+	@PostMapping("/page-favorites")
+	public Map<String, Object> insertPageFavorite(@RequestParam int workspaceNo, @RequestParam int pageNo, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> param = new HashMap<>();
+		Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = memberLoggedIn.getMemberId();
+		int createdFavoriteNo = 0;
+		
+		try {
+			param.put("memberId", memberId);
+			param.put("workspaceNo", workspaceNo);
+			param.put("pageNo", pageNo);
+			
+			// 즐겨찾기 추가 후 생성된 즐겨찾기 번호 조회
+			createdFavoriteNo = pageService.insertPageFavorite(param);
+			map.put("createdFavoriteNo", createdFavoriteNo);
+			logger.debug("createdFavoriteNo = {}", createdFavoriteNo);
+			
+		} catch(Exception e) {
+			logger.error("페이지 즐겨찾기 추가 오류: ", e);
+			throw new PageException("페이지 즐겨찾기 추가 오류!", e);
+		}
+		
+		return map;
+	}
 
 }

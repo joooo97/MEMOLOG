@@ -228,6 +228,7 @@ public class WorkspaceRestController {
 		}
 	}
 
+	// 워크스페이스 및 페이지 즐겨찾기 해제
 	@DeleteMapping("/favorites/{favoritesNo}")
 	public void deleteFavorite(@PathVariable("favoritesNo") int favoritesNo) {
 		try {
@@ -238,6 +239,7 @@ public class WorkspaceRestController {
 		}
 	}
 	
+	// 워크스페이스 즐겨찾기 추가
 	@PostMapping("/workspace-favorites")
 	public Map<String, Object> insertWsFavorite(@RequestParam int workspaceNo, HttpSession session) {
 		Map<String, Object> map = new HashMap<>();

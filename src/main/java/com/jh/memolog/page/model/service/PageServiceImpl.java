@@ -179,5 +179,19 @@ public class PageServiceImpl implements PageService {
 		return postList;
 	}
 
+	// 페이지 즐겨찾기 추가 후 생성된 즐겨찾기 번호 반환
+	@Override
+	public int insertPageFavorite(Map<String, Object> param) {
+		int result = pageDAO.insertPageFavorite(param);
+		int favoritesNo;
+		
+		if(result == 0)
+			throw new PageException("페이지 즐겨찾기 추가 오류!");
+		else
+			favoritesNo = (int)param.get("favoritesNo");
+		
+		return favoritesNo;
+	}
+
 	
 }
