@@ -57,10 +57,10 @@
 								<ul>
 									<li class="opener2">
 										<span class="opener opener2 no-click"><a href="#">WORKSPACE</a></span>
-										<ul class="opener2">
+										<ul class="opener2" id="ul-ws-favorites">
 											<c:forEach items="${favoritesList}" var="f" varStatus="vs">
 												<c:if test="${f.favoritesType == 'W'}">
-												<li><span><a href="#">
+												<li id="favorites-${f.favoritesNo}"><span><a href="#">
 													<button class="hover-text btn-go-workspace" onclick="goWorkspace(${f.workspaceNo});">${f.workspaceName}</button>
 													<i class="plus square outline icon btn-add-page" onclick="addPage('${f.roleCode}', '${f.workspaceNo }');"></i>
 													<div class="ui buttons btn-settings">

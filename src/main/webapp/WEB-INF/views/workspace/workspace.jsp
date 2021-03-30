@@ -175,6 +175,8 @@
 					// 즐겨찾기 표시 해제
 					$("#btn-star").attr("class", "far fa-star")
 								  .attr("onclick", "addWsFavorite("+v_nowWorkspaceNo+");");
+	 				// 사이드바 내 워크스페이스 즐겨찾기 리스트에서 제외
+	 				$("li#favorites-"+favoritesNo+"").remove();
 					
 				},
 				error: (x, s, e) => {
