@@ -6,9 +6,9 @@
 
 <fmt:requestEncoding value="utf-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+<!-- workspace, page 페이지만 css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/juhyun.css" />
 
-	<!-- workspace, page 페이지만 css -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/juhyun.css" />
 <script>
 var v_nowPageNo = "${page.pageNo}"; // 포스트 추가, 조회, 수정 위한 현재 페이지 번호 전역변수
 var v_nowPostNo; // 포스트 수정 / 포스트 댓글 사이드 바 조회를 위한 포스트 번호

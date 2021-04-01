@@ -13,6 +13,7 @@
 		<result column="page_desc" property="pageDesc"/>
 		<result column="page_cover_code" property="pageCoverCode"/>
 		<result column="page_date" property="pageDate"/>
+		<result column="workspace_writer" property="workspaceWriter"/>
 		<result column="workspace_name" property="workspaceName"/>
 		<result column="workspace_cover_code" property="workspaceCoverCode"/>
 		<result column="workspace_type" property="workspaceType"/>
@@ -61,10 +62,10 @@
 		</selectKey>
 	</insert>
 	
-	<!-- 페이지 + 워크스페이스 이름, 커버색, 타입 + 사용자 아이디 + 사용자 ws 권한 + 페이지 즐겨찾기 여부 조회 (by pageNo, memberId) -->
+	<!-- 페이지 + 워크스페이스 (작성자, 워크스페이스 명, 커버색, 타입) + 사용자 아이디 + 사용자 ws 권한 + 페이지 즐겨찾기 여부 조회 (by pageNo, memberId) -->
 	<select id="selectOnePage" resultMap="pageMap">		
 		select V.*, F.favorites_no, decode(F.favorites_type, 'P', 'Y', 'N') p_favorite_yn
-		from (select P.*, W.workspace_name, W.workspace_cover_code, W.workspace_type, WM.member_id, WM.role_code
+		from (select P.*, W.workspace_writer, W.workspace_name, W.workspace_cover_code, W.workspace_type, WM.member_id, WM.role_code
 		      from page P left join workspace W on P.workspace_no = W.workspace_no
 		                   left join workspace_member WM on P.workspace_no = WM.workspace_no
 		      where page_no = #{pageNo} and member_id = #{memberId}) V

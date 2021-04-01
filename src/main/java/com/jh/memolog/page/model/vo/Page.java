@@ -30,6 +30,7 @@ public class Page implements Serializable {
 	private Date pageDate;
 	
 	// 가상 컬럼
+	private String workspaceWriter;
 	private String workspaceName;
 	private String workspaceCoverCode;
 	private String workspaceType;
