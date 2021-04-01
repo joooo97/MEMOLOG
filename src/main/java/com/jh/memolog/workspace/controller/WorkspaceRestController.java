@@ -174,8 +174,8 @@ public class WorkspaceRestController {
 	}
 	
 	// 특정 워크스페이스 멤버 조회(by memberId)
-	@GetMapping("/workspace-members/{memberId}")
-	public Map<String, Object> selectOneWorkspaceMember(@PathVariable("memberId") String memberId, @RequestParam String workspaceNo){
+	@GetMapping("/workspace-members/{workspaceNo}/{memberId}")
+	public Map<String, Object> selectOneWorkspaceMember(@PathVariable("workspaceNo") String workspaceNo, @PathVariable("memberId") String memberId){
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> param = new HashMap<>();
 		

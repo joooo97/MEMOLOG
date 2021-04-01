@@ -169,9 +169,8 @@ function searchViewMember(memberId){
 		viewWsMember();
 	} else {
 		$.ajax({
-			url: contextPath+'/workspace-members/'+memberId,
+			url: contextPath+'/workspace-members/'+v_nowWorkspaceNo+'/'+memberId,
 			type: 'GET',
-			data: {workspaceNo: v_nowWorkspaceNo},
 			dataType: 'json',
 			success: data => {
 				console.log(data);
