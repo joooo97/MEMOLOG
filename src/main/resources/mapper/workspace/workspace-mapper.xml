@@ -173,14 +173,14 @@
 	</insert>
 	
 	<!-- 하나의 워크스페이스 + 사용자 아이디 + 사용자의 ws 권한 + ws즐겨찾기 여부 조회 (by workspaceNo, memberId) -->
-	<select id="selectOneWorkspace" resultMap="workspaceMap">
+	<select id="selectOneWorkspace" resultMap="workspaceMap">       
 		select V.*, F.favorites_no, decode(F.favorites_type, 'W', 'Y', 'N') ws_favorite_yn
 		from (select W.*, WM.member_id, WM.role_code
 		      from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
 		      where W.workspace_no = #{workspaceNo} and WM.member_id = #{memberId}) V
 		      left join (select *
 		               from favorites
-		               where workspace_no = #{workspaceNo} and member_id = #{memberId}) F
+		               where favorites_type = 'W' and workspace_no = #{workspaceNo} and member_id = #{memberId}) F
 		               on V.member_id = F.member_id
 	</select>
 	
