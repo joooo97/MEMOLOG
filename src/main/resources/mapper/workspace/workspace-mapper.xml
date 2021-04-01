@@ -53,6 +53,7 @@
 		<result column="page_writer" property="pageWriter"/>
 		<result column="page_desc" property="pageDesc"/>
 		<result column="role_code" property="roleCode"/>
+		<result column="workspace_member_no" property="workspaceMemberNo"/>
 	</resultMap>
 	
 	<!-- resultMap: workspce_member + member(member_name, profile_renamed_filename) -->
@@ -67,9 +68,9 @@
 	</resultMap>
 	
 	
-	<!-- 즐겨찾기 리스트 + 권한 조회 -->
+	<!-- 즐겨찾기 리스트 + 권한 + 워크스페이스 멤버 번호 조회 -->
 	<select id="selectAllFavorites" resultMap="favoritesMap">
-		select V.*, WM.role_code
+		select V.*, WM.role_code, WM.workspace_member_no
 		from view_favorites_ws_p V left join workspace_member WM on V.workspace_no = WM.workspace_no
 		where WM.member_id = V.member_id and V.member_id = #{memberId}
 		order by favorites_no
