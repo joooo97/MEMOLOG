@@ -37,6 +37,6 @@ public class Favorites implements Serializable {
 	private String pageWriter;
 	private String pageDesc;
 	private String roleCode;
-	private String workspaceMemberNo;
+	private int workspaceMemberNo;
 
 }
