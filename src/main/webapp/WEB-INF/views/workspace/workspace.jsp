@@ -22,16 +22,14 @@
 		<c:if test="${workspace.workspaceType == 'S' && workspace.roleCode == 'R1'}">
 			<li><i id="btn-add-member" class="fas fa-user-plus" data-toggle="modal" data-target="#modal-addMember"></i></li>
 		</c:if>
-			<!-- <li><i id="btn-bell" class="fas fa-bell"></i></li> -->
-		<c:choose>
-			<c:when test="${workspace.wsFavoriteYn == 'Y'}">
-				<li><i id="btn-star" class="fas fa-star" onclick="deleteWsFavorite(${workspace.favoritesNo});"></i></li>
-			</c:when>
-			<c:otherwise>
-				<li><i id="btn-star" class="far fa-star" onclick="addWsFavorite(${workspace.workspaceNo});"></i></li>
-			</c:otherwise>
-		</c:choose>
-			<li><i id="btn-more-menu" class="fas fa-ellipsis-h"></i></li>
+		<!-- <li><i id="btn-bell" class="fas fa-bell"></i></li> -->
+		<c:if test="${workspace != null && workspace.wsFavoriteYn == 'Y'}">
+			<li><i id="btn-star" class="fas fa-star" onclick="deleteWsFavorite(${workspace.favoritesNo});"></i></li>
+		</c:if>
+		<c:if test="${workspace != null && workspace.wsFavoriteYn == 'N' }">
+			<li><i id="btn-star" class="far fa-star" onclick="addWsFavorite(${workspace.workspaceNo});"></i></li>
+		</c:if>
+		<li><i id="btn-more-menu" class="fas fa-ellipsis-h"></i></li>
 		</ul>
 	</nav>
 	<!-- /nav#header-icons -->
@@ -53,6 +51,7 @@
 					<div id="page-cover" style="background: #F3D7E0;">
 				</c:otherwise>
 			</c:choose>
+			<c:if test ="${workspace != null}">
 				<div class="ui dropdown" id="btn-change-cover-color">
 					<div id="color-header"><i class="fas fa-palette"></i>CHANGE COVER COLOR</div>
 					<div class="menu color-menu">
@@ -76,6 +75,7 @@
 						</div>
 					</div>
 				</div>
+			</c:if>
 			</div>
 	
 			<div class="inner">
@@ -145,13 +145,11 @@
 			$(".ws-name i").css('color', colorOption);
 			$("#workspace-name i").css('color', colorOption);
 			
-			var workspaceNo = ${workspace.workspaceNo};			
-			
 			// 커버 색 변경
 			// data에 쓴 파라미터를 GET방식에서는 jquery가 자동으로 url단으로 올려서 처리하지만 PUT/DELETE에서는 messageBody에 써짐.
 			// data는 messageBody에 작성되고, @RequestBody에 의해 json데이터 처리됨(직렬화된 형태 허용안함.)
  			$.ajax({
-				url: "${pageContext.request.contextPath}/workspaces/"+workspaceNo+"/cover-color",
+				url: "${pageContext.request.contextPath}/workspaces/"+v_nowWorkspaceNo+"/cover-color",
 				data: colorOption,
 				type: "PUT",
 				contentType: 'application/json; charset=utf-8',
