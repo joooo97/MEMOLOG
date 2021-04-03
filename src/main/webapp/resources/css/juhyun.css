@@ -42,7 +42,6 @@ nav#header-icons{position: fixed; z-index: 11000; right: 1rem; height: 2.8rem;}
 
 /* 상단 우측 헤더 드롭다운 메뉴 */
 #more-menu-list {width: 15rem; position: fixed; right: 1.5rem; top: 2.5rem; z-index: 1000; padding: 0; font-size: 93%;}
-#more-menu-list li {cursor: pointer;}
 #more-menu-list li:hover {background: rgb(236, 236, 236);}
 #more-menu-search {width: 12rem;}
 /* #search-tab {padding: 0 1rem 0 0.2rem; color:gray;} */
