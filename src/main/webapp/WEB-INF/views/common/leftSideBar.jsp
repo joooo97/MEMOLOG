@@ -66,7 +66,7 @@
 													<div class="ui buttons btn-settings">
 														<i class="ui dropdown fas fa-ellipsis-h">
 															<div class="menu menu-settings">
-															  <div class="item"><i class="star outline icon"></i>즐겨찾기 취소</div>
+															  <div class="item" onclick="deleteWsFavorite(${f.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>
 															  <c:if test="${f.workspaceWriter == memberLoggedIn.memberId}">
 															  	<div class="item btn-update-ws" onclick="updateWorkspace('${f.workspaceNo}', '${f.workspaceName}', '${f.workspaceDesc}');"><i class="edit icon"></i>수정</div>
 																<div class="item" onclick="deleteWorkspace('${f.workspaceNo}');"><i class="delete icon"></i>삭제</div>
