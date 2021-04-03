@@ -72,7 +72,7 @@
 																<div class="item" onclick="deleteWorkspace('${f.workspaceNo}');"><i class="delete icon"></i>삭제</div>
 															  </c:if>
 															  <c:if test="${f.workspaceWriter != memberLoggedIn.memberId}">
-															  	<div class="item"><i class="icon fas fa-sign-out-alt"></i>나가기</div>
+															  	<div class="item" onclick="leaveShareWorkspace(${f.workspaceMemberNo});"><i class="icon fas fa-sign-out-alt"></i>나가기</div>
 															  </c:if>
 															</div>
 														</i>
@@ -126,7 +126,7 @@
 														  <div class="item" onclick="deleteWorkspace('${w.workspaceNo}');"><i class="delete icon"></i>삭제</div>
 														</c:if>
 														<c:if test="${w.workspaceWriter != memberLoggedIn.memberId}">
-														  <div class="item"><i class="icon fas fa-sign-out-alt"></i>나가기</div>
+														  <div class="item" onclick="leaveShareWorkspace(${w.workspaceMemberNo});"><i class="icon fas fa-sign-out-alt"></i>나가기</div>
 														</c:if>
 														</div>
 													</i>
@@ -242,8 +242,31 @@ $(function(){
 });
 
 // 함수 영역
-// #3. 페이지 생성 모달 띄우기
-function addPage(roleCode, workspaceNo){
+
+// 공유 워크스페이스 멤버 나가기
+function leaveShareWorkspace(workspaceMemberNo) {
+	if(!confirm("현재 공유 워크스페이스를 나가시겠습니까?"))
+		return;
+	
+	$.ajax({
+		url: '${pageContext.request.contextPath}/workspace-members/'+workspaceMemberNo,
+		type: 'DELETE',
+		success: data => {
+			// 현재 조회중이던 공유 워크스페이스가 아닌 사용자가 속한 다른 공유 워크스페이스 조회
+			location.href = "${pageContext.request.contextPath}/workspaces";
+			
+			console.log("공유 워크스페이스 멤버 나가기 성공!");
+			
+			
+		},
+		error: (x, s, e) => {
+			console.log("공유 워크스페이스 멤버 나가기 실패!", x, s, e);
+		}
+	});
+}
+
+// 페이지 생성 모달 띄우기
+function addPage(roleCode, workspaceNo) {
 	if(roleCode == 'R3'){
 		alert("페이지 생성 권한이 없습니다.");
 		return;
@@ -256,7 +279,7 @@ function addPage(roleCode, workspaceNo){
 	}
 }
 
-// #4. 워크스페이스 수정 모달 띄우기
+// 워크스페이스 수정 모달 띄우기
 function updateWorkspace(workspaceNo, workspaceName, workspaceDesc) {
 	// 전역변수에 수정할 워크스페이스 정보 저장
 	v_workspaceNo = workspaceNo;
@@ -267,6 +290,19 @@ function updateWorkspace(workspaceNo, workspaceName, workspaceDesc) {
 	// 기존 워크스페이스 정보 모달에 띄우기
 	$("#modal-update-ws input[name='workspaceName']").val(workspaceName);
 	$("#modal-update-ws input[name='workspaceDesc']").val(workspaceDesc);
+}
+
+//페이지 수정 모달 띄우기
+function updatePage(pageNo, pageName, pageDesc) {
+	// 전역변수에 수정할 페이지 정보 저장
+	v_pageNo = pageNo;
+	
+	// 페이지 수정 모달 열기
+	$("#show-modal-update-p").click();
+	
+	// 기존 페이지 정보 모달에 띄우기
+	$("#modal-update-p input[name='pageName']").val(pageName);
+	$("#modal-update-p input[name='pageDesc']").val(pageDesc);
 }
 
 // 워크스페이스 삭제
@@ -285,19 +321,6 @@ function deleteWorkspace(workspaceNo) {
 			console.log("워크스페이스 삭제 ajax 요청 실패!", x, s, e);
 		}
 	});
-}
-
-// #5. 페이지 수정 모달 띄우기
-function updatePage(pageNo, pageName, pageDesc) {
-	// 전역변수에 수정할 페이지 정보 저장
-	v_pageNo = pageNo;
-	
-	// 페이지 수정 모달 열기
-	$("#show-modal-update-p").click();
-	
-	// 기존 페이지 정보 모달에 띄우기
-	$("#modal-update-p input[name='pageName']").val(pageName);
-	$("#modal-update-p input[name='pageDesc']").val(pageDesc);
 }
 
 // 페이지 삭제

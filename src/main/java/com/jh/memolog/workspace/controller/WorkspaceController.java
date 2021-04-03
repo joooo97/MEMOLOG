@@ -59,7 +59,7 @@ public class WorkspaceController {
 					firstWorkspaceNo = firstSharedWorkspace.getWorkspaceNo();
 				}
 				else {
-					// 1-3. 개인, 공유 워크스페이스가 모두 존재하지 않는다면
+					// 1-3. 개인, 공유 워크스페이스가 모두 존재하지 않는다면 기본 memolog 페이지 조회
 					return "workspace/workspace";
 				}
 			}
