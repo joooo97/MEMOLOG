@@ -92,7 +92,7 @@
 													<div class="ui buttons btn-settings">
 														<i class="ui dropdown fas fa-ellipsis-h">
 															<div class="menu menu-settings">
-															  <div class="item"><i class="star outline icon"></i>즐겨찾기 취소</div>
+															  <div class="item" onclick="deletePageFavorite(${f.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>
 															  <c:if test="${f.workspaceWriter == memberLoggedIn.memberId || f.pageWriter == memberLoggedIn.memberId}">
 																<div class="item btn-update-p" onclick="updatePage('${f.pageNo}', '${f.pageName}', '${f.pageDesc}');"><i class="edit icon"></i>수정</div>
 															  	<div class="item" onclick="deletePage('${f.pageNo}', '${f.workspaceNo}');"><i class="delete icon"></i>삭제</div>
