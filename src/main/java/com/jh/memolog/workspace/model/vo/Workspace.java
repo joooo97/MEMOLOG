@@ -40,6 +40,7 @@ public class Workspace implements Serializable {
 	
 	// 가상 컬럼
 	private String memberId;
+	private int workspaceMemberNo;
 	private String roleCode;
 	private int favoritesNo;
 	private String wsFavoriteYn;

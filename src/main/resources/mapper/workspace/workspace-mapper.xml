@@ -33,6 +33,7 @@
 		<result column="workspace_cover_code" property="workspaceCoverCode"/>
 		<result column="workspace_date" property="workspaceDate"/>
 		<result column="member_id" property="memberId"/>
+		<result column="workspace_member_no" property="workspaceMemberNo"/>
 		<result column="role_code" property="roleCode"/>
 		<result column="favorites_no" property="favoritesNo"/>
 		<result column="ws_favorite_yn" property="wsFavoriteYn"/>
@@ -94,7 +95,7 @@
 
 	<!-- 워크스페이스 리스트 + 권한 코드 조회-->
 	<select id="selectWorkspaceList" resultMap="workspaceMap">
-		select W.*, role_code
+		select W.*, WM.workspace_member_no, WM.role_code
 		from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
 		where WM.member_id = #{memberId}
 		order by W.workspace_no
