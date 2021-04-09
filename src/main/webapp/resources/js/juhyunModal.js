@@ -81,7 +81,7 @@ function wsMemberList(data){
 	$("#view-ws-member-list").html("");
 		
 	$.each(data, (idx, member) => {
-		var commonTag = "<img src="+contextPath+"/resources/images/profile/"+member.profileRenamedFilename+" class='img-writer' alt='멤버 사진'>"
+		var commonTag = "<img src="+contextPath+"/resources/images/profile/"+member.profileRenamedFilename+" class='img-writer' alt='멤버 사진' onclick='showProfile(\""+member.memberId+"\");'>"
 						+ "<span>"+member.memberName;
 		
 		// 사용자가 현재 워크스페이스의 관리자일 경우만 멤버 삭제 버튼 띄우기
@@ -94,7 +94,7 @@ function wsMemberList(data){
 		if(member.roleCode == 'R1'){ // 모달에 표시될 워크스페이스 멤버의 권한이 관리자라면
 			divAdmin = $("<div class='one-member "+member.workspaceMemberNo+"'></div>");
 			
-			divAdmin.append("<img src="+contextPath+"/resources/images/profile/"+member.profileRenamedFilename+" class='img-writer' alt='멤버 사진'>"
+			divAdmin.append("<img src="+contextPath+"/resources/images/profile/"+member.profileRenamedFilename+" class='img-writer' alt='멤버 사진' onclick='showProfile(\""+member.memberId+"\");'>"
 							+ "<span>"+member.memberName+"</span>");
 			divAdmin.append("<div class='ui red label access'>관리자</div>");
 		} 
@@ -521,7 +521,42 @@ function updatePost(postNo, postSortCode) {
 
 }
 
-
+// 프로필 띄우기
+function showProfile(memberId) {
+	// 프로필을 조회할 멤버의 정보 가져오기
+	$.ajax({
+		url: contextPath+'/members/'+memberId,
+		type: 'GET',
+		dataType: 'json',
+		success: data => {
+			console.log(data);
+			
+			// 프로필 모달에 멤버 정보 띄우기
+			// 프로필 이미지
+			var profileImage = '<img src="'+contextPath+'/resources/images/profile/'+data.profileRenamedFilename+'">';
+			$("#modal-view-profile #profile-image").html(profileImage);
+			// 프로필 정보
+			$("#modal-view-profile span.profile-id").text(data.memberId);
+			$("#modal-view-profile div.profile-name").text(data.memberName);
+			$("#modal-view-profile div.profile-email").text(data.email);
+			
+			// 현재 사용자와 프로필을 조회할 멤버가 동일한 경우만 프로필 변경 버튼 띄우기
+			if(v_memberId != memberId) {
+				$("#btn-edit-profile").css("display", "none");
+			}
+			else {
+				$("#btn-edit-profile").css("display", "block");
+			}
+			
+			// 모달 띄우기 (수동)
+			$("#show-modal-view-profile").click();
+		},
+		error : (x, s, e) => {
+			console.log("프로필 조회를 위한 멤버 정보 불러오기 ajax 요청 실패!", x, s, e);
+		}
+	});
+		
+}
 
 
 
