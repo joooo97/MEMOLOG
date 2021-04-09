@@ -772,7 +772,10 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 				 
 				 // 2. 코멘트 바 ajax 처리
 				 // 2-1. 코멘트 수 표시
+				 // 2-1-1. 코멘트 바 내 코멘트 수 표시
 				 $("#comments-bar div.comment-cnt").text(data.post.commentCount);
+				 // 2-1-2. 포스트 메뉴 내 코멘트 수 표시
+				 $("#post-"+data.post.postNo+" div.btn-view-comment div.comment-cnt").text(data.post.commentCount);
 				
 				 // 2-2. 포스트 작성자 및 포스트 이름 표시
 				 $("#commentBar-post-writer a.avatar").html("<img src='${pageContext.request.contextPath}/resources/images/profile/"+data.post.profileRenamedFilename+"' class='img-writer'>");
