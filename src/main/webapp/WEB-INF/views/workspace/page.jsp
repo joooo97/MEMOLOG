@@ -565,8 +565,8 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 			// 공통태그 2 (포스트 작성자) -> 이 안에 포스트 내용 append해야 함
 			var commonTag2 = "<div class='page-post'><div class='ui comments post-writer'>"
 						   + "<div class='comment'><a class='avatar'>"
-						   + "<img src='${pageContext.request.contextPath}/resources/images/profile/"+post.profileRenamedFilename+"' class='img-writer'></a>" // 작성자 이미지 추가[0]
-						   + "<div class='content'><a class='author'>"+post.postWriter+"</a>"
+						   + "<img src='${pageContext.request.contextPath}/resources/images/profile/"+post.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+post.postWriter+"\");'></a>" // 작성자 이미지 추가[0]
+						   + "<div class='content'><a class='writer-id'>"+post.postWriter+"</a>"
 						   + "<div class='metadata'><div class='date' style='font-weight: bold;'>"+post.postDate+"</div></div></div></div></div>"; // 포스트 데이트 변경[나중]
 			
 			// 포스트 종류별 추가
@@ -778,8 +778,8 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 				 $("#post-"+data.post.postNo+" div.btn-view-comment div.comment-cnt").text(data.post.commentCount);
 				
 				 // 2-2. 포스트 작성자 및 포스트 이름 표시
-				 $("#commentBar-post-writer a.avatar").html("<img src='${pageContext.request.contextPath}/resources/images/profile/"+data.post.profileRenamedFilename+"' class='img-writer'>");
-				 var contentTag = "<a class='author'>"+data.post.postWriter+"</a><div class='metadata'><div class='date'>"+data.post.postDate+"</div></div>";
+				 $("#commentBar-post-writer a.avatar").html("<img src='${pageContext.request.contextPath}/resources/images/profile/"+data.post.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+data.post.postWriter+"\");'>");
+				 var contentTag = "<a class='writer-id'>"+data.post.postWriter+"</a><div class='metadata'><div class='date'>"+data.post.postDate+"</div></div>";
 				 
 				 // 첨부파일 포스트일 경우 포스트 이름 표시
 				 if(data.post.postSortCode == 'P2'){
@@ -815,8 +815,8 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 					 // level 1 코멘트
 					 if(comment.postCommentLevel == 1) {
  						 var comment_1 = "<div class='comment' id='comment-"+comment.postCommentNo+"'>"
-						  			   + "<a class='avatar'><img src='${pageContext.request.contextPath }/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer'></a>"
-						  			   + "<div class='content'><a class='author'>"+comment.postCommentWriter+"</a>"
+						  			   + "<a class='avatar'><img src='${pageContext.request.contextPath }/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>"
+						  			   + "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
 						  			   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span><a class='reply' onclick='viewReply(2, "+comment.postCommentNo+", \""+comment.postCommentWriter+"\")'>답글</a></div>";
 						  			   
 						 // 코멘트 작성자일 경우 코멘트 관리 버튼(수정, 삭제) 띄우기
@@ -840,8 +840,8 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 					 // level2 코멘트
  					 else if(comment.postCommentLevel == 2) {
 						 var comment_2 = "<div class='comments'><div class='comment'>"
-						 			   + "<a class='avatar'><img src='${pageContext.request.contextPath}/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer'></a>"
-						 			   + "<div class='content'><a class='author'>"+comment.postCommentWriter+"</a>"
+						 			   + "<a class='avatar'><img src='${pageContext.request.contextPath}/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>"
+						 			   + "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
 						 			   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span>"
 						 			   + "<a class='reply' onclick='viewReply(3, "+comment.postCommentRef+", \""+comment.postCommentWriter+"\")'>답글</a></div>";
 						 
@@ -867,8 +867,8 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 					 // level 3 코멘트
 					 else {
 						 var comment_3 = "<div class='comments'><div class='comment'>"
-						 			   + "<a class='avatar'><img src='${pageContext.request.contextPath}/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer'></a>"
-						 			   + "<div class='content'><a class='author'>"+comment.postCommentWriter+"</a>"
+						 			   + "<a class='avatar'><img src='${pageContext.request.contextPath}/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>"
+						 			   + "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
 						 			   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span>"
 						 			   + "<a class='reply' onclick='viewReply(3, "+comment.postCommentRef+", \""+comment.postCommentWriter+"\")'>답글</a></div>"
 						 			   
