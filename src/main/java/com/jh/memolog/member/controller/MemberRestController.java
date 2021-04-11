@@ -1,7 +1,10 @@
 package com.jh.memolog.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jh.memolog.member.model.exception.MemberException;
 import com.jh.memolog.member.model.service.MemberService;
@@ -174,6 +178,52 @@ public class MemberRestController {
 		return map;
 	}
 	
+	
+	// 프로필 이미지 변경 시 선택한 프로필 이미지 띄우기
+	// 선택한 이미지를 업로드만 할 뿐 사용자의 프로필 이미지 속성 변경 x
+	@PostMapping("/members/{memberId}/profile-images")
+	public Map<String, Object> insertProfileImage(@PathVariable("memberId") String memberId, @RequestParam(value="upFile") MultipartFile upFile, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			// 파일 저장 경로 (사용자별 프로필 이미지가 저장될 경로)
+			String saveDirectory = session.getServletContext().getRealPath("/resources/upload/profile/"+memberId);
+			
+			// 동적으로 directory 생성
+			File dir = new File(saveDirectory);
+			if(!dir.exists())
+				dir.mkdir();
+			
+			// MultipartFile 객체 파일 업로드 처리
+			if(!upFile.isEmpty()) {
+				// 파일명 재생성
+				String originalFileName = upFile.getOriginalFilename();
+				String ext = originalFileName.substring(originalFileName.lastIndexOf(".")); // 확장자  자르기
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
+				int rndNum = (int)(Math.random() * 1000); // 0 ~ 999까지의 랜덤한 숫자
+				String renamedFileName = sdf.format(new Date()) + "_" + rndNum + ext;
+				
+				// 서버 컴퓨터에 파일 저장
+				try {
+					upFile.transferTo(new File(saveDirectory + "/" + renamedFileName));
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				// 업로드한 파일의 이름 반환
+				map.put("selectedFileName", renamedFileName);
+				
+			}
+			
+		} catch (Exception e) {
+			logger.error("프로필 이미지 업로드 오류: ", e);
+			throw new MemberException("프로필 이미지 업로드 오류!", e);
+		}
+		
+		return map;
+	}
 	
 	
 
