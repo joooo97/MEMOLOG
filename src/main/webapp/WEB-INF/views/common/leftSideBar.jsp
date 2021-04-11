@@ -44,7 +44,7 @@
 				<span> ${memberLoggedIn.memberName }'s MEMOLOG</span>
 				<div class="menu menu-profile">
 				  <div id="btn-show-profile" class="item">프로필 보기</div>
-				  <div class="item" onclick="">계정 설정</div>
+				  <div class="item" onclick="location.href='${pageContext.request.contextPath}/account'">계정 설정</div>
 				  <div class="item" onclick="location.href='${pageContext.request.contextPath}/logOut'">로그아웃</div>
 				</div>
 			</div>
