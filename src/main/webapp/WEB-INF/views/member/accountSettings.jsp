@@ -7,10 +7,9 @@
 <fmt:requestEncoding value="utf-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
-	<!-- accountSettingsp 페이지 css -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/juhyun.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/searchPage-accountSettingsPage.css" />
-
+<!-- accountSettingsp 페이지 css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/juhyun.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/searchPage-accountSettingsPage.css" />
 </head>
 
 <body class="is-preload">
@@ -23,38 +22,39 @@
 				<section>
 					<div id="accountSettings-name"><i class="fas fa-user-cog"></i>계정 설정</div>
 					<div class="ui secondary pointing menu" id="menu-tab">
-						<a class="item active">이메일</a>
-						<a class="item">전화번호</a>
-						<a class="item">비밀번호</a> 
+						<a class="item active">프로필</a>
+						<a class="item">비밀번호 변경</a>
 						<a class="item">계정 탈퇴</a>
-					</div>
-					<!-- 이메일 변경 -->
-					<div class="ui segment" id="update-email-area">
+	                </div>
+	                    
+	                <!-- 프로필 변경 -->
+					<div class="ui segment" id="update-profile-area">
 						<form class="ui form">
 							<div class="field">
-								<label for="email-now">현재 이메일 주소</label>
-								<input type="email" id="email-now" value="teetee77@naver.com" disabled>
+	                                <label>프로필 이미지</label>
+	                                <div id="update-profile-image-area">
+	                                    <img src="resources/images/위영드림.jpg" alt="프로필 이미지">
+	                                </div>
+	                                <label>이미지 변경</label>
+	                                <input type="file" class="form-control-file">
 							</div>
 							<div class="field">
-								<label for="email-new">변경할 이메일 주소</label>
-								<input type="email" id="email-new">
-							</div>
-							<button class="ui button btn-update-settings" type="submit">이메일 변경</button>
-						</form>
-					</div>	
-	
-					<!-- 전화번호 변경 -->
-					<div class="ui segment" id="update-tel-area">
-						<form class="ui form">
-							<div class="field">
-								<label for="tel-now">현재 전화번호</label>
-								<input type="tel" id="tel-now" value="010-2260-7158" disabled>
+								<label>아이디</label>
+								<input type="text" id="update-profile-id" value="joo0726" disabled>
 							</div>
 							<div class="field">
-								<label for="tel-new">변경할 전화번호</label>
-								<input type="tel" id="tel-new">
+								<label>이름</label>
+								<input type="text"value="">
 							</div>
-							<button class="ui button btn-update-settings" type="submit">전화번호 변경</button>
+							<div class="field">
+								<label>이메일</label>
+								<input type="email" value="teetee77@naver.com">
+							</div>
+							<div class="field">
+								<label>전화번호</label>
+								<input type="tel">
+							</div>
+							<button class="ui button btn-update-settings" type="submit">프로필 변경</button>
 						</form>
 					</div>	
 	
@@ -89,7 +89,6 @@
 							<button class="ui button btn-remove-account" type="submit">계정 탈퇴</button>
 						</form>
 					</div>	
-	
 				</section>
 			</div>
 			<!-- /#main .inner -->
@@ -113,54 +112,18 @@
 		$(function(){
 			//워크스페이스명, 페이지명이 아닌 토글버튼만 보이기
 			$("#header-workspace-name li").not(".toggle").remove();
+				
+			// semantic dropdown 활성화
+			// 사이드바 내 드롭다운 활성화(프로필 보기, 계정 설정, 로그아웃 메뉴)
+			$('.ui.dropdown').dropdown();
 			
-			$('.ui.dropdown').dropdown(); //semantic dropdown 활성화
-	
 			//semantic ui menu 활성화
+			// 프로필 / 비밀번호 변경 / 계정 탈퇴 메뉴 활성화
 			$('.ui.pointing.menu').on('click', '.item', function() {
 				if(!$(this).hasClass('dropdown')) {
 					$(this).addClass('active').siblings('.item').removeClass('active');
 				}
 			});
-	
-			//사이드바 각 메뉴 호버 시 관리, 추가 버튼 나타내기
-			$("#menu span").hover(function(){
-				$(this).find('i').css('visibility', 'visible');
-			});
-			$("#menu span").mouseleave(function(){
-				$(this).find('i').css('visibility', 'hidden');
-			});
-	
-			//사이드바 메뉴 클릭 시 모달 띄우기
-			//#1. 개인 워크스페이스 생성
-			$("#btn-add-p-workspace").on('click', function(){
-				$("#show-modal-add-p-ws").click();
-			});
-			//#2. 공유 워크스페이스 생성
-			$("#btn-add-s-workspace").on('click', function(){
-				$("#show-modal-add-s-ws").click();
-			});
-			//#3. 페이지 생성
-			$(".btn-add-page").on('click', function(){
-				$("#show-modal-add-page").click();
-			});
-			//#4. 워크스페이스 수정
-			$(".btn-update-ws").on('click', function(){
-				$("#show-modal-update-ws").click();
-			});
-			//#5. 페이지 수정
-			$(".btn-update-p").on('click', function(){
-				$("#show-modal-update-p").click();
-			});
-			//#6. 프로필 보기
-			$(".btn-show-profile").on('click', function(){
-				$("#show-modal-view-profile").click();
-			});
-			//#7. 이미지 클릭 시 프로필 보기
-			$(".img-writer").on('click', function(){
-				$("#show-modal-view-profile").click();
-			});
-	
 	
 		});
 	
