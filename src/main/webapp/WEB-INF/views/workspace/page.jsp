@@ -519,7 +519,7 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 		var postSort = $("#classification-tab").text().trim();
 		
 		// 현재 선택되어 있는 포스트 종류 탭에 따른 포스트 조회
-		if(postSort == '모든 게시물')
+		if(postSort == '모든 게시물' || postSort == '종류별 정렬')
 			viewPostBySort('all');
 		else if(postSort == '첨부파일')
 			viewPostBySort('file');
