@@ -19,7 +19,7 @@ span.ok {color: blue;}
 
 <script>
 // 정규 표현식
-var regName = /^[a-zA-Z가-힣]+$/;
+var regName = /^[a-zA-Z가-힣]{2,}$/;
 var regPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).{8,15}$/;
 //var regPassword = /^(?=^.{8,15}$)(?=.*[a-zA-z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).*$/;
 var regEmail = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+/;
