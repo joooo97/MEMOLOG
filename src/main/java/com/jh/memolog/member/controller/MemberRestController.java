@@ -182,7 +182,7 @@ public class MemberRestController {
 	// 프로필 이미지 변경 시 선택한 프로필 이미지 띄우기
 	// 선택한 이미지를 업로드만 할 뿐 사용자의 프로필 이미지 속성 변경 x
 	@PostMapping("/members/{memberId}/profile-images")
-	public Map<String, Object> insertProfileImage(@PathVariable("memberId") String memberId, @RequestParam(value="upFile") MultipartFile upFile, HttpSession session) {
+	public Map<String, Object> uploadProfileImage(@PathVariable("memberId") String memberId, @RequestParam(value="upFile") MultipartFile upFile, HttpSession session) {
 		Map<String, Object> map = new HashMap<>();
 		
 		try {
@@ -225,6 +225,90 @@ public class MemberRestController {
 		return map;
 	}
 	
+	// 회원 정보 수정
+	// 업로드할 파일이 있는 경우 PutMapping으로 수정 시 415 에러 또는 nullPoint 에러 남
+	@PostMapping("/members/{memberId}")
+	public void updateMember(@PathVariable("memberId") String memberId, Member member, @RequestParam(value="defaultYn") String defaultYn, @RequestParam(value="newImageYn", required=false) String newImageYn, @RequestParam(value="upFile", required=false) MultipartFile upFile, HttpSession session) {
+		try {
+			logger.debug("들어온 정보 = {}", member);
+			logger.debug("들어온 파일 = {}", upFile);
+			// 1. 프로필 이미지 저장
+			// 파일 저장 경로
+			String saveDirectory = session.getServletContext().getRealPath("/resources/upload/profile/"+memberId);
+			File dir = new File(saveDirectory);
+			
+			// 1-1. 기본 이미지인 경우 (defaultYn.equls("Y"))
+			if(defaultYn.equals("Y")) {
+				logger.debug("기본 이미지로 변경");
+				
+				// 디렉토리가 이미 존재하는 경우 디렉토리 내 모든 파일 삭제
+				if(dir.exists()) deleteAllFiles(dir);
+				
+				// 사용자의 프로필 이미지 이름 지정
+				member.setProfileOriginalFilename("default.jpg");
+				member.setProfileRenamedFilename("default.jpg");
+			}
+			// 1-2. 새로운 이미지를 업로드 하는 경우
+			else if(newImageYn.equals("Y")) {
+				// 사용자의 기존 프로필 이미지와 다른 경우에만 이미지 업로드 진행
+				if(!upFile.isEmpty()) {
+					logger.debug("새 이미지 업로드 = {}", upFile.getName());
+					
+					// 이미지 업로드 과정
+					// 1-1) directory가 존재하지 않는 경우 동적으로 directory 생성
+					if(!dir.exists()) {
+						dir.mkdir();
+					}
+					else { // 1-2) directory가 존재하는 경우 기존에 업로드된 디렉토리 내 파일 모두 삭제
+						deleteAllFiles(dir);
+					}
+					
+					// 2) 새 이미지 업로드 -  MultipartFile 객체 파일 업로드 처리
+					// 파일명 재생성
+					String originalFileName = upFile.getOriginalFilename();
+					String ext = originalFileName.substring(originalFileName.lastIndexOf(".")); // 확장자 자르기
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
+					int rndNum = (int)(Math.random()*1000); // 0~999
+					String renamedFileName = sdf.format(new Date()) + "_" + rndNum + ext;
+					
+					// 서버컴퓨터에 파일 저장
+					try {
+						upFile.transferTo(new File(saveDirectory+"/"+renamedFileName));
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+					// 이미지 이름 저장
+					member.setProfileOriginalFilename(originalFileName);
+					member.setProfileRenamedFilename(renamedFileName);
+					
+				}
+			}
+			
+			// 2. 회원 정보 수정
+			logger.debug("변경할 회원 정보: member = {}", member);
+			memberService.updateMember(member);
+			
+		} catch(Exception e) {
+			logger.error("회원 정보 수정 오류: ", e);
+			throw new MemberException("회원 정보 수정 오류!", e);
+		}
+	}
 	
+	// 디렉토리 내 모든 파일을 삭제하는 메소드
+	// 프로필 이미지 변경 시 사용자 프로필 이미지 디렉토리 내 모든 파일을 삭제
+	public void deleteAllFiles(File dir) {
+		File[] files = dir.listFiles();
+		
+		for(int i = 0; i < files.length; i++) {
+			if(files[i].delete()) {
+				logger.debug("파일 삭제 성공: {}", files[i].getName());
+			} else {
+				logger.debug("파일 삭제 실패: {}", files[i].getName());
+			}
+		}
+	}
 
 }

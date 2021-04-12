@@ -31,6 +31,15 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	// 회원 정보 수정
+	@Override
+	public void updateMember(Member member) {
+		int result = memberDAO.updateMember(member);
+		
+		if(result == 0)
+			throw new MemberException("회원 정보 수정 오류!");
+	}
+
 
 	// 모든 멤버 조회
 /*	@Override

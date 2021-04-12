@@ -13,5 +13,18 @@
 		insert into member (member_id, member_name, password, email, phone)
 		values (#{memberId}, #{memberName}, #{password}, #{email}, #{phone})
 	</insert>
+	
+	<update id="updateMember">
+		update member 
+		set
+		<if test="profileOriginalFilename != null">
+		    profile_original_filename = #{profileOriginalFilename},
+		    profile_renamed_filename = #{profileRenamedFilename},
+		</if>
+		member_name = #{memberName}, 
+		    email = #{email}, 
+		    phone = #{phone}
+		where member_id = #{memberId}
+	</update>
 
 </mapper>

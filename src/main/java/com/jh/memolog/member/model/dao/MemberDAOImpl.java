@@ -22,6 +22,11 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.insert("member.insertMember", member);
 	}
 
+	@Override
+	public int updateMember(Member member) {
+		return sqlSession.update("member.updateMember", member);
+	}
+
 
 	/*	@Override
 	public List<Member> selectMemberList() {

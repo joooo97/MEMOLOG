@@ -33,7 +33,12 @@
 							<div class="field">
 	                                <label>프로필 이미지</label>
 	                                <div id="update-profile-image-area">
-	                                    <img src="resources/images/profile/${member.profileRenamedFilename}" alt="프로필 이미지">
+		                                <c:if test="${member.profileRenamedFilename == 'default.jpg'}">
+		                                    <img src="resources/images/profile/default.jpg" alt="프로필 이미지">
+		                                </c:if>
+		                                <c:if test="${member.profileRenamedFilename != 'default.jpg'}">
+	    	                                <img src="resources/upload/profile/${member.memberId}/${member.profileRenamedFilename}" alt="프로필 이미지">
+	        	                        </c:if>
 	                                </div>
 	                                <label>이미지 변경</label>
 									<div class="input-group mb-3">
@@ -59,17 +64,20 @@
 							</div>
 							<div class="field">
 								<label>이름</label>
-								<input type="text"value="${member.memberName}">
+								<input type="text" placeholder="이름을 입력해주세요." id="update-profile-name" value="${member.memberName}">
+								<span class="valid">알맞은 형식의 이름을 입력해주세요.</span>
 							</div>
 							<div class="field">
 								<label>이메일</label>
-								<input type="email" value="${member.email}">
+								<input type="email" placeholder="이메일을 입력해주세요." id="update-profile-email" value="${member.email}">
+								<span class="valid">알맞은 형식의 이메일을 입력해주세요.</span>
 							</div>
 							<div class="field">
 								<label>전화번호</label>
-								<input type="tel" value="${member.phone}">
+								<input type="tel" placeholder="전화번호를 입력해주세요. ( - 제외)" id="update-profile-phone" value="${member.phone}">
+								<span class="valid">알맞은 형식의 전화번호를 입력해주세요.</span>
 							</div>
-							<button class="ui button btn-update-settings" type="button">프로필 변경</button>
+							<button class="ui button btn-update-settings" type="button" onclick="updateProfile('${member.profileOriginalFilename}');">프로필 변경</button>
 						</form>
 					</div>	
 	
@@ -124,6 +132,12 @@
 	<jsp:include page="/WEB-INF/views/common/commonScript.jsp"></jsp:include>
 			
 	<script>
+	// 정규 표현식
+	var regName = /^[a-zA-Z가-힣]{2,}$/;
+	var regPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).{8,15}$/;
+	//또는 var regPassword = /^(?=^.{8,15}$)(?=.*[a-zA-z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).*$/;
+	var regEmail = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+/;
+	var regPhone = /^\d{10,11}$/;
 	
 	$(function() {
 		// 워크스페이스명, 페이지명이 아닌 토글버튼만 보이기
@@ -173,8 +187,47 @@
 				// 선택한 이미지 띄우기
 				viewProfileImage();
 			}
+		});
+		
+		// 사용자 정보 입력 시 유효성 체크에 따른 메세지 띄우기
+		// 이름 유효성 체크
+		$("#update-profile-name").keyup(function() {
+			var name = $(this).val().trim();
 			
+			if(!regName.test(name)) {
+				$(this).css('border', '1px solid red');
+				$(this).next().css('display', 'block'); // 유효성 체크 메세지 띄우기
+			}
+			else {
+				$(this).css('border', '1px solid rgba(34, 36, 38, 0.15)');
+				$(this).next().css('display', 'none');
+			}
+		});
+		// 이메일 유효성 체크
+		$("#update-profile-email").keyup(function() {
+			var email = $(this).val().trim();
 			
+			if(!regEmail.test(email)) {
+				$(this).css('border', '1px solid red');
+				$(this).next().css('display', 'block');
+			}
+			else {
+				$(this).css('border', '1px solid rgba(34, 36, 38, 0.15)');
+				$(this).next().css('display', 'none');
+			}
+		});
+		// 전화번호 유효성 체크
+		$("#update-profile-phone").keyup(function() {
+			var phone = $(this).val().trim();
+			
+			if(!regPhone.test(phone)) {
+				$(this).css('border', '1px solid red');
+				$(this).next().css('display', 'block');
+			}
+			else {
+				$(this).css('border', '1px solid rgba(34, 36, 38, 0.15)');
+				$(this).next().css('display', 'none');
+			}
 		});
 		
 	});
@@ -185,6 +238,10 @@
 		$("#update-password-area").css('display', 'none');
 		$("#remove-account-area").css('display', 'none');
 		$("#update-profile-area").css('display', 'block');
+		
+		if("${member.profileOriginalFilename}" == 'default.jpg') {
+			$("#check-default-img input:checkbox").prop('checked', true);	
+		}
 	}
 	
 	// 비밀번호 변경 영역 띄우기
@@ -206,7 +263,6 @@
 		var upFile = $("#update-profile-area input:file").prop('files')[0];
 		var formData = new FormData();
 		formData.append('upFile', upFile);
-		console.log(formData);
 		
 		$.ajax({
 			url: "${pageContext.request.contextPath}/members/${memberLoggedIn.memberId}/profile-images",
@@ -226,7 +282,89 @@
 			}
 		});
 	};
+	
+	// 프로필 변경
+	// profileOriginalFilename: 기존 사용자 이미지
+	function updateProfile(profileOriginalFilename) {
+		var memberName = $("#update-profile-name");
+		var email = $("#update-profile-email");
+		var phone = $("#update-profile-phone");
 
+		// 1. 정보 입력 여부 확인
+		if(memberName.val().trim().length == 0) {
+			alert("이름을 입력하지 않으셨습니다.");
+			memberName.focus();
+			return;
+		}
+		if(email.val().trim().length == 0) {
+			alert("이메일을 입력하지 않으셨습니다.");
+			email.focus();
+			return;
+		}
+		if(phone.val().trim().length == 0) {
+			alert("번호를 입력하지 않으셨습니다.");
+			phone.focus();
+			return;
+		}
+		
+		// 2. 유효성 체크
+		var valid = false;
+		if(!regName.test(memberName.val())) valid = false;
+		else if(!regEmail.test(email.val())) valid = false;
+		else if(!regPhone.test(phone.val())) valid = false;
+		else valid = true;
+		
+		if(!valid) {
+			alert("알맞은 형식의 정보를 입력해주세요.");
+			return;
+		}
+		
+		// 3. 모든 조건 만족 시 변경할 정보 저장
+		// 3-1. 입력 정보 저장
+		var formData = new FormData();
+		formData.append('memberName', memberName.val().trim());
+		formData.append('email', email.val().trim());
+		formData.append('phone', phone.val().trim());
+		
+		// 3-2. 이미지 저장
+		// 1) 기본 이미지를 선택한 경우
+		if($("#check-default-img input:checkbox").is(":checked")) {
+			formData.append('defaultYn', 'Y'); // 기본 이미지 여부 Y로 설정
+		}
+		// 2) 기본 이미지를 선택하지 않은 경우
+		else {
+			formData.append('defaultYn', 'N'); // 기본 이미지 여부 N으로 설정
+			
+			// 2-1) 이미지를 변경하지 않는 경우
+			if($("#inputGroupFile02").prop('files')[0] === undefined) {
+				formData.append('newImageYn', 'N');
+			}
+			else { // 2-2) 새 이미지를 선택한 경우
+				formData.append('newImageYn', 'Y');
+			
+				// 업로드할 이미지 저장
+				var upFile = $("#update-profile-area input:file").prop('files')[0];
+				formData.append('upFile', upFile);
+			}
+		}
+
+		// 4. 프로필 정보 변경 ajax
+ 		$.ajax({
+			url: '${pageContext.request.contextPath}/members/${memberLoggedIn.memberId}',
+			type: 'POST',
+			data: formData,
+			processData: false, // 파일 업로드 ajax시 필수 속성
+			contentType: false, // 파일 업로드 ajax시 필수 속성,
+			success: data => {
+				console.log("프로필 변경 ajax 처리 성공!");
+				alert("프로필이 변경되었습니다.");
+			},
+			error: (x, s, e) => {
+				console.log("프로필 변경 ajax 요청 실패!", x, s, e);
+			}
+			
+		});
+	}
 	
 	</script>
 
