@@ -158,17 +158,24 @@ public class MemberRestController {
 
 	// 멤버 정보 조회(아이디, 이름, 이메일, 전화번호, 프로필 사진 이름)
 	@GetMapping("/members/{memberId}")
-	public Member selectOneMember(@PathVariable("memberId") String memberId) {
-		Member member;
+	public Map<String, Object> selectOneMember(@PathVariable("memberId") String memberId) {
+		Map<String, Object> map = new HashMap<>();
 		
 		try {
-			member = memberService.selectOneMember(memberId);
+			Member member = memberService.selectOneMember(memberId);
+			
+			map.put("memberId", member.getMemberId());
+			map.put("memberName", member.getMemberName());
+			map.put("email", member.getEmail());
+			map.put("phone", member.getPhone());
+			map.put("profileRenamedFilename", member.getProfileRenamedFilename());
+			
 		} catch(Exception e) {
 			logger.error("멤버 정보 조회 오류: ", e);
 			throw new MemberException("멤버 정보 조회 오류!", e);
 		}
 		
-		return member;
+		return map;
 	}
 	
 	
