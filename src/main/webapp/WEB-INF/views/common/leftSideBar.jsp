@@ -40,10 +40,15 @@
 				</ul>
 			</nav>
 			<div id="sidebar-header" class="ui dropdown">
-				<img src="${pageContext.request.contextPath}/resources/images/profile/${memberLoggedIn.profileRenamedFilename}" alt="사용자 프로필 이미지">
+				<c:if test="${memberLoggedIn.profileRenamedFilename == 'default.jpg'}">
+					<img src="${pageContext.request.contextPath}/resources/images/profile/default.jpg" alt="사용자 프로필 이미지">
+				</c:if>
+				<c:if test="${memberLoggedIn.profileRenamedFilename != 'default.jpg'}">
+					<img src="${pageContext.request.contextPath}/resources/upload/profile/${memberLoggedIn.memberId}/${memberLoggedIn.profileRenamedFilename}" alt="사용자 프로필 이미지">
+				</c:if>
 				<span> ${memberLoggedIn.memberName }'s MEMOLOG</span>
 				<div class="menu menu-profile">
-				  <div id="btn-show-profile" class="item">프로필 보기</div>
+				  <div id="btn-show-profile" class="item" onclick="showProfile('${memberLoggedIn.memberId}');">프로필 보기</div>
 				  <div class="item" onclick="location.href='${pageContext.request.contextPath}/account'">계정 설정</div>
 				  <div class="item" onclick="location.href='${pageContext.request.contextPath}/logOut'">로그아웃</div>
 				</div>

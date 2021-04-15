@@ -38,44 +38,11 @@ if("${page}" != "") {
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<!-- <div class="member-search-area ui icon input">
-						<input type="text" placeholder="멤버 검색">
-						<i class="search icon"></i>
-					</div> -->
 					<select class="ui search dropdown member-search-area" id="select-view-member" onchange="searchViewMember(this.value);">
 						<option value="" id="view-placeholder">워크스페이스 멤버 검색</option>
-						<!-- <option value="AL">이제노</option> -->
 					</select>
 					
-					<div class="modal-body" id="view-ws-member-list">
-<%-- 						<div class="one-member">
-							<img src="${pageContext.request.contextPath }/resources/images/pic05.jpg" alt="멤버 사진">
-							<span>이주현<i class="delete icon"></i></span>
-							<div class="ui red label access">관리자</div>
-						</div>
-						<div class="one-member">
-							<img src="${pageContext.request.contextPath }/resources/images/pic05.jpg" alt="멤버 사진">
-							<span>이제노<i class="delete icon"></i></span>
-							<select class="ui dropdown access-select">
-								<option selected>조회 권한</option>
-								<option>생성 권한</option>
-							</select>
-						</div> --%>
-						<!-- 변경된 one-member 구조 -->
-<%-- 						<div class="one-member">
-							<img src="${pageContext.request.contextPath }/resources/images/pic05.jpg" alt="멤버 사진">
-							<span>이제노<i class="delete icon"></i></span>
-							<button class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								  종류별 정렬
-							</button>
-							<div class="dropdown-menu">
-							    <div class="dropdown-item">조회 권한</div>
-							    <div class="dropdown-item">생성 권한</div>
-							</div>
-						</div> --%>
-						
-						
-					</div>
+					<div class="modal-body" id="view-ws-member-list"></div>
 					<!-- /.modal-body -->
 					<div class="modal-footer">
 						<c:if test="${workspace.roleCode == 'R1' || page.roleCode == 'R1'}">
@@ -97,10 +64,6 @@ if("${page}" != "") {
 						</button>
 					</div>
 					<div class="modal-body">
-<!-- 						<select class="ui fluid search dropdown" multiple="" id="addMemberSelect">
-							<option value="" name="placeholder">워크스페이스 멤버 선택 (이름 또는 아이디)</option>
-							<option value="jeno">이제노</option>
-						</select> -->
 							<select class="ui search dropdown member-add-area" id="select-add-member">
 								<option value="" id="add-placeholder">멤버 선택 (이름 또는 아이디)</option>
 							</select>
@@ -140,7 +103,6 @@ if("${page}" != "") {
 						</div>
 						<!-- /.modal-body -->
 						<div class="modal-footer">
-<!-- 							<button type="submit" class="modal-button">생성</button> -->
 							<button type="button" class="modal-button" onclick="createWorkspace('P');">생성</button>
 						</div>
 					</form>
@@ -341,18 +303,16 @@ if("${page}" != "") {
 				<div class="modal-content">
 					<div class="ui card modal-body">
 						<i id="btn-close-profile" class="fas fa-times" data-dismiss="modal"></i>
-						<div id="profile-image">
- 							<img src="${pageContext.request.contextPath }/resources/images/profile/${memberLoggedIn.profileRenamedFilename}">
-						</div>
+						<div id="profile-image"></div>
 						<div class="content">
-							<span class="header profile-id">${memberLoggedIn.memberId}</span>
+							<span class="header profile-id"></span>
 							<div class="meta">
-								<div class="profile-name">${memberLoggedIn.memberName}</div>
-								<div class="profile-email">${memberLoggedIn.email}</div>
+								<div class="profile-name"></div>
+								<div class="profile-email"></div>
 							</div>
 						</div>
 						<div class="extra">
-							<div id="btn-edit-profile">프로필 변경</div>
+							<div id="btn-edit-profile" onclick="location.href='${pageContext.request.contextPath}/account'">프로필 변경</div>
 						</div>
 					</div> <!-- /.modal-body -->
 				</div>

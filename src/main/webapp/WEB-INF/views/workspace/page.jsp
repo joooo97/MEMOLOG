@@ -198,7 +198,7 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 		<!-- 모달 모음 - 모든 모달 필요 -->	
 		<jsp:include page="/WEB-INF/views/common/modals.jsp"></jsp:include>
 		<!-- 모달 / 상단바 우측 아이콘 기능 js -->
-		<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js?ver=1"></script>
+		<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js?ver=2"></script>
 		<!-- 공통스크립트 -->
 		<jsp:include page="/WEB-INF/views/common/commonScript.jsp"></jsp:include>	
 	
@@ -559,15 +559,19 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 				if("${memberLoggedIn.memberId}" == post.postPinnedPerson){
 					commonTag1 += "<div class='item pin' onclick='pinPost(\"N\", "+post.postNo+");'><i class='icon fas fa-thumbtack'></i>고정해제</div></div></div>"
 				} 
-					commonTag1 += "</div></div><div class='icon-pin'><i class='fas fa-thumbtack'></i>Pinned by '"+post.postPinnedPerson+"'</div>"; // 첨부파일은 메뉴 더 추가!! [o]
+					commonTag1 += "</div></div><div class='icon-pin'><i class='fas fa-thumbtack'></i>Pinned by '"+post.postPinnedPerson+"'</div>";
 			}
 						   
 			// 공통태그 2 (포스트 작성자) -> 이 안에 포스트 내용 append해야 함
-			var commonTag2 = "<div class='page-post'><div class='ui comments post-writer'>"
-						   + "<div class='comment'><a class='avatar'>"
-						   + "<img src='${pageContext.request.contextPath}/resources/images/profile/"+post.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+post.postWriter+"\");'></a>" // 작성자 이미지 추가[0]
-						   + "<div class='content'><a class='writer-id'>"+post.postWriter+"</a>"
-						   + "<div class='metadata'><div class='date' style='font-weight: bold;'>"+post.postDate+"</div></div></div></div></div>"; // 포스트 데이트 변경[나중]
+			var commonTag2 = "<div class='page-post'><div class='ui comments post-writer'><div class='comment'><a class='avatar'>";
+			
+			if(post.profileRenamedFilename == 'default.jpg') 
+				commonTag2 += "<img src='${pageContext.request.contextPath}/resources/images/profile/default.jpg' class='img-writer' alt='작성자 사진' onclick='showProfile(\""+post.postWriter+"\");'></a>";
+			else
+				commonTag2 += "<img src='${pageContext.request.contextPath}/resources/upload/profile/"+post.postWriter+"/"+post.profileRenamedFilename+"' class='img-writer' alt='작성자 사진' onclick='showProfile(\""+post.postWriter+"\");'></a>";
+						   
+			commonTag2 += "<div class='content'><a class='writer-id'>"+post.postWriter+"</a>"
+					   + "<div class='metadata'><div class='date' style='font-weight: bold;'>"+post.postDate+"</div></div></div></div></div>";
 			
 			// 포스트 종류별 추가
 			if(post.postSortCode == 'P1') {
@@ -778,7 +782,11 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 				 $("#post-"+data.post.postNo+" div.btn-view-comment div.comment-cnt").text(data.post.commentCount);
 				
 				 // 2-2. 포스트 작성자 및 포스트 이름 표시
-				 $("#commentBar-post-writer a.avatar").html("<img src='${pageContext.request.contextPath}/resources/images/profile/"+data.post.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+data.post.postWriter+"\");'>");
+				 if(data.post.profileRenamedFilename == 'default.jpg')
+					 $("#commentBar-post-writer a.avatar").html("<img src='${pageContext.request.contextPath}/resources/images/profile/default.jpg' class='img-writer' onclick='showProfile(\""+data.post.postWriter+"\");'>");
+				 else
+					 $("#commentBar-post-writer a.avatar").html("<img src='${pageContext.request.contextPath}/resources/upload/profile/"+data.post.postWriter+"/"+data.post.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+data.post.postWriter+"\");'>");
+				 
 				 var contentTag = "<a class='writer-id'>"+data.post.postWriter+"</a><div class='metadata'><div class='date'>"+data.post.postDate+"</div></div>";
 				 
 				 // 첨부파일 포스트일 경우 포스트 이름 표시
@@ -814,10 +822,17 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 				 $.each(data.commentList, (idx, comment) => {
 					 // level 1 코멘트
 					 if(comment.postCommentLevel == 1) {
- 						 var comment_1 = "<div class='comment' id='comment-"+comment.postCommentNo+"'>"
-						  			   + "<a class='avatar'><img src='${pageContext.request.contextPath }/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>"
-						  			   + "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
-						  			   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span><a class='reply' onclick='viewReply(2, "+comment.postCommentNo+", \""+comment.postCommentWriter+"\")'>답글</a></div>";
+ 						 var comment_1 = "<div class='comment' id='comment-"+comment.postCommentNo+"'><a class='avatar'>";
+ 						 
+ 						 if(comment.profileRenamedFilename == 'default.jpg') {
+ 							 comment_1 += "<img src='${pageContext.request.contextPath}/resources/images/profile/default.jpg' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>";
+ 						 }
+ 						 else {
+ 							 comment_1 += "<img src='${pageContext.request.contextPath}/resources/upload/profile/"+comment.postCommentWriter+"/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>";
+ 						 }
+ 						 
+ 						 comment_1 += "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
+						  		   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span><a class='reply' onclick='viewReply(2, "+comment.postCommentNo+", \""+comment.postCommentWriter+"\")'>답글</a></div>";
 						  			   
 						 // 코멘트 작성자일 경우 코멘트 관리 버튼(수정, 삭제) 띄우기
 						 if("${memberLoggedIn.memberId}" == comment.postCommentWriter){
@@ -839,11 +854,18 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 					 }
 					 // level2 코멘트
  					 else if(comment.postCommentLevel == 2) {
-						 var comment_2 = "<div class='comments'><div class='comment'>"
-						 			   + "<a class='avatar'><img src='${pageContext.request.contextPath}/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>"
-						 			   + "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
-						 			   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span>"
-						 			   + "<a class='reply' onclick='viewReply(3, "+comment.postCommentRef+", \""+comment.postCommentWriter+"\")'>답글</a></div>";
+						 var comment_2 = "<div class='comments'><div class='comment'><a class='avatar'>";
+						 
+ 						 if(comment.profileRenamedFilename == 'default.jpg') {
+ 							 comment_2 += "<img src='${pageContext.request.contextPath}/resources/images/profile/default.jpg' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>";
+ 						 }
+ 						 else {
+ 							 comment_2 += "<img src='${pageContext.request.contextPath}/resources/upload/profile/"+comment.postCommentWriter+"/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>";
+ 						 }
+						 
+						 comment_2 += "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
+						 		   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span>"
+						 		   + "<a class='reply' onclick='viewReply(3, "+comment.postCommentRef+", \""+comment.postCommentWriter+"\")'>답글</a></div>";
 						 
 						 // 코멘트 작성자일 경우 코멘트 관리 버튼(수정, 삭제) 띄우기
 						 if("${memberLoggedIn.memberId}" == comment.postCommentWriter){
@@ -866,11 +888,18 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 					 }
 					 // level 3 코멘트
 					 else {
-						 var comment_3 = "<div class='comments'><div class='comment'>"
-						 			   + "<a class='avatar'><img src='${pageContext.request.contextPath}/resources/images/profile/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>"
-						 			   + "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
-						 			   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span>"
-						 			   + "<a class='reply' onclick='viewReply(3, "+comment.postCommentRef+", \""+comment.postCommentWriter+"\")'>답글</a></div>"
+						 var comment_3 = "<div class='comments'><div class='comment'><a class='avatar'>";
+						 
+ 						 if(comment.profileRenamedFilename == 'default.jpg') {
+ 							 comment_3 += "<img src='${pageContext.request.contextPath}/resources/images/profile/default.jpg' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>";
+ 						 }
+ 						 else {
+ 							 comment_3 += "<img src='${pageContext.request.contextPath}/resources/upload/profile/"+comment.postCommentWriter+"/"+comment.profileRenamedFilename+"' class='img-writer' onclick='showProfile(\""+comment.postCommentWriter+"\");'></a>";
+ 						 }
+						 
+ 						 comment_3 += "<div class='content'><a class='writer-id'>"+comment.postCommentWriter+"</a>"
+						 		   + "<div class='metadata'><span class='date'>"+comment.postCommentDate+"</span>"
+						 		   + "<a class='reply' onclick='viewReply(3, "+comment.postCommentRef+", \""+comment.postCommentWriter+"\")'>답글</a></div>";
 						 			   
 						 // 코멘트 작성자일 경우 코멘트 관리 버튼(수정, 삭제) 띄우기
 						 if("${memberLoggedIn.memberId}" == comment.postCommentWriter){

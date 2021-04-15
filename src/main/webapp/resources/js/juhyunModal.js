@@ -81,8 +81,13 @@ function wsMemberList(data){
 	$("#view-ws-member-list").html("");
 		
 	$.each(data, (idx, member) => {
-		var commonTag = "<img src="+contextPath+"/resources/images/profile/"+member.profileRenamedFilename+" class='img-writer' alt='멤버 사진' onclick='showProfile(\""+member.memberId+"\");'>"
-						+ "<span>"+member.memberName;
+		var commonTag;
+		if(member.profileRenamedFilename == 'default.jpg') 
+			commonTag = "<img src='"+contextPath+"/resources/images/profile/default.jpg' alt='멤버 사진' onclick='showProfile(\""+member.memberId+"\");'>"
+			          + "<span>"+member.memberName;
+		else
+			commonTag = "<img src='"+contextPath+"/resources/upload/profile/"+member.memberId+"/"+member.profileRenamedFilename+"' alt='멤버 사진' onclick='showProfile(\""+member.memberId+"\");'>"
+					  + "<span>"+member.memberName;
 		
 		// 사용자가 현재 워크스페이스의 관리자일 경우만 멤버 삭제 버튼 띄우기
 		if(v_roleCode == 'R1'){
@@ -94,9 +99,14 @@ function wsMemberList(data){
 		if(member.roleCode == 'R1'){ // 모달에 표시될 워크스페이스 멤버의 권한이 관리자라면
 			divAdmin = $("<div class='one-member "+member.workspaceMemberNo+"'></div>");
 			
-			divAdmin.append("<img src="+contextPath+"/resources/images/profile/"+member.profileRenamedFilename+" class='img-writer' alt='멤버 사진' onclick='showProfile(\""+member.memberId+"\");'>"
-							+ "<span>"+member.memberName+"</span>");
-			divAdmin.append("<div class='ui red label access'>관리자</div>");
+			var imgTag;
+			if(member.profileRenamedFilename == 'default.jpg') 
+				imgTag = "<img src='"+contextPath+"/resources/images/profile/default.jpg' alt='멤버 사진' onclick='showProfile(\""+member.memberId+"\");'>";
+			else
+				imgTag = "<img src='"+contextPath+"/resources/upload/profile/"+member.memberId+"/"+member.profileRenamedFilename+"' alt='멤버 사진' onclick='showProfile(\""+member.memberId+"\");'>";
+				
+			divAdmin.append(imgTag);
+			divAdmin.append("<span>"+member.memberName+"</span><div class='ui red label access'>관리자</div>");
 		} 
 		else {
 			var divMember = $("<div class='one-member m "+member.workspaceMemberNo+"'></div>");
@@ -533,8 +543,15 @@ function showProfile(memberId) {
 			
 			// 프로필 모달에 멤버 정보 띄우기
 			// 프로필 이미지
-			var profileImage = '<img src="'+contextPath+'/resources/images/profile/'+data.profileRenamedFilename+'">';
+			var profileImage;
+			if(data.profileRenamedFilename == 'default.jpg') {
+				profileImage = '<img src="'+contextPath+'/resources/images/profile/default.jpg" alt="사용자 프로필 이미지">';
+			}
+			else {
+				profileImage = '<img src="'+contextPath+'/resources/upload/profile/'+memberId+'/'+data.profileRenamedFilename+'" alt="사용자 프로필 이미지">';
+			}
 			$("#modal-view-profile #profile-image").html(profileImage);
+			
 			// 프로필 정보
 			$("#modal-view-profile span.profile-id").text(data.memberId);
 			$("#modal-view-profile div.profile-name").text(data.memberName);

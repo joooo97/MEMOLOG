@@ -342,18 +342,8 @@
 			contentType: false, // 파일 업로드 ajax시 필수 속성,
 			success: data => {
 				console.log("프로필 변경 ajax 처리 성공!");
-				alert("프로필이 변경되었습니다.");
-				
-				// 파일 초기화 (input:file)
-				var agent = navigator.userAgent.toLowerCase();
-				if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
-				    $("#update-profile-area input:file").replaceWith($("#update-profile-area input:file").clone(true));
-				} else {
-				    $("#update-profile-area input:file").val("");
-				}
 			
-				// 변경된 정보 띄우기
-				viewProfileAjax();
+				location.href = '${pageContext.request.contextPath}/account';
 			},
 			error: (x, s, e) => {
 				console.log("프로필 변경 ajax 요청 실패!", x, s, e);
@@ -370,6 +360,14 @@
 			dataType: 'json',
 			success: data => {
 				console.log(data);
+				
+				// 파일 초기화 (input:file)
+				var agent = navigator.userAgent.toLowerCase();
+				if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
+				    $("#update-profile-area input:file").replaceWith($("#update-profile-area input:file").clone(true));
+				} else {
+				    $("#update-profile-area input:file").val("");
+				}
 				
 				// 프로필 영역 정보 갱신
 				// 1. 이미지
@@ -407,7 +405,7 @@
 				
 			},
 			error: (x, s, e) => {
-				console.log("변경된 계정 정보 조회 ajax 요청 실패!", x, s, e);
+				console.log("프로필 정보 조회 ajax 요청 실패!", x, s, e);
 			}
 			
 		});
