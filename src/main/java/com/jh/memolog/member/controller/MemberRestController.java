@@ -29,9 +29,9 @@ import com.jh.memolog.member.model.service.MemberService;
 import com.jh.memolog.member.model.vo.Member;
 
 
-//해당 클래스 내에서 모델에 저장하는 키를 @SessionAttributes에 정의된 Key와 동일하게 저장하는 경우, 
-//자동으로 세션에도 저장시켜 줌 
-@SessionAttributes(value={"memberLoggedIn"})
+// 해당 클래스 내에서 모델에 저장하는 키를 @SessionAttributes에 정의된 Key와 동일하게 저장하는 경우 (mav.addObject("memberLoggedIn", m);)
+// 자동으로 세션에도 저장시켜 줌 -> session.setAttribute("memberLoggedIn", m); --생략 가능
+// @SessionAttributes(value={"memberLoggedIn"})
 @RestController
 public class MemberRestController {
 	
@@ -283,6 +283,11 @@ public class MemberRestController {
 			// 2. 회원 정보 수정
 			logger.debug("변경할 회원 정보: member = {}", member);
 			memberService.updateMember(member);
+			
+			// 세션에 변경된 회원 정보 저장
+			Member m = memberService.selectOneMember(memberId);
+			session.setAttribute("memberLoggedIn", m);
+			logger.debug("변경 후 회원 정보: member =  {}", m);
 			
 		} catch(Exception e) {
 			logger.error("회원 정보 수정 오류: ", e);
