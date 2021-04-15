@@ -49,6 +49,7 @@ nav#header-icons{position: fixed; z-index: 11000; right: 1rem; height: 2.8rem;}
 
 /* 워크스페이스 멤버 검색 */
 #view-ws-member-list button.role-dropdown {margin-left: 1rem; font-weight: bold;}
+#view-ws-member-list img {width: 2.3rem !important; height: 2.3rem !important; object-fit: cover;}
 
 /*페이지 커버*/
 #page-cover {cursor: pointer; width: 100%; height: 15rem; position: relative;}
@@ -68,7 +69,7 @@ div.page-post-area.P2 div.file-area i{font-size: 2rem; margin-right: 1rem;}
 #sidebar{height: 100%;}
 #sidebar-header {width: 100%; height: 4rem; padding-left: 1.5rem; line-height: 4rem; font-weight: bold;}
 #sidebar-header:hover {cursor: pointer; background: rgb(236, 236, 236);}
-#sidebar-header img {width: 2rem; height: 2rem; vertical-align: middle; border-radius: .2rem; margin-right: .8rem;}
+#sidebar-header img {width: 2.5rem; height: 2.5rem; object-fit: cover; border-radius: .2rem; margin-right: .5rem;}
 /* #sidebar-content {width: 100%;} */
 #sidebar-content:hover {background: rgb(236, 236, 236);}
 #btn-add-s-workspace, #btn-add-p-workspace, #sidebar .btn-add-page, #sidebar .btn-settings {font-size: 1.3rem; vertical-align: middle; float: right; color: darkgray; visibility: hidden;}
@@ -81,7 +82,6 @@ div.page-post-area.P2 div.file-area i{font-size: 2rem; margin-right: 1rem;}
 
 /* 코멘트 바 */
 #comments-bar{top: 2.8rem; width: 25rem;}
-#comments-bar .img-writer{width: 2.3rem !important; height: 2.3rem !important;}
 #comment-overflow {height: 85%; overflow-x: hidden; padding-bottom: 1rem;}
 #commentsbar-header {font-weight: bold; font-size: 1.1rem;}
 #btn-close-comments {cursor: pointer; color: gray;}
@@ -158,8 +158,9 @@ i.btn-post-management:hover {background: rgb(241, 241, 241); color: black;}
 
 /* 포스트 작성자 */
 /* .post-writer {display: none; margin-bottom: 0 !important;} */
+/* .post-writer .img-writer{width: 2.3rem !important; height: 2.3rem !important; margin-top: -.2rem !important; margin-right: -.2rem !important; object-fit: cover;} */
 .post-writer {display: inline-block; margin-bottom: .5rem !important;}
-.post-writer .img-writer{width: 2.3rem !important; height: 2.3rem !important; margin-top: -.2rem !important; margin-right: -.2rem !important;}
+.img-writer{width: 2.3rem !important; height: 2.3rem !important; margin-top: -.2rem !important; margin-right: -.2rem !important; object-fit: cover;}
 
 /* 사이드바 */
 #sidebar {
@@ -379,20 +380,24 @@ div.modal .modal-button:hover {background: rgb(231, 146, 149); cursor: pointer;}
 
 
 
-/* 프로필 보기 */
+/* 프로필 보기 모달 */
 img.img-writer {cursor: pointer;}
 .profile-area {position: absolute; z-index: 15000; top: 50%; left: 50%; width: 100%; height: 100%;}
 #modal-view-profile {top: 5rem; left: 6rem;}
 #modal-view-profile .modal-body {width: 100%; height: 32rem;}
 #modal-view-profile .modal-content {width: 24rem;}
-#modal-view-profile .content {padding: 2rem 1.5rem 0 1.5rem;}
+#modal-view-profile .content {padding: 3rem 2rem 0 2rem;}
 #modal-view-profile .meta {font-weight: bold; margin-top: 1rem;}
 #btn-close-profile {float: right; padding: .5rem 1rem .5rem 0; font-size: 1.2rem; color: gray; text-align: right;}
 #btn-close-profile:hover {cursor: pointer; color: black;}
-#btn-edit-profile {text-align: right; font-weight: bold;}
+#modal-view-profile div.extra {min-height: 40px !important;}
+#btn-edit-profile {font-weight: bold; padding: 0 .5rem; text-align: center; float: right;}
 #btn-edit-profile:hover {cursor: pointer; color: black;}
 #profile-image {height: 45%;}
-#profile-image img {height: 100%;}
+#profile-image img {height: 100%; object-fit: cover;}
+
+/* 포스트 작성자, 코멘트 작성자 아이디 */
+a.writer-id {font-weight: bold;}
 
 
 /* #modal-showViewMember img {width: 2rem !important; height: 2rem !important;} */
