@@ -66,7 +66,7 @@
 											<c:forEach items="${favoritesList}" var="f" varStatus="vs">
 												<c:if test="${f.favoritesType == 'W'}">
 												<li id="favorites-${f.favoritesNo}"><span><a href="#">
-													<button class="hover-text btn-go-workspace" onclick="goWorkspace(${f.workspaceNo});">${f.workspaceName}</button>
+													<div class="hover-text btn-go-workspace" onclick="goWorkspace(${f.workspaceNo});">${f.workspaceName}</div>
 													<i class="plus square outline icon btn-add-page" onclick="addPage('${f.roleCode}', '${f.workspaceNo }');"></i>
 													<div class="ui buttons btn-settings">
 														<i class="ui dropdown fas fa-ellipsis-h">
@@ -93,7 +93,7 @@
 											<c:forEach items="${favoritesList}" var="f" varStatus="vs">
 												<c:if test="${f.favoritesType == 'P'}">
 												<li id="favorites-${f.favoritesNo}"><span><a href="#" class="hover-text">
-													<button class="hover-text btn-go-page" onclick="goPage(${f.pageNo});">${f.pageName}</button>
+													<div class="hover-text btn-go-page" onclick="goPage(${f.pageNo});">${f.pageName}</div>
 													<div class="ui buttons btn-settings">
 														<i class="ui dropdown fas fa-ellipsis-h">
 															<div class="menu menu-settings">
@@ -121,7 +121,7 @@
 									<c:if test="${w.workspaceType == 'S'}">
 										<li>
 											<span class="opener opener2"><a href="#">
-												<button class="hover-text btn-go-workspace" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</button>
+												<div class="hover-text btn-go-workspace" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
 												<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo}');"></i>
 												<div class="ui buttons btn-settings">
 													<i class="ui dropdown fas fa-ellipsis-h">
@@ -141,7 +141,7 @@
 												<c:forEach items="${workspacePageList}" var="wp" varStatus="wpvs">
 													<c:if test="${w.workspaceNo == wp.workspaceNo}">
 														<li><span><a href="#" class="hover-text">
-															<button class="hover-text btn-go-page" onclick="goPage(${wp.pageNo});">${wp.pageName}</button>
+															<div class="hover-text btn-go-page" onclick="goPage(${wp.pageNo});">${wp.pageName}</div>
 															<div class="ui buttons btn-settings">
 															<c:if test="${wp.workspaceWriter == memberLoggedIn.memberId || wp.pageWriter == memberLoggedIn.memberId}">
 																<i class="ui dropdown fas fa-ellipsis-h">
@@ -172,7 +172,7 @@
 									<c:if test="${w.workspaceType == 'P'}">
 										<li>
 											<span class="opener opener2"><a href="#">
-												<button class="hover-text btn-go-workspace" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</button>
+												<div class="hover-text btn-go-workspace" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
 												<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo }');"></i>
 												<div class="ui buttons btn-settings">
 													<i class="ui dropdown fas fa-ellipsis-h">
@@ -187,7 +187,7 @@
 												<c:forEach items="${workspacePageList}" var="wp" varStatus="wpvs">
 													<c:if test="${w.workspaceNo == wp.workspaceNo}">
 														<li><span><a href="#" class="hover-text">
-															<button class="hover-text btn-go-page" onclick="goPage(${wp.pageNo});">${wp.pageName}</button>
+															<div class="hover-text btn-go-page" onclick="goPage(${wp.pageNo});">${wp.pageName}</div>
 															<div class="ui buttons btn-settings">
 																<i class="ui dropdown fas fa-ellipsis-h">
 																	<div class="menu menu-settings">
