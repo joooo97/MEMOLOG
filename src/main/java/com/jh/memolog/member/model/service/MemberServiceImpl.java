@@ -1,5 +1,7 @@
 package com.jh.memolog.member.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,17 +42,16 @@ public class MemberServiceImpl implements MemberService {
 			throw new MemberException("회원 정보 수정 오류!");
 	}
 
-
-	// 모든 멤버 조회
-/*	@Override
-	public List<Member> selectMemberList() {
-		List<Member> memberList = memberDAO.selectMemberList(); 
+	// 비밀번호 변경
+	@Override
+	public int updatePassword(Map<String, Object> param) {
+		int result = memberDAO.updatePassword(param);
 		
-		if(memberList == null)
-			throw new MemberException("전체 멤버 조회 오류!");
+		if(result == 0)
+			throw new MemberException("비밀번호 변경 오류!");
 		
-		return memberList;
-	}*/
+		return result;
+	}
 
 
 }

@@ -1,5 +1,7 @@
 package com.jh.memolog.member.model.dao;
 
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,10 +29,10 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.update("member.updateMember", member);
 	}
 
+	@Override
+	public int updatePassword(Map<String, Object> param) {
+		return sqlSession.update("member.updatePassword", param);
+	}
 
-	/*	@Override
-	public List<Member> selectMemberList() {
-		return sqlSession.selectList("member.selectMemberList");
-	}*/
 	
 }

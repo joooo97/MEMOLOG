@@ -18,10 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jh.memolog.member.model.exception.MemberException;
@@ -156,7 +156,7 @@ public class MemberRestController {
 	}
 	
 
-	// 멤버 정보 조회(아이디, 이름, 이메일, 전화번호, 프로필 사진 이름)
+	// 멤버 정보 조회
 	@GetMapping("/members/{memberId}")
 	public Member selectOneMember(@PathVariable("memberId") String memberId) {
 		Member member;
@@ -218,9 +218,9 @@ public class MemberRestController {
 		return map;
 	}
 	
-	// 회원 정보 수정
+	// 프로필 정보 수정
 	// 업로드할 파일이 있는 경우 PutMapping으로 수정 시 415 에러 또는 nullPoint 에러 남
-	@PostMapping("/members/{memberId}")
+	@PostMapping("/members/{memberId}/profile")
 	public void updateMember(@PathVariable("memberId") String memberId, Member member, @RequestParam(value="defaultYn") String defaultYn, @RequestParam(value="newImageYn", required=false) String newImageYn, @RequestParam(value="upFile", required=false) MultipartFile upFile, HttpSession session) {
 		try {
 			logger.debug("들어온 정보 = {}", member);
@@ -307,6 +307,45 @@ public class MemberRestController {
 				logger.debug("파일 삭제 실패: {}", files[i].getName());
 			}
 		}
+	}
+	
+	// 비밀번호 변경
+	// @RequestBody : 클라이언트로부터 요청받은 json문자열을 java객체로 변환. 파라미터에 사용
+	@PutMapping("/members/{memberId}/password")
+	public Map<String, Object> updatePassword(@RequestBody Map<String, String> passwordParam, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> param = new HashMap<>();
+		Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = memberLoggedIn.getMemberId();
+		// logger.debug("변경 전 비밀번호 = {}", memberLoggedIn.getPassword());
+		
+		try {
+			// 입력한 비밀번호가 일치하는 경우
+			if(bcryptPasswordEncoder.matches(passwordParam.get("currentPwd"), memberLoggedIn.getPassword())) {
+				// 비밀번호 암호화 후 변경
+				String encryptedPassword = bcryptPasswordEncoder.encode(passwordParam.get("newPwd"));
+				param.put("memberId", memberLoggedIn.getMemberId());
+				param.put("password", encryptedPassword);
+				
+				int result = memberService.updatePassword(param);
+				// 세션에 변경된 정보 저장
+				memberLoggedIn = memberService.selectOneMember(memberId);
+				session.setAttribute("memberLoggedIn", memberLoggedIn);
+				// logger.debug("변경 후 비밀번호 = {}", memberLoggedIn.getPassword());
+				
+				map.put("isMatched", true); // 입력한 비밀번호의 일치 여부
+				map.put("msg", result > 0 ? "비밀번호가 변경되었습니다." : "비밀번호 변경에 실패하셨습니다.");
+			}
+			else {
+				map.put("isMatched", false);
+			}
+			
+		} catch(Exception e) {
+			logger.error("비밀번호 수정 오류: ", e);
+			throw new MemberException("비밀번호 수정 오류!");
+		}
+		
+		return map;
 	}
 
 }

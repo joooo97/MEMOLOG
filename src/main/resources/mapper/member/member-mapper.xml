@@ -26,5 +26,11 @@
 		    phone = #{phone}
 		where member_id = #{memberId}
 	</update>
+	
+	<update id="updatePassword">
+		update member
+		set password = #{password}
+		where member_id = #{memberId}
+	</update>
 
 </mapper>

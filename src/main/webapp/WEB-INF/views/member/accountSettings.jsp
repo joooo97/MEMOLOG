@@ -72,15 +72,19 @@
 					<div class="ui segment" id="update-password-area">
 						<form class="ui form">
 							<div class="field">
-								<label for="password-now">현재 비밀번호</label>
-								<input type="password" id="password-now" value="">
-								<!-- <input type="hidden" value="$2a$10$LfAM52wl5CD/pJjloJpNkuPxxv3vXLrSWEfxZnkTiK.PEx1Tmx/vC" id="pwd-real"> -->
+								<label for="currentPassword">현재 비밀번호</label>
+								<input type="password" id="currentPassword">
 							</div>
 							<div class="field">
-								<label for="password-new">변경할 비밀번호</label>
-								<input type="password" id="password-new">
+								<label for="newPassword">변경할 비밀번호</label>
+								<input type="password" id="newPassword" placeholder="영문자, 숫자, 특수문자를 포함하여 8-15자를 입력해주세요.">
+								<span class="valid">알맞은 형식의 비밀번호를 입력해주세요.</span>
 							</div>
-							<button class="ui button btn-update-settings" type="button">비밀번호 변경</button>
+							<div class="field">
+								<label for="check-newPassword">변경할 비밀번호 확인</label>
+								<input type="password" id="check-newPassword">
+							</div>
+							<button class="ui button btn-update-settings" type="button" onclick="checkPasswordValid();">비밀번호 변경</button>
 						</form>
 					</div>	
 	
@@ -217,20 +221,41 @@
 			}
 		});
 		
+		// 변경할 비밀번호 유효성 체크
+		$("#newPassword").keyup(function() {
+			var newPassword = $(this).val().trim();
+			
+			if(!regPassword.test(newPassword)) {
+				$(this).css('border', '1px solid red');
+				$(this).next().css('display', 'block');
+			}
+			else {
+				$(this).css('border', '1px solid rgba(34, 36, 38, 0.15)');
+				$(this).next().css('display', 'none');
+			}
+		});
+		
 	});
 		
 	// 함수 영역
 	// 프로필 변경 영역 띄우기
 	function showUpdateProfileArea() {
+		viewProfileAjax(); // 프로필 정보 입력
+		
 		$("#update-password-area").css('display', 'none');
 		$("#remove-account-area").css('display', 'none');
 		$("#update-profile-area").css('display', 'block');
-		
-		viewProfileAjax();
 	}
 	
 	// 비밀번호 변경 영역 띄우기
 	function showUpdatePasswordArea() {
+		// 비밀번호 입력칸 초기화
+		$("#update-password-area input:password").val("");
+		
+		// 비밀번호 유효성 체크 메세지 초기화
+		$("#newPassword").next().css('display', 'none');
+		$("#newPassword").css('border', '1px solid rgba(34, 36, 38, 0.15)');
+
 		$("#update-profile-area").css('display', 'none');
 		$("#remove-account-area").css('display', 'none');
 		$("#update-password-area").css('display', 'block');
@@ -294,9 +319,9 @@
 		
 		// 2. 유효성 체크
 		var valid = false;
-		if(!regName.test(memberName.val())) valid = false;
-		else if(!regEmail.test(email.val())) valid = false;
-		else if(!regPhone.test(phone.val())) valid = false;
+		if(!regName.test(memberName.val().trim())) valid = false;
+		else if(!regEmail.test(email.val().trim())) valid = false;
+		else if(!regPhone.test(phone.val().trim())) valid = false;
 		else valid = true;
 		
 		if(!valid) {
@@ -335,7 +360,7 @@
 
 		// 4. 프로필 정보 변경
  		$.ajax({
-			url: '${pageContext.request.contextPath}/members/${memberLoggedIn.memberId}',
+			url: '${pageContext.request.contextPath}/members/${memberLoggedIn.memberId}/profile',
 			type: 'POST',
 			data: formData,
 			processData: false, // 파일 업로드 ajax시 필수 속성
@@ -359,7 +384,7 @@
 			type: 'GET',
 			dataType: 'json',
 			success: data => {
-				console.log(data);
+				// console.log(data);
 				
 				// 파일 초기화 (input:file)
 				var agent = navigator.userAgent.toLowerCase();
@@ -409,6 +434,73 @@
 			}
 			
 		});
+	}
+	
+	// 비밀번호 변경 시 유효성 체크
+	function checkPasswordValid() {
+		var currentPwd = $("#currentPassword").val().trim();
+		var newPwd = $("#newPassword").val().trim();
+		var checkPwd = $("#check-newPassword").val().trim();
+		
+		// 1. 입력 여부 확인
+		if(currentPwd.length == 0) {
+			alert("현재 비밀번호를 입력하지 않으셨습니다.");
+			$("#currentPassword").focus();
+			return;
+		}
+		if(newPwd.length == 0) {
+			alert("변경할 비밀번호를 입력하지 않으셨습니다.");
+			$("#newPassword").focus();
+			return;
+		}
+		if(checkPwd.length == 0) {
+			alert("비밀번호 확인란을 입력하지 않으셨습니다.");
+			$("#check-newPassword").focus();
+			return;
+		}
+		
+		// 2. 변경할 비밀번호의 유효성 체크
+		var valid = false;
+		
+		if(!regPassword.test($("#newPassword").val().trim())) valid = false;
+		else valid = true;
+		
+		if(!valid) {
+			alert("알맞은 형식의 비밀번호를 입력해주세요.");
+			$("#newPassword").focus();
+			return;
+		}
+		
+		// 3. 비밀번호 확인란 일치 여부 체크
+		if(newPwd != checkPwd) {
+			alert("변경할 비밀번호와 변경할 비밀번호 확인란이 일치하지 않습니다.");
+			$("#check-newPassword").focus();
+			return;
+		}
+		
+		// 4. 입력한 현재 비밀번호의 일치 여부에 따른 비밀번호 변경
+		var param = {currentPwd: currentPwd, newPwd: newPwd};
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/members/${memberLoggedIn.memberId}/password',
+			type: 'PUT',
+			data: JSON.stringify(param),
+			contentType: 'application/json; charset=utf-8',
+			success: data => {
+				if(data.isMatched) {
+					alert(data.msg);
+					$("#update-password-area input:password").val("");
+				}
+				else {
+					alert("입력한 현재 비밀번호가 일치하지 않습니다.");
+					$("#currentPassword").focus();
+				}
+			},
+			error: (x, s, e) => {
+				console.log("비밀번호 변경 ajax 처리 실패!", x, s, e);
+			}
+		});
+		
 	}
 	
 	</script>

@@ -1,5 +1,7 @@
 package com.jh.memolog.member.model.dao;
 
+import java.util.Map;
+
 import com.jh.memolog.member.model.vo.Member;
 
 public interface MemberDAO {
@@ -9,5 +11,7 @@ public interface MemberDAO {
 	int insertMember(Member member);
 
 	int updateMember(Member member);
+
+	int updatePassword(Map<String, Object> param);
 
 }
