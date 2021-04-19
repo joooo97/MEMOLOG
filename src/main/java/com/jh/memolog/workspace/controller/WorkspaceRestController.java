@@ -1,5 +1,6 @@
 package com.jh.memolog.workspace.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jh.memolog.member.model.exception.MemberException;
 import com.jh.memolog.member.model.vo.Member;
+import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.workspace.model.exception.WorkspaceException;
 import com.jh.memolog.workspace.model.service.WorkspaceService;
 import com.jh.memolog.workspace.model.vo.Workspace;
@@ -110,9 +112,36 @@ public class WorkspaceRestController {
 	
 	// 워크스페이스 삭제
 	@DeleteMapping("/workspaces/{workspaceNo}")
-	public void deleteWorkspace(@PathVariable("workspaceNo") int workspaceNo) {
+	public void deleteWorkspace(@PathVariable("workspaceNo") int workspaceNo, HttpSession session) {
 		try {
+			// 1. 삭제할 워크스페이스의 각 페이지 폴더에 저장된 파일 및 페이지 폴더 삭제
+			List<Page> pageList = workspaceService.selectPageList(workspaceNo);
+			
+			for(int i = 0; i < pageList.size(); i++) {
+				String saveDir = session.getServletContext().getRealPath("/resources/upload/page/"+pageList.get(i).getPageNo());
+				File dir = new File(saveDir); // 각 페이지 폴더
+				
+				// 페이지 폴더 내 모든 파일 삭제
+				if(dir.exists()) {
+					File[] files = dir.listFiles();
+					
+					for(int j = 0; j < files.length; j++) {
+						if(files[j].delete())
+							logger.debug("파일 삭제 성공: {}", files[j].getName());
+						else
+							logger.debug("파일 삭제 실패: {}", files[j].getName());
+					}
+				}
+				// 페이지 폴더 삭제
+				if(dir.delete())
+					logger.debug("페이지 폴더 삭제 성공: {}", dir.getName());
+				else
+					logger.debug("페이지 폴더 삭제 실패: {}", dir.getName());
+			}
+			
+			// 2. 워크스페이스 삭제
 			workspaceService.deleteWorkspace(workspaceNo);
+			
 		} catch(Exception e) {
 			logger.error("워크스페이스 삭제 오류: ", e);
 			throw new WorkspaceException("워크스페이스 삭제 오류!", e);
@@ -224,7 +253,7 @@ public class WorkspaceRestController {
 			workspaceService.deleteWorkspaceMember(workspaceMemberNo);
 		} catch(Exception e) {
 			logger.error("워크스페이스 멤버 삭제 오류: ", e);
-			throw new WorkspaceException("워크스페이스 삭제 오류!", e);
+			throw new WorkspaceException("워크스페이스 멤버 삭제 오류!", e);
 		}
 	}
 

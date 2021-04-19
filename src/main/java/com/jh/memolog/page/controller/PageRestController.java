@@ -122,9 +122,29 @@ public class PageRestController {
 	
 	// 페이지 삭제
 	@DeleteMapping("/pages/{pageNo}")
-	public void deletePage(@PathVariable("pageNo") int pageNo) {
+	public void deletePage(@PathVariable("pageNo") int pageNo, HttpSession session) {
 		try {
 			pageService.deletePage(pageNo);
+			
+			String saveDirectory = session.getServletContext().getRealPath("/resources/upload/page/"+pageNo);
+			File dir = new File(saveDirectory); // 폴더
+			// 페이지에 업로드된 모든 파일 삭제
+			if(dir.exists()) {
+				File[] files = dir.listFiles();
+				
+				for(int i = 0; i < files.length; i++) {
+					if(files[i].delete()) 
+						logger.debug("파일 삭제 성공: {}", files[i].getName());
+					else
+						logger.debug("파일 삭제 실패: {}", files[i].getName());
+				}
+			}
+			// 해당 페이지 폴더 삭제
+			if(dir.delete())
+				logger.debug("페이지 폴더 삭제 성공: {}", dir.getName());
+			else
+				logger.debug("페이지 폴더 삭제 실패: {}", dir.getName());
+			
 		} catch(Exception e) {
 			logger.error("페이지 삭제 오류: ", e);
 			throw new PageException("페이지 삭제 오류!", e);
