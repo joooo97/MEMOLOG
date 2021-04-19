@@ -504,7 +504,7 @@ public class PageRestController {
 	
 	// 페이지 즐겨찾기 추가
 	@PostMapping("/page-favorites")
-	public Map<String, Object> insertPageFavorite(@RequestParam int workspaceNo, @RequestParam int pageNo, HttpSession session) {
+	public Map<String, Object> insertPageFavorite(@RequestParam(value="workspaceNo") int workspaceNo, @RequestParam(value="pageNo") int pageNo, HttpSession session) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> param = new HashMap<>();
 		Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");

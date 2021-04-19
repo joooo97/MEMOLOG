@@ -270,7 +270,7 @@ public class WorkspaceRestController {
 	
 	// 워크스페이스 즐겨찾기 추가
 	@PostMapping("/workspace-favorites")
-	public Map<String, Object> insertWsFavorite(@RequestParam int workspaceNo, HttpSession session) {
+	public Map<String, Object> insertWsFavorite(@RequestParam(value="workspaceNo") int workspaceNo, HttpSession session) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> param = new HashMap<>();
 		Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
