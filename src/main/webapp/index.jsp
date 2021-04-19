@@ -65,10 +65,14 @@ function checkInput() {
 		type: "POST",
 		dataType: "json",
 		success: data => {
-			if(data.msg != '')
+			if(data.msg != '') {
 				alert(data.msg);
+				$("#password").val('');
+			}
 			
-			location.href = '${pageContext.request.contextPath}'+data.loc;
+			if(data.loc != '')
+				location.href = '${pageContext.request.contextPath}'+data.loc;
+			
 		},
 		error: (x, s, e) => {
 			console.log("로그인 ajax 요청 실패!", x, s, e);

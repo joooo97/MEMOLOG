@@ -58,7 +58,7 @@ public class MemberRestController {
 			logger.debug("saveId={}", saveId);
 
 			String msg = "";
-			String loc = "/";
+			String loc = "";
 			
 			String encryptedPassword = bcryptPasswordEncoder.encode(password);
 			
@@ -361,12 +361,21 @@ public class MemberRestController {
 			// 프로필 이미지 폴더 및 파일 삭제
 			String saveDirectory = session.getServletContext().getRealPath("/resources/upload/profile/"+memberId);
 			File dir = new File(saveDirectory); // 폴더
-			if(dir.exists()) deleteAllFiles(dir); // 폴더 내 파일 삭제
-			if(dir.delete()) logger.debug("폴더 삭제 성공: {}", dir.getName()); // 폴더 삭제
+			// 폴더 내 파일 삭제
+			if(dir.exists()) deleteAllFiles(dir);
+			// 폴더 삭제
+			if(dir.delete()) 
+				logger.debug("폴더 삭제 성공: {}", dir.getName()); // 폴더 삭제
+			else
+				logger.debug("폴더 삭제 실패: {}", dir.getName()); // 폴더 삭제
+				
+			if(result > 0) {
+				session.invalidate();
+				map.put("result", true);
+			}
+			else
+				map.put("result", false);
 			
-			session.invalidate();
-			
-			map.put("result", result > 0 ? true : false);
 			
 		} catch(Exception e) {
 			logger.error("계정 탈퇴 오류: ", e);
