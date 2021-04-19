@@ -14,4 +14,6 @@ public interface MemberService {
 
 	int updatePassword(Map<String, Object> param);
 
+	int deleteMember(String memberId);
+
 }

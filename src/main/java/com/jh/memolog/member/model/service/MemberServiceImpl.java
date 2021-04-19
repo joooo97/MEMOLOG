@@ -52,6 +52,17 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+	
+	// 계정 탈퇴
+	@Override
+	public int deleteMember(String memberId) {
+		int result = memberDAO.deleteMember(memberId);
+		
+		if(result == 0)
+			throw new MemberException("계정 탈퇴 오류!");
+		
+		return result;
+	}
 
 
 }

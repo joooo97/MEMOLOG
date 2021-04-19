@@ -32,5 +32,10 @@
 		set password = #{password}
 		where member_id = #{memberId}
 	</update>
+	
+	<delete id="deleteMember">
+		delete from member
+		where member_id = #{memberId}
+	</delete>
 
 </mapper>

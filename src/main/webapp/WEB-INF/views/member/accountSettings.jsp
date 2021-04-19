@@ -92,15 +92,15 @@
 					<div class="ui segment" id="remove-account-area">
 						<form class="ui form">
 							<div class="field">
-								<p>탈퇴된 계정은 다시 복구할 수 없으며, 탈퇴된 계정으로 생성했던 모든 데이터들 또한 복구할 수 없습니다.</p>
+								<p>현재 사용중인 계정(<span style="color: tomato;">${memberLoggedIn.memberId}</span>)은 탈퇴 시 복구가 불가능하며, 탈퇴 후 회원정보 및 등록한 게시물은 모두 삭제됩니다.</p>
 							</div>
 							<div class="field">
 							  <div class="ui checkbox">
-								<input type="checkbox" tabindex="0" class="">
-								<label>동의하고 탈퇴를 진행합니다.</label>
+								<input type="checkbox" tabindex="0">
+								<label>안내 사항을 모두 확인하였으며, 이에 동의하고 탈퇴를 진행합니다.</label>
 							  </div>
 							</div>
-							<button class="ui button btn-remove-account" type="button">계정 탈퇴</button>
+							<button class="ui button btn-remove-account" type="button" onclick="removeAccount();">계정 탈퇴</button>
 						</form>
 					</div>	
 				</section>
@@ -501,6 +501,32 @@
 			}
 		});
 		
+	}
+	
+	// 계정 탈퇴
+	function removeAccount() {
+		if(!$("#remove-account-area input:checkbox").is(":checked")) {
+			alert("탈퇴 안내를 확인하고 동의해 주세요.");
+			return;
+		}
+		
+		if(!confirm("정말로 탈퇴를 진행하시겠습니까?")) return;
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/members/${memberLoggedIn.memberId}',
+			type: 'DELETE',
+			success: data => {
+				if(!data.result) {
+					alert("계정 탈퇴에 실패하셨습니다.");
+					return;
+				}				
+				
+				location.href = '${pageContext.request.contextPath}/';
+			},
+			error: (x, s, e) => {
+				console.log("계정 탈퇴 처리 실패!", x, s, e);
+			}
+		});
 	}
 	
 	</script>

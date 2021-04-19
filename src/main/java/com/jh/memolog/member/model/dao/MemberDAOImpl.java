@@ -34,5 +34,8 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.update("member.updatePassword", param);
 	}
 
-	
+	@Override
+	public int deleteMember(String memberId) {
+		return sqlSession.delete("member.deleteMember", memberId);
+	}
 }

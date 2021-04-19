@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -347,5 +348,32 @@ public class MemberRestController {
 		
 		return map;
 	}
-
+	
+	// 계정 탈퇴
+	@DeleteMapping("/members/{memberId}")
+	public Map<String, Object> deleteMember(@PathVariable String memberId, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			// 계정 탈퇴
+			int result = memberService.deleteMember(memberId);
+			
+			// 프로필 이미지 폴더 및 파일 삭제
+			String saveDirectory = session.getServletContext().getRealPath("/resources/upload/profile/"+memberId);
+			File dir = new File(saveDirectory); // 폴더
+			if(dir.exists()) deleteAllFiles(dir); // 폴더 내 파일 삭제
+			if(dir.delete()) logger.debug("폴더 삭제 성공: {}", dir.getName()); // 폴더 삭제
+			
+			session.invalidate();
+			
+			map.put("result", result > 0 ? true : false);
+			
+		} catch(Exception e) {
+			logger.error("계정 탈퇴 오류: ", e);
+			throw new MemberException("계정 탈퇴 오류!");
+		}
+		
+		return map;
+	}
+	
 }
