@@ -215,16 +215,11 @@
 		<!-- /#sidebar -->
 
 <script>
-$(function(){
+$(function() {
 	
 	// <왼쪽 사이드바>
 	// 사이드바 각 메뉴 호버 시 관리, 추가 버튼 나타내기
-	$("#menu span").hover(function(){
-		$(this).find('i').css('visibility', 'visible');
-	});
-	$("#menu span").mouseleave(function(){
-		$(this).find('i').css('visibility', 'hidden');
-	});
+	hoverSideBarBtn();
 	
 	// 사이드바 메뉴 클릭 시 모달 띄우기
 	//#1. 개인 워크스페이스 생성 모달 띄우기
@@ -247,6 +242,16 @@ $(function(){
 });
 
 // 함수 영역
+
+// 사이드바 내 워크스페이스/페이지 호버 시 관리메뉴 나타내기
+function hoverSideBarBtn() {
+	$("#menu span").hover(function(){
+		$(this).find('i').css('visibility', 'visible');
+	});
+	$("#menu span").mouseleave(function(){
+		$(this).find('i').css('visibility', 'hidden');
+	});
+}
 
 // 공유 워크스페이스 멤버 나가기
 function leaveShareWorkspace(workspaceMemberNo) {
