@@ -195,6 +195,27 @@
 					// 즐겨찾기 표시 (data.createdFavoriteNo: 생성된 즐겨찾기 번호)
 					$("#btn-star").attr("class", "fas fa-star")
 								  .attr("onclick", "deleteWsFavorite("+data.createdFavoriteNo+");");
+					
+					// 사이드바 내 즐겨찾기한 워크스페이스 목록에 추가
+					var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#">'
+										   + '<div class="hover-text btn-go-workspace" onclick="goWorkspace(${workspace.workspaceNo});">${workspace.workspaceName}</div>'
+										   + '<i class="plus square outline icon btn-add-page" onclick="addPage(\'${workspace.roleCode}\', \'${workspace.workspaceNo}\');"></i>'
+										   + '<div class="ui buttons btn-settings"><i class="ui dropdown fas fa-ellipsis-h"><div class="menu menu-settings">'
+										   + '<div class="item" onclick="deleteWsFavorite(${f.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>';
+
+					if('${workspace.workspaceWriter == memberLoggedIn.memberId}') {
+						createdFavoriteTag += '<div class="item btn-update-ws" onclick="updateWorkspace(\'${worksapce.workspaceNo}\', \'${worksapce.workspaceName}\', \'${worksapce.workspaceDesc}\');">'
+										   + '<i class="edit icon"></i>수정</div><div class="item" onclick="deleteWorkspace(\'${worksapce.workspaceNo}\');"><i class="delete icon"></i>삭제</div>';
+					}
+					else {
+						createdFavoriteTag += '<div class="item" onclick="leaveShareWorkspace(${workspace.workspaceMemberNo});"><i class="icon fas fa-sign-out-alt"></i>나가기</div>';
+					}										   
+					
+					createdFavoriteTag += '</div></i></div></a></span></li>';
+					$("#ul-ws-favorites").append(createdFavoriteTag);
+					
+					// 워크스페이스 호버 시 관리 메뉴 나타내기
+					hoverSideBarBtn();
 				},
 				error: (x, s, e) => {
 					console.log("워크스페이스 즐겨찾기 추가 실패!", x, s, e);
