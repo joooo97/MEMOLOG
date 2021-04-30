@@ -197,13 +197,14 @@
 								  .attr("onclick", "deleteWsFavorite("+data.createdFavoriteNo+");");
 					
 					// 사이드바 내 즐겨찾기한 워크스페이스 목록에 추가
-					var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#">'
+ 					var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#">'
 										   + '<div class="hover-text btn-go-workspace" onclick="goWorkspace(${workspace.workspaceNo});">${workspace.workspaceName}</div>'
 										   + '<i class="plus square outline icon btn-add-page" onclick="addPage(\'${workspace.roleCode}\', \'${workspace.workspaceNo}\');"></i>'
-										   + '<div class="ui buttons btn-settings"><i class="ui dropdown fas fa-ellipsis-h"><div class="menu menu-settings">'
-										   + '<div class="item" onclick="deleteWsFavorite(${f.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>';
+										   + '<div class="ui buttons btn-settings"><i class="ui dropdown fas fa-ellipsis-h" tabindex="0">'
+										   + '<div class="menu menu-settings transition" tabindex="-1">'
+										   + '<div class="item" onclick="deleteWsFavorite('+data.createdFavoriteNo+');"><i class="star outline icon"></i>즐겨찾기 취소</div>';
 
-					if('${workspace.workspaceWriter == memberLoggedIn.memberId}') {
+					if('${workspace.workspaceWriter}' == '${memberLoggedIn.memberId}') {
 						createdFavoriteTag += '<div class="item btn-update-ws" onclick="updateWorkspace(\'${worksapce.workspaceNo}\', \'${worksapce.workspaceName}\', \'${worksapce.workspaceDesc}\');">'
 										   + '<i class="edit icon"></i>수정</div><div class="item" onclick="deleteWorkspace(\'${worksapce.workspaceNo}\');"><i class="delete icon"></i>삭제</div>';
 					}
@@ -216,6 +217,17 @@
 					
 					// 워크스페이스 호버 시 관리 메뉴 나타내기
 					hoverSideBarBtn();
+					
+					$("li#favorites-"+data.createdFavoriteNo+" .btn-settings").on('click', function() {
+						// 관리 버튼 클릭 시 관리 메뉴(즐겨찾기 취소 / 수정 / 삭제)가 뜨지 않아 수동으로 띄워주기
+						$(this).find("div.menu-settings").toggleClass("visible");
+					});
+					
+					// 사이드바 내 다른 요소 클릭 시 관리 메뉴 닫기
+					$('#sidebar, #sidebar i').on('click', function(e) {
+						$("#favorites-"+data.createdFavoriteNo+" div.menu-settings").removeClass('visible');
+					});
+					
 				},
 				error: (x, s, e) => {
 					console.log("워크스페이스 즐겨찾기 추가 실패!", x, s, e);
