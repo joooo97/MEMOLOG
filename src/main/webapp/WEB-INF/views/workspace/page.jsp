@@ -1112,9 +1112,31 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
  			success: data => {
  				console.log("페이지 즐겨찾기 추가 성공!");
  				
- 				// 즐겨찾기 표시 (data.createdFavoriteNo: 생성된 즐겨찾기 번호)
+ 				// 상단에 즐겨찾기 표시 (data.createdFavoriteNo: 생성된 즐겨찾기 번호)
  				$("#btn-star").attr("class", "fas fa-star")
  					          .attr("onclick", "deletePageFavorite("+data.createdFavoriteNo+");");
+ 				
+ 				// 사이드바 내 즐겨찾기한 페이지 목록에 추가
+  				var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#" class="hover-text">'
+									   + '<div class="hover-text btn-go-page" onclick="goPage(${page.pageNo});">${page.pageName}</div>'
+									   + '<div class="ui buttons btn-settings"><i class="ui dropdown fas fa-ellipsis-h"><div class="menu menu-settings transition">'
+									   + '<div class="item" onclick="deletePageFavorite(${page.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>';
+									   
+				// 사용자가 즐겨찾기한 페이지의 워크스페이스 관리자이거나 페이지 관리자라면 관리 버튼 띄우기
+				if('${page.workspaceWriter}' == '${memberLoggedIn.memberId}' || '${page.pageWriter}' == '${memberLoggedIn.memberId}') {
+					createdFavoriteTag += '<div class="item btn-update-p" onclick="updatePage(${page.pageNo}, \'${page.pageName}\', \'${page.pageDesc}\');"><i class="edit icon"></i>수정</div>'
+							  		   + '<div class="item" onclick="deletePage(${page.pageNo}, \'${page.workspaceNo}\');"><i class="delete icon"></i>삭제</div>';
+				}
+				
+				createdFavoriteTag += '</div></i></div></a></span></li>';
+ 					
+ 				$("#ul-page-favorites").append(createdFavoriteTag);
+ 				
+ 				// 사이드바 내 워크스페이스, 페이지 호버 시 관리 버튼 나타내기
+				hoverSideBarBtn();
+ 				
+ 				// 즐겨찾기 추가된 페이지의 관리 메뉴 수동으로 띄워주고 닫아주기
+ 				viewSettingsMenu(data.createdFavoriteNo);
  			},
  			error: (x, s, e) => {
  				console.log("페이지 즐겨찾기 추가 실패!", x, s, e);
