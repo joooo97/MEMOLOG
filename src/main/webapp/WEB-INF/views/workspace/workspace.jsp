@@ -215,18 +215,11 @@
 					createdFavoriteTag += '</div></i></div></a></span></li>';
 					$("#ul-ws-favorites").append(createdFavoriteTag);
 					
-					// 워크스페이스 호버 시 관리 메뉴 나타내기
+					// 워크스페이스 호버 시 관리 버튼 나타내기
 					hoverSideBarBtn();
 					
-					$("li#favorites-"+data.createdFavoriteNo+" .btn-settings").on('click', function() {
-						// 관리 버튼 클릭 시 관리 메뉴(즐겨찾기 취소 / 수정 / 삭제)가 뜨지 않아 수동으로 띄워주기
-						$(this).find("div.menu-settings").toggleClass("visible");
-					});
-					
-					// 사이드바 내 다른 요소 클릭 시 관리 메뉴 닫기
-					$('#sidebar, #sidebar i').on('click', function(e) {
-						$("#favorites-"+data.createdFavoriteNo+" div.menu-settings").removeClass('visible');
-					});
+					// 즐겨찾기 추가된 워크스페이스의 관리 메뉴 수동으로 띄워주고 닫아주기
+					viewSettingsMenu(data.createdFavoriteNo);
 					
 				},
 				error: (x, s, e) => {

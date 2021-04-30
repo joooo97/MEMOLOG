@@ -243,12 +243,25 @@ $(function() {
 
 // 함수 영역
 
-// 사이드바 내 워크스페이스/페이지 호버 시 관리메뉴 나타내기
+// 즐겨찾기 추가된 워크스페이스/페이지의 관리 메뉴 수동으로 열고 닫기
+function viewSettingsMenu(createdFavoriteNo) {
+	// 관리 버튼 클릭 시 관리 메뉴(즐겨찾기 취소 / 수정 / 삭제)가 뜨지 않아 수동으로 띄워주기
+	$("li#favorites-"+createdFavoriteNo+" .btn-settings").on('click', function() {
+		$(this).find("div.menu-settings").toggleClass("visible");
+	});
+	
+	// 사이드바 내 다른 요소 클릭 시 관리 메뉴 닫기
+	$('#sidebar, #sidebar i').on('click', function(e) {
+		$("#favorites-"+createdFavoriteNo+" div.menu-settings").removeClass('visible');
+	});	
+}
+
+// 사이드바 내 워크스페이스/페이지 호버 시 관리버튼 나타내기
 function hoverSideBarBtn() {
-	$("#menu span").hover(function(){
+	$("#menu span").hover(function() {
 		$(this).find('i').css('visibility', 'visible');
 	});
-	$("#menu span").mouseleave(function(){
+	$("#menu span").mouseleave(function() {
 		$(this).find('i').css('visibility', 'hidden');
 	});
 }
