@@ -4,11 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 
-<style>
-	.btn-go-workspace, .btn-go-page {border: 0; font-size: 12px; background: rgba(255, 255, 255, 0); color: rgb(97, 96, 96); }
-	.hover-text:hover {font-weight: bold;}
-</style>
-
 		<!-- Sidebar -->
 		<!-- 부트스트랩과 semantic ui의 충돌로 사이드바 내에서 모달 띄우기가 안 되어 다른 요소를 이용하여 모달 띄우기 -->
 		<span id="show-modal-add-p-ws" data-toggle="modal" data-target="#modal-add-p-ws"></span>
@@ -65,22 +60,24 @@
 										<ul class="opener2" id="ul-ws-favorites">
 											<c:forEach items="${favoritesList}" var="f" varStatus="vs">
 												<c:if test="${f.favoritesType == 'W'}">
-												<li id="favorites-${f.favoritesNo}"><span><a href="#">
-													<div class="hover-text btn-go-workspace" onclick="goWorkspace(${f.workspaceNo});">${f.workspaceName}</div>
-													<i class="plus square outline icon btn-add-page" onclick="addPage('${f.roleCode}', '${f.workspaceNo }');"></i>
-													<div class="ui buttons btn-settings">
-														<i class="ui dropdown fas fa-ellipsis-h">
-															<div class="menu menu-settings">
-															  <div class="item" onclick="deleteWsFavorite(${f.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>
-															  <c:if test="${f.workspaceWriter == memberLoggedIn.memberId}">
-															  	<div class="item btn-update-ws" onclick="updateWorkspace('${f.workspaceNo}', '${f.workspaceName}', '${f.workspaceDesc}');"><i class="edit icon"></i>수정</div>
-																<div class="item" onclick="deleteWorkspace('${f.workspaceNo}');"><i class="delete icon"></i>삭제</div>
-															  </c:if>
-															  <c:if test="${f.workspaceWriter != memberLoggedIn.memberId}">
-															  	<div class="item" onclick="leaveShareWorkspace(${f.workspaceMemberNo});"><i class="icon fas fa-sign-out-alt"></i>나가기</div>
-															  </c:if>
-															</div>
-														</i>
+												<li id="favorites-${f.favoritesNo}"><span><a href="#" class="hover-text">
+													<div class="btn-go-workspace">
+														<div class="ws-p-name" onclick="goWorkspace(${f.workspaceNo});">${f.workspaceName}</div>
+														<i class="plus square outline icon btn-add-page" onclick="addPage('${f.roleCode}', '${f.workspaceNo }');"></i>
+														<div class="ui buttons btn-settings">
+															<i class="ui dropdown fas fa-ellipsis-h">
+																<div class="menu menu-settings">
+																  <div class="item" onclick="deleteWsFavorite(${f.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>
+																  <c:if test="${f.workspaceWriter == memberLoggedIn.memberId}">
+																  	<div class="item btn-update-ws" onclick="updateWorkspace('${f.workspaceNo}', '${f.workspaceName}', '${f.workspaceDesc}');"><i class="edit icon"></i>수정</div>
+																	<div class="item" onclick="deleteWorkspace('${f.workspaceNo}');"><i class="delete icon"></i>삭제</div>
+																  </c:if>
+																  <c:if test="${f.workspaceWriter != memberLoggedIn.memberId}">
+																  	<div class="item" onclick="leaveShareWorkspace(${f.workspaceMemberNo});"><i class="icon fas fa-sign-out-alt"></i>나가기</div>
+																  </c:if>
+																</div>
+															</i>
+														</div>
 													</div>
 												</a></span></li>
 												</c:if>
@@ -93,17 +90,19 @@
 											<c:forEach items="${favoritesList}" var="f" varStatus="vs">
 												<c:if test="${f.favoritesType == 'P'}">
 												<li id="favorites-${f.favoritesNo}"><span><a href="#" class="hover-text">
-													<div class="hover-text btn-go-page" onclick="goPage(${f.pageNo});">${f.pageName}</div>
-													<div class="ui buttons btn-settings">
-														<i class="ui dropdown fas fa-ellipsis-h">
-															<div class="menu menu-settings">
-															  <div class="item" onclick="deletePageFavorite(${f.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>
-															  <c:if test="${f.workspaceWriter == memberLoggedIn.memberId || f.pageWriter == memberLoggedIn.memberId}">
-																<div class="item btn-update-p" onclick="updatePage('${f.pageNo}', '${f.pageName}', '${f.pageDesc}');"><i class="edit icon"></i>수정</div>
-															  	<div class="item" onclick="deletePage('${f.pageNo}', '${f.workspaceNo}');"><i class="delete icon"></i>삭제</div>
-															  </c:if>
-															</div>
-														</i>
+													<div class="btn-go-page">
+														<div class="ws-p-name" onclick="goPage(${f.pageNo});">${f.pageName}</div>
+														<div class="ui buttons btn-settings">
+															<i class="ui dropdown fas fa-ellipsis-h">
+																<div class="menu menu-settings">
+																  <div class="item" onclick="deletePageFavorite(${f.favoritesNo});"><i class="star outline icon"></i>즐겨찾기 취소</div>
+																  <c:if test="${f.workspaceWriter == memberLoggedIn.memberId || f.pageWriter == memberLoggedIn.memberId}">
+																	<div class="item btn-update-p" onclick="updatePage('${f.pageNo}', '${f.pageName}', '${f.pageDesc}');"><i class="edit icon"></i>수정</div>
+																  	<div class="item" onclick="deletePage('${f.pageNo}', '${f.workspaceNo}');"><i class="delete icon"></i>삭제</div>
+																  </c:if>
+																</div>
+															</i>
+														</div>
 													</div>
 												</a></span></li>
 												</c:if>
@@ -120,37 +119,41 @@
 									<c:forEach items="${workspaceList}" var="w" varStatus="wvs">
 									<c:if test="${w.workspaceType == 'S'}">
 										<li>
-											<span class="opener opener2"><a href="#">
-												<div class="hover-text btn-go-workspace" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
-												<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo}');"></i>
-												<div class="ui buttons btn-settings">
-													<i class="ui dropdown fas fa-ellipsis-h">
-														<div class="menu menu-settings">
-														<c:if test="${w.workspaceWriter == memberLoggedIn.memberId}">
-														  <div class="item btn-update-ws" onclick="updateWorkspace('${w.workspaceNo}', '${w.workspaceName}', '${w.workspaceDesc}');"><i class="edit icon"></i>수정</div>
-														  <div class="item" onclick="deleteWorkspace('${w.workspaceNo}');"><i class="delete icon"></i>삭제</div>
-														</c:if>
-														<c:if test="${w.workspaceWriter != memberLoggedIn.memberId}">
-														  <div class="item" onclick="leaveShareWorkspace(${w.workspaceMemberNo});"><i class="icon fas fa-sign-out-alt"></i>나가기</div>
-														</c:if>
-														</div>
-													</i>
+											<span class="opener opener2"><a href="#" class="hover-text">
+												<div class="btn-go-workspace">
+													<div class="ws-p-name" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
+													<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo}');"></i>
+													<div class="ui buttons btn-settings">
+														<i class="ui dropdown fas fa-ellipsis-h">
+															<div class="menu menu-settings">
+															<c:if test="${w.workspaceWriter == memberLoggedIn.memberId}">
+															  <div class="item btn-update-ws" onclick="updateWorkspace('${w.workspaceNo}', '${w.workspaceName}', '${w.workspaceDesc}');"><i class="edit icon"></i>수정</div>
+															  <div class="item" onclick="deleteWorkspace('${w.workspaceNo}');"><i class="delete icon"></i>삭제</div>
+															</c:if>
+															<c:if test="${w.workspaceWriter != memberLoggedIn.memberId}">
+															  <div class="item" onclick="leaveShareWorkspace(${w.workspaceMemberNo});"><i class="icon fas fa-sign-out-alt"></i>나가기</div>
+															</c:if>
+															</div>
+														</i>
+													</div>
 												</div>
 											</a></span>
 											<ul class="opener2">
 												<c:forEach items="${workspacePageList}" var="wp" varStatus="wpvs">
 													<c:if test="${w.workspaceNo == wp.workspaceNo}">
 														<li><span><a href="#" class="hover-text">
-															<div class="hover-text btn-go-page" onclick="goPage(${wp.pageNo});">${wp.pageName}</div>
-															<div class="ui buttons btn-settings">
-															<c:if test="${wp.workspaceWriter == memberLoggedIn.memberId || wp.pageWriter == memberLoggedIn.memberId}">
-																<i class="ui dropdown fas fa-ellipsis-h">
-																	<div class="menu menu-settings">
-																	  <div class="item btn-update-p" onclick="updatePage('${wp.pageNo}', '${wp.pageName}', '${wp.pageDesc}');"><i class="edit icon"></i>수정</div>
-																	  <div class="item" onclick="deletePage('${wp.pageNo}', ${wp.workspaceNo});"><i class="delete icon"></i>삭제</div>
-																	</div>
-																</i>
-															</c:if>
+															<div class="btn-go-page">
+																<div class="ws-p-name" onclick="goPage(${wp.pageNo});">${wp.pageName}</div>
+																<div class="ui buttons btn-settings">
+																<c:if test="${wp.workspaceWriter == memberLoggedIn.memberId || wp.pageWriter == memberLoggedIn.memberId}">
+																	<i class="ui dropdown fas fa-ellipsis-h">
+																		<div class="menu menu-settings">
+																		  <div class="item btn-update-p" onclick="updatePage('${wp.pageNo}', '${wp.pageName}', '${wp.pageDesc}');"><i class="edit icon"></i>수정</div>
+																		  <div class="item" onclick="deletePage('${wp.pageNo}', ${wp.workspaceNo});"><i class="delete icon"></i>삭제</div>
+																		</div>
+																	</i>
+																</c:if>
+																</div>
 															</div>
 														</a></span></li>
 													</c:if>
@@ -171,30 +174,34 @@
 									<c:forEach items="${workspaceList}" var="w" varStatus="wvs">
 									<c:if test="${w.workspaceType == 'P'}">
 										<li>
-											<span class="opener opener2"><a href="#">
-												<div class="hover-text btn-go-workspace" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
-												<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo }');"></i>
-												<div class="ui buttons btn-settings">
-													<i class="ui dropdown fas fa-ellipsis-h">
-														<div class="menu menu-settings">
-														  <div class="item btn-update-ws" onclick="updateWorkspace('${w.workspaceNo}', '${w.workspaceName}', '${w.workspaceDesc}');"><i class="edit icon"></i>수정</div>
-														  <div class="item" onclick="deleteWorkspace('${w.workspaceNo}');"><i class="delete icon"></i>삭제</div>
-														</div>
-													</i>
+											<span class="opener opener2"><a href="#" class="hover-text">
+												<div btn-go-workspace">
+													<div class="ws-p-name" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
+													<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo }');"></i>
+													<div class="ui buttons btn-settings">
+														<i class="ui dropdown fas fa-ellipsis-h">
+															<div class="menu menu-settings">
+															  <div class="item btn-update-ws" onclick="updateWorkspace('${w.workspaceNo}', '${w.workspaceName}', '${w.workspaceDesc}');"><i class="edit icon"></i>수정</div>
+															  <div class="item" onclick="deleteWorkspace('${w.workspaceNo}');"><i class="delete icon"></i>삭제</div>
+															</div>
+														</i>
+													</div>
 												</div>
 											</a></span>
 											<ul class="opener2">
 												<c:forEach items="${workspacePageList}" var="wp" varStatus="wpvs">
 													<c:if test="${w.workspaceNo == wp.workspaceNo}">
 														<li><span><a href="#" class="hover-text">
-															<div class="hover-text btn-go-page" onclick="goPage(${wp.pageNo});">${wp.pageName}</div>
-															<div class="ui buttons btn-settings">
-																<i class="ui dropdown fas fa-ellipsis-h">
-																	<div class="menu menu-settings">
-																	  <div class="item btn-update-p" onclick="updatePage('${wp.pageNo}', '${wp.pageName}', '${wp.pageDesc}');"><i class="edit icon"></i>수정</div>
-																	  <div class="item" onclick="deletePage('${wp.pageNo}', '${wp.workspaceNo}');"><i class="delete icon"></i>삭제</div>
-																	</div>
-																</i>
+															<div class="btn-go-page" onclick="goPage(${wp.pageNo});">
+																<div class="ws-p-name">${wp.pageName}</div> 
+																<div class="ui buttons btn-settings">
+																	<i class="ui dropdown fas fa-ellipsis-h">
+																		<div class="menu menu-settings">
+																		  <div class="item btn-update-p" onclick="updatePage('${wp.pageNo}', '${wp.pageName}', '${wp.pageDesc}');"><i class="edit icon"></i>수정</div>
+																		  <div class="item" onclick="deletePage('${wp.pageNo}', '${wp.workspaceNo}');"><i class="delete icon"></i>삭제</div>
+																		</div>
+																	</i>
+																</div>
 															</div>
 														</a></span></li>
 													</c:if>

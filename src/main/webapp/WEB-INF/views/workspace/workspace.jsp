@@ -197,8 +197,8 @@
 								  .attr("onclick", "deleteWsFavorite("+data.createdFavoriteNo+");");
 					
 					// 사이드바 내 즐겨찾기한 워크스페이스 목록에 추가
- 					var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#">'
-										   + '<div class="hover-text btn-go-workspace" onclick="goWorkspace(${workspace.workspaceNo});">${workspace.workspaceName}</div>'
+ 					var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#" class="hover-text">'
+										   + '<div class="btn-go-workspace"><div class="ws-p-name" onclick="goWorkspace(${workspace.workspaceNo});">${workspace.workspaceName}</div>'
 										   + '<i class="plus square outline icon btn-add-page" onclick="addPage(\'${workspace.roleCode}\', \'${workspace.workspaceNo}\');"></i>'
 										   + '<div class="ui buttons btn-settings"><i class="ui dropdown fas fa-ellipsis-h" tabindex="0">'
 										   + '<div class="menu menu-settings transition" tabindex="-1">'
@@ -212,7 +212,7 @@
 						createdFavoriteTag += '<div class="item" onclick="leaveShareWorkspace(${workspace.workspaceMemberNo});"><i class="icon fas fa-sign-out-alt"></i>나가기</div>';
 					}										   
 					
-					createdFavoriteTag += '</div></i></div></a></span></li>';
+					createdFavoriteTag += '</div></i></div></div></a></span></li>';
 					$("#ul-ws-favorites").append(createdFavoriteTag);
 					
 					// 워크스페이스 호버 시 관리 버튼 나타내기
