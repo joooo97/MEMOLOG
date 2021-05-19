@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jh.memolog.member.model.vo.Member;
+import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.search.model.service.SearchService;
 import com.jh.memolog.workspace.model.exception.WorkspaceException;
 import com.jh.memolog.workspace.model.vo.Workspace;
@@ -40,11 +41,16 @@ public class SearchController {
 			// 1. 업무로직
 			// 1) 워크스페이스명 검색 결과
 			List<Workspace> workspaceList = searchService.selectWsListByKeyword(param);
-			logger.debug("controller@wsList = {}", workspaceList);
+			// logger.debug("controller@wsList = {}", workspaceList);
+			
+			// 2) 페이지명 검색 결과
+			List<Page> pageList = searchService.selectPageListByKeyword(param);
+			// logger.debug("controller@pageList = {}", pageList);
 			
 			// 2. 뷰모델 처리
 			mav.addObject("keyword", keyword);
 			mav.addObject("workspaceList", workspaceList);
+			mav.addObject("pageList", pageList);
 			mav.setViewName("search/search");
 			
 		} catch(Exception e) {

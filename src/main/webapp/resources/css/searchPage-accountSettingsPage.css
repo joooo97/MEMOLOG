@@ -5,10 +5,11 @@
 #searchPage-search-tab{width: 12rem; height: 2rem;}
 .inner section {margin-top: 3rem;}
 .img-writer {width: 2.3rem; height: 2.3rem !important;}
-.search-result-area {max-height: 30rem; overflow-x: hidden; background: rgb(248, 248, 248) !important;}
-.search-result-area .card {width: 60%; margin: 0 auto; margin-bottom: 1rem;}
-.search-result-area .card i {margin-right: .5rem;}
+.searched-result-area {max-height: 30rem; overflow-x: hidden; background: rgb(248, 248, 248) !important;}
+.searched-result-area .card {width: 60%; margin: 0 auto; margin-bottom: 1rem;}
+.searched-result-area .card i {margin-right: .5rem;}
 div.card-ws-name, div.card-page-name {font-weight: bold; color: #595959;}
+div.card-ws-name span, div.card-page-name span {color: darkgray; margin: .6rem .5rem 0 .5rem;}
 
 /* 게정 설정 페이지 section 구역 */
 #accountSettings-name {font-size: 1.3rem; margin-bottom: 1.5rem; font-weight: bold;}

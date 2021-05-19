@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.workspace.model.vo.Workspace;
 
 @Repository
@@ -18,6 +19,11 @@ public class SearchDAOImpl implements SearchDAO {
 	@Override
 	public List<Workspace> selectWsListByKeyword(Map<String, Object> param) {
 		return sqlSession.selectList("search.selectWsListByKeyword", param);
+	}
+	
+	@Override
+	public List<Page> selectPageListByKeyword(Map<String, Object> param) {
+		return sqlSession.selectList("search.selectPageListByKeyword", param);
 	}
 
 }

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.search.model.dao.SearchDAO;
 import com.jh.memolog.search.model.exception.SearchException;
 import com.jh.memolog.workspace.model.vo.Workspace;
@@ -23,10 +24,14 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public List<Workspace> selectWsListByKeyword(Map<String, Object> param) {
 		List<Workspace> list = searchDAO.selectWsListByKeyword(param);
-		logger.debug("serviceImpl@wsList = {}", list);
+//		logger.debug("serviceImpl@wsList = {}", list);
 		
-		if(list == null)
-			throw new SearchException("워크스페이스명 검색 오류!");
+		return list;
+	}
+
+	@Override
+	public List<Page> selectPageListByKeyword(Map<String, Object> param) {
+		List<Page> list = searchDAO.selectPageListByKeyword(param);
 		
 		return list;
 	}

@@ -8,9 +8,16 @@
 		<id column="workspace_no" property="workspaceNo"/>
 		<result column="workspace_name" property="workspaceName"/>
 		<result column="workspace_cover_code" property="workspaceCoverCode"/>
-		<result column="page_no" property="pageNo"/>
+	</resultMap>
+	
+	<!-- 페이지 -->
+	<resultMap type="page" id="pageMap">
+		<id column="page_no" property="pageNo"/>
 		<result column="page_name" property="pageName"/>
-		<result column="page_cove_code" property="pageCoverCode"/>
+		<result column="page_cover_code" property="pageCoverCode"/>
+		<result column="workspace_no" property="workspaceNo"/>
+		<result column="workspace_name" property="workspaceName"/>
+		<result column="workspace_cover_code" property="workspaceCoverCode"/>
 	</resultMap>
 	
 	<!-- 워크스페이스명 검색 -->
@@ -19,6 +26,15 @@
 		from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
 		where WM.member_id = #{memberId} and workspace_name like '%'||#{keyword}||'%'
 		order by W.workspace_no
+	</select>
+	
+	<!-- 페이지명 검색 -->
+	<select id="selectPageListByKeyword" resultMap="pageMap">
+		select P.page_no, P.page_name, P.page_cover_code, W.workspace_no, W.workspace_name, W.workspace_cover_code
+		from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
+		                 left join page P on W.workspace_no = P.workspace_no
+		where WM.member_id = #{memberId} and page_name like '%'||#{keyword}||'%'
+		order by W.workspace_no, P.page_no
 	</select>
 
 </mapper>

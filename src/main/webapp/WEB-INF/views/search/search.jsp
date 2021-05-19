@@ -32,26 +32,28 @@
 					</div>
 					<!-- 검색 결과 -->
 					<!-- 1. 워크스페이스명 -->
-					<div class="ui segment search-result-area" id="ws-name-area">
-						<c:forEach items="${workspaceList}" var="w">
+					<div class="ui segment searched-result-area" id="ws-name-area">
+						<c:forEach items="${workspaceList}" var="ws">
 							<div class="ui raised link card">
-								<div class="content card-ws-name" onclick="location.href='${pageContext.request.contextPath}/workspaces/${w.workspaceNo}'">
-									<i class="fas fa-feather" style="color: ${w.workspaceCoverCode};"></i>${w.workspaceName}
+								<div class="content card-ws-name" onclick="location.href='${pageContext.request.contextPath}/workspaces/${ws.workspaceNo}'">
+									<i class="fas fa-feather" style="color: ${ws.workspaceCoverCode};"></i>${ws.workspaceName}
 								</div>
 							</div>
 						</c:forEach>
 					</div>	
 					<!-- 2. 페이지명 -->
-					<div class="ui segment search-result-area" id="page-name-area">
-						<!-- 워크스페이스명/페이지명 -->
-						<div class="ui raised link card">
-							<div class="content card-ws-name">드림</div>
-						</div>
-						<div class="ui raised link card">
-							<div class="content card-page-name">츄잉검</div>
-						</div>
+					<div class="ui segment searched-result-area" id="page-name-area">
+						<c:forEach items="${pageList}" var="page">
+							<div class="ui raised link card">
+								<div class="content card-page-name" onclick="location.href='${pageContext.request.contextPath}/pages/${page.pageNo}'">
+									<i class="fas fa-feather" style="color: ${page.workspaceCoverCode};"></i>${page.workspaceName}
+									<span>/</span>
+									<i class="fas fa-sticky-note" style="color: ${page.pageCoverCode}"></i>${page.pageName}
+								</div>
+							</div>
+						</c:forEach>
 					</div>	
-					<div class="ui segment search-result-area" id="search-result-workspace-name">
+					<div class="ui segment searched-result-area" id="search-result-workspace-name">
 						<!-- 워크스페이스명/페이지명 -->
 						<div class="ui raised link card">
 							<div class="content card-ws-name">드림</div>
