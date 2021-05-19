@@ -24,7 +24,7 @@ import com.jh.memolog.workspace.model.vo.Workspace;
 @Controller
 public class WorkspaceController {
 
-	private static final Logger logger = LoggerFactory.getLogger(WorkspaceRestController.class);
+	private static final Logger logger = LoggerFactory.getLogger(WorkspaceController.class);
 	
 	@Autowired
 	WorkspaceService workspaceService;

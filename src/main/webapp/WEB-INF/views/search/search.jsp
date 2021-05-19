@@ -20,9 +20,9 @@
 			<div class="inner">
 				<!-- Content -->
 				<section>
-					<div class="ui icon input" id="searchPage-search-tab">
-						<input type="text" placeholder="검색">
-						<i class="search icon"></i>
+					<div class="ui icon input search-tab" id="searchPage-search-tab">
+						<input type="text" placeholder="검색" value="${keyword}">
+						<i class="link search icon" onclick="search();"></i>
 					</div>
 					<div class="ui secondary pointing menu" id="menu-tab">
 						<a class="item active">워크스페이스명</a>
@@ -30,7 +30,28 @@
 						<a class="item">포스트</a>
 						<a class="item">코멘트</a>
 					</div>
-					<div class="ui segment" id="search-result-area">
+					<!-- 검색 결과 -->
+					<!-- 1. 워크스페이스명 -->
+					<div class="ui segment search-result-area" id="ws-name-area">
+						<c:forEach items="${workspaceList}" var="w">
+							<div class="ui raised link card">
+								<div class="content card-ws-name" onclick="location.href='${pageContext.request.contextPath}/workspaces/${w.workspaceNo}'">
+									<i class="fas fa-feather" style="color: ${w.workspaceCoverCode};"></i>${w.workspaceName}
+								</div>
+							</div>
+						</c:forEach>
+					</div>	
+					<!-- 2. 페이지명 -->
+					<div class="ui segment search-result-area" id="page-name-area">
+						<!-- 워크스페이스명/페이지명 -->
+						<div class="ui raised link card">
+							<div class="content card-ws-name">드림</div>
+						</div>
+						<div class="ui raised link card">
+							<div class="content card-page-name">츄잉검</div>
+						</div>
+					</div>	
+					<div class="ui segment search-result-area" id="search-result-workspace-name">
 						<!-- 워크스페이스명/페이지명 -->
 						<div class="ui raised link card">
 							<div class="content card-ws-name">드림</div>
@@ -42,32 +63,40 @@
 						<!-- 1. 텍스트 -->
 						<div class="ui raised link card">
 							<div class="ui comments content">
-								<div class="meta"><span class="category">텍스트</span></div>
+								<div class="meta">
+									<a>DEVELOP</a><span>/</span><a>SPRING FRAMEWORK</a><span style="font-weight: bold;">> 텍스트</span>
+								</div>
 								<div class="comment">
-								  <a class="avatar"><img src="${pageContext.request.contextPath }/resources/images/위영드림.jpg" class="img-writer"></a>
-								  <div class="content">
-									<a class="author">Stevie Feliciano</a>
-									<div class="metadata">
-									  <div class="date">2 days ago</div>
+									<a class="avatar"><img src="resources/images/위영드림.jpg" class="img-writer"></a>
+									<div class="content">
+										<div class="author">이주현
+											<div class="metadata"><span>07.25</span></div>
+										</div>
+										<p>워크스페이스 구현 중 mapper파일에서 문제 발생하였다. 오늘까지 오류 해결 하기!!!!</p>
 									</div>
-									<div class="text">
-									  Hey guys, I hope this example comment is helping you read this documentation.
-									</div>
-								  </div>
 								</div>
 							</div>
 						</div>
 						<!-- 2. 이미지 -->
 						<div class="ui raised link card">
 							<div class="ui comments content">
-								<div class="meta"><span class="category">첨부파일//테이블은 나중</span></div>
+								<div class="meta">
+									<a>DEVELOP</a>
+									<!-- <i class="fas fa-feather" style="color: rgb(243, 215, 224);"></i><a href="#" style="color: gray;"></a>DEVELOP</a> -->
+									<span>/</span>
+									<!-- <i class="fas fa-sticky-note" style="color: yellowgreen"></i><a href="#" style="color: gray;">SPRING FRAMEWORK</a> -->
+									<a>SPRING FRAMEWORK</a>
+									<span style="font-weight: bold;">> 이미지</span>
+								</div>
 								<div class="comment">
-									<a class="avatar"><img src="${pageContext.request.contextPath }/resources/images/위영드림.jpg" class="img-writer"></a>
+									<a class="avatar"><img src="resources/images/위영드림.jpg" class="img-writer"></a>
 									<div class="content">
-										<div class="author">'위영드림.jpg'</div>
-										<div class="metadata">
-											 <span>제노</span>
-											  <span>2 days ago</span>
+										<div class="author">이주현
+											<div class="metadata"><span>07.20</span></div>
+										</div>
+										<div>
+											<div class="text">'0720_워크스페이스구현.jpg'</div>
+											<span class="image main"><img src="resources/images/spring.PNG" alt="" style="width: 30%;"/></span>
 										</div>
 									</div>
 								</div>
@@ -196,6 +225,7 @@
 		});
 	
 		//함수 영역
+		
 	
 	</script>
 

@@ -105,11 +105,10 @@
 
 		<!-- 상단 우측 헤더 드롭다운 메뉴 -->
 		<ul class="list-group" id="more-menu-list" style="display: none;">
-			<!-- <li class="list-group-item" onclick="location.href='SearchPage.html'"><i class="fas fa-search" id="search-tab"></i><span>검색</span></li> -->
 			<li class="list-group-item">
-				<div class="ui icon input" id="more-menu-search">
+				<div class="ui icon input search-tab" id="more-menu-search">
 					<input type="text" placeholder="검색">
-					<i class="search icon"></i>
+					<i class="link search icon" onclick="search();"></i>
 				</div>
 			</li>
 		</ul>

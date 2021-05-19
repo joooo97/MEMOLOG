@@ -164,11 +164,10 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 			
 			<!-- 상단 우측 헤더 드롭다운 메뉴 -->
 			<ul class="list-group" id="more-menu-list" style="display: none;">
-				<!-- <li class="list-group-item" onclick="location.href='SearchPage.html'"><i class="fas fa-search" id="search-tab"></i><span>검색</span></li> -->
 				<li class="list-group-item">
-					<div class="ui icon input" id="more-menu-search">
+					<div class="ui icon input search-tab" id="more-menu-search">
 						<input type="text" placeholder="검색">
-						<i class="search icon"></i>
+						<i class="link search icon" onclick="search();"></i>
 					</div>
 				</li>
 				<li class="list-group-item">
@@ -292,6 +291,103 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 	});
 
 	// [ 함수 영역 ]
+	
+	//summernote 함수
+	function summernoteSetting() {
+
+		//1. 텍스트, 테이블 툴바
+		var textToolbar = [
+			// [groupName, [list of button]]
+			['font', ['style', 'bold', 'underline', 'strikethrough']],
+			['fontname', ['fontname']],
+			['fontsize', ['fontsize']],
+			['color', ['color']],
+			['para', ['paragraph']],
+			['height', ['height']],
+		];
+
+		var tableToolbar = [
+			['table'],
+			['font', ['bold', 'strikethrough']],
+			['fontname', ['fontname', 'fontsize', 'color']],
+		];
+
+		var commentToolbar = [
+			['font', ['bold', 'underline', 'strikethrough']],
+		];
+
+		$('.text-summernote').summernote({
+			toolbar: textToolbar,
+			lang: "ko-KR",
+			height: 100,
+			placeholder: '텍스트 입력',
+			codeviewFilter: false,				//XSS 보호
+  			codeviewIframeFilter: true
+		});
+
+		$('.table-summernote').summernote({
+			toolbar: tableToolbar,
+			lang: "ko-KR",
+			height: 100,
+			placeholder: '테이블 작성',
+			codeviewFilter: false,				//XSS 보호
+  			codeviewIframeFilter: true
+		});
+
+		$('.comment-summernote').summernote({
+			toolbar: commentToolbar,
+			lang: "ko-KR",
+			height: 70,
+			placeholder: '코멘트 입력',
+			codeviewFilter: false,				//XSS 보호
+  			codeviewIframeFilter: true
+		});
+		
+		//2. 전송, 닫기 버튼 추가
+		var submitButton = '<div class="btn-submit-summernote" type="button"><i class="paper plane icon"></i></div>';
+		var closeButton = '<div class="btn-close-post-form"><i class="fas fa-times"></i></div>';
+		$(".post-form .note-toolbar").append(submitButton);
+		$(".post-form").append(closeButton);
+		$("#comment-summernote-area .note-toolbar").append(submitButton);
+
+		//3. summernote 닫기
+		$(".btn-close-post-form").on('click', function(){
+			$("form.post-form").css('display', 'none');
+			$("div#add-post-area hr").css('display', 'none');
+		});
+		
+	};
+
+	//페이지 커버 컬러 변경
+	function changeCoverColor(colorOption) {
+		if(v_roleCode == 'R1' || "${page.pageWriter}" == "${memberLoggedIn.memberId}") {
+			
+			$("#page-cover").css("background", colorOption);
+			$(".p-name i").css("color", colorOption);
+			$("#page-name i").css("color", colorOption);
+			
+			var pageNo = ${page.pageNo};
+			
+			// 커버 색 변경
+			$.ajax({
+				url: "${pageContext.request.contextPath}/pages/"+pageNo+"/cover-color",
+				data: colorOption,
+				type: "PUT",
+				contentType: "application/json; charset=utf-8",
+				success: data => {
+					console.log("페이지 커버 색 변경 성공");
+				},
+				error: (x, s, e) => {
+					console.log("페이지 커버 색 변경 ajax 요청 실패!", x, s, e);
+				}
+			})
+		}
+		else {
+			alert("페이지 커버 색 변경 권한이 없습니다.");
+		}
+		
+	}
+	
 	// 게시글 종류별 조회 탭
 	function viewPostBySort(menu) {
 		// 포스트 종류별 탭 닫기
@@ -1144,102 +1240,6 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
  		});
  	}
  	
-
-	//summernote 함수
-	function summernoteSetting() {
-
-		//1. 텍스트, 테이블 툴바
-		var textToolbar = [
-			// [groupName, [list of button]]
-			['font', ['style', 'bold', 'underline', 'strikethrough']],
-			['fontname', ['fontname']],
-			['fontsize', ['fontsize']],
-			['color', ['color']],
-			['para', ['paragraph']],
-			['height', ['height']],
-		];
-
-		var tableToolbar = [
-			['table'],
-			['font', ['bold', 'strikethrough']],
-			['fontname', ['fontname', 'fontsize', 'color']],
-		];
-
-		var commentToolbar = [
-			['font', ['bold', 'underline', 'strikethrough']],
-		];
-
-		$('.text-summernote').summernote({
-			toolbar: textToolbar,
-			lang: "ko-KR",
-			height: 100,
-			placeholder: '텍스트 입력',
-			codeviewFilter: false,				//XSS 보호
-  			codeviewIframeFilter: true
-		});
-
-		$('.table-summernote').summernote({
-			toolbar: tableToolbar,
-			lang: "ko-KR",
-			height: 100,
-			placeholder: '테이블 작성',
-			codeviewFilter: false,				//XSS 보호
-  			codeviewIframeFilter: true
-		});
-
-		$('.comment-summernote').summernote({
-			toolbar: commentToolbar,
-			lang: "ko-KR",
-			height: 70,
-			placeholder: '코멘트 입력',
-			codeviewFilter: false,				//XSS 보호
-  			codeviewIframeFilter: true
-		});
-		
-		//2. 전송, 닫기 버튼 추가
-		var submitButton = '<div class="btn-submit-summernote" type="button"><i class="paper plane icon"></i></div>';
-		var closeButton = '<div class="btn-close-post-form"><i class="fas fa-times"></i></div>';
-		$(".post-form .note-toolbar").append(submitButton);
-		$(".post-form").append(closeButton);
-		$("#comment-summernote-area .note-toolbar").append(submitButton);
-
-		//3. summernote 닫기
-		$(".btn-close-post-form").on('click', function(){
-			$("form.post-form").css('display', 'none');
-			$("div#add-post-area hr").css('display', 'none');
-		});
-		
-	};
-
-	//페이지 커버 컬러 변경
-	function changeCoverColor(colorOption) {
-		if(v_roleCode == 'R1' || "${page.pageWriter}" == "${memberLoggedIn.memberId}") {
-			
-			$("#page-cover").css("background", colorOption);
-			$(".p-name i").css("color", colorOption);
-			$("#page-name i").css("color", colorOption);
-			
-			var pageNo = ${page.pageNo};
-			
-			// 커버 색 변경
-			$.ajax({
-				url: "${pageContext.request.contextPath}/pages/"+pageNo+"/cover-color",
-				data: colorOption,
-				type: "PUT",
-				contentType: "application/json; charset=utf-8",
-				success: data => {
-					console.log("페이지 커버 색 변경 성공");
-				},
-				error: (x, s, e) => {
-					console.log("페이지 커버 색 변경 ajax 요청 실패!", x, s, e);
-				}
-			})
-		}
-		else {
-			alert("페이지 커버 색 변경 권한이 없습니다.");
-		}
-		
-	}
 
 
 </script>

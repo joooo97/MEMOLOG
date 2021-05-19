@@ -17,6 +17,7 @@
 			<nav id="header-workspace-name">
 				<ul>
 					<li class="toggle"><i id="left-toggle-button" class="fas fa-bars"></i></li>
+					<!-- 워크스페이스명 나타내기 -->
 					<c:choose>
 						<c:when test="${workspace != null}">
 							<li class="hover ws-name"><i class="fas fa-feather" style="color: ${workspace.workspaceCoverCode};"></i><a href="${pageContext.request.contextPath}/workspaces/${workspace.workspaceNo}">${workspace.workspaceName}</a></li>
@@ -28,6 +29,7 @@
 							<li class="hover ws-name"><i class="fas fa-feather" style="color: #F3D7E0;"></i><a href="#">MEMOLOG</a></li>
 						</c:otherwise>
 					</c:choose>
+					<!-- 페이지명 나타내기 -->
 					<c:if test="${page != null}">
 						<li class="span"><span>/</span></li>
 						<li class="hover p-name"><i class="fas fa-sticky-note" style="color: ${page.pageCoverCode}"></i><a href="${pageContext.request.contextPath}/pages/${page.pageNo}">${page.pageName}</a></li>
@@ -379,6 +381,18 @@ function goWorkspace(workspaceNo) {
 // 페이지명 클릭 시 페이지 조회
 function goPage(pageNo) {
 	location.href = "${pageContext.request.contextPath}/pages/"+pageNo;
+}
+
+// 검색
+function search() {
+	var keyword = $(".search-tab input").val().trim();
+	
+	if(keyword == "") {
+		alert("검색어를 입력하지 않으셨습니다.");
+		return;
+	}
+	
+	location.href = '${pageContext.request.contextPath}/search/'+keyword;
 }
 
 </script>
