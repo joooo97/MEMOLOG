@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="search">
+	<!-- 워크스페이스-->
+	<resultMap type="workspace" id="workspaceMap">
+		<id column="workspace_no" property="workspaceNo"/>
+		<result column="workspace_name" property="workspaceName"/>
+		<result column="workspace_cover_code" property="workspaceCoverCode"/>
+		<result column="page_no" property="pageNo"/>
+		<result column="page_name" property="pageName"/>
+		<result column="page_cove_code" property="pageCoverCode"/>
+	</resultMap>
+	
+	<!-- 워크스페이스명 검색 -->
+	<select id="selectWsListByKeyword" resultMap="workspaceMap">
+		select W.workspace_no, W.workspace_name, W.workspace_cover_code
+		from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
+		where WM.member_id = #{memberId} and workspace_name like '%'||#{keyword}||'%'
+		order by W.workspace_no
+	</select>
+
+</mapper>
