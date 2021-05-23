@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jh.memolog.page.model.vo.Page;
+import com.jh.memolog.page.model.vo.Post;
 import com.jh.memolog.search.model.dao.SearchDAO;
 import com.jh.memolog.search.model.exception.SearchException;
 import com.jh.memolog.workspace.model.vo.Workspace;
@@ -24,7 +25,6 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public List<Workspace> selectWsListByKeyword(Map<String, Object> param) {
 		List<Workspace> list = searchDAO.selectWsListByKeyword(param);
-//		logger.debug("serviceImpl@wsList = {}", list);
 		
 		return list;
 	}
@@ -32,6 +32,13 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public List<Page> selectPageListByKeyword(Map<String, Object> param) {
 		List<Page> list = searchDAO.selectPageListByKeyword(param);
+		
+		return list;
+	}
+
+	@Override
+	public List<Post> selectPostListByKeyword(Map<String, Object> param) {
+		List<Post> list = searchDAO.selectPostListByKeyword(param);
 		
 		return list;
 	}

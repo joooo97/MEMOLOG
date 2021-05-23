@@ -33,8 +33,8 @@ public class PageController {
 	WorkspaceService workspaceService;
 	
 	// 페이지 조회
-	@GetMapping("/pages/{pageNo}")
-	public ModelAndView pageByPageNo(ModelAndView mav, HttpSession session, @PathVariable("pageNo") int pageNo) {
+	@GetMapping(value = {"/pages/{pageNo}", "/pages/{pageNo}/searched-post/{postNo}"})
+	public ModelAndView pageByPageNo(ModelAndView mav, HttpSession session, @PathVariable("pageNo") int pageNo, @PathVariable(required = false) Integer postNo) {
 		
 		Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
 		String memberId = memberLoggedIn.getMemberId();
@@ -69,6 +69,11 @@ public class PageController {
 		
 		// 페이지 영역
 		mav.addObject("page", page); // 조회할 페이지
+		
+		// 검색된 포스트 조회 시
+		if(postNo != null) {
+			mav.addObject("searchedPostNo", postNo);
+		}
 		
 		mav.setViewName("workspace/page");
 		

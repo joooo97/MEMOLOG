@@ -25,35 +25,137 @@
 						<i class="link search icon" onclick="search();"></i>
 					</div>
 					<div class="ui secondary pointing menu" id="menu-tab">
-						<a class="item active">워크스페이스명</a>
-						<a class="item">페이지명</a>
-						<a class="item">포스트</a>
+						<c:if test="${searchedWsList != null}">
+							<a class="item" id="searched-ws">워크스페이스명</a>
+						</c:if>
+						<c:if test="${searchedPageList != null}">
+							<a class="item" id="searched-page">페이지명</a>
+						</c:if>
+						<c:if test="${searchedPostList != null}">
+							<a class="item" id="searched-post">포스트</a>
+						</c:if>
 						<a class="item">코멘트</a>
 					</div>
-					<!-- 검색 결과 -->
-					<!-- 1. 워크스페이스명 -->
-					<div class="ui segment searched-result-area" id="ws-name-area">
-						<c:forEach items="${workspaceList}" var="ws">
-							<div class="ui raised link card">
-								<div class="content card-ws-name" onclick="location.href='${pageContext.request.contextPath}/workspaces/${ws.workspaceNo}'">
-									<i class="fas fa-feather" style="color: ${ws.workspaceCoverCode};"></i>${ws.workspaceName}
+					<!-- 검색 결과 영역 -->
+					<!-- 1. 워크스페이스명 검색 결과 -->
+					<c:if test="${searchedWsList != null}">
+						<div class="ui segment searched-result-area" id="searched-ws-area">
+							<c:forEach items="${searchedWsList}" var="ws">
+								<div class="ui raised link card">
+									<div class="content card-ws-name" onclick="location.href='${pageContext.request.contextPath}/workspaces/${ws.workspaceNo}'">
+										<i class="fas fa-feather" style="color: ${ws.workspaceCoverCode};"></i>${ws.workspaceName}
+									</div>
 								</div>
-							</div>
-						</c:forEach>
-					</div>	
-					<!-- 2. 페이지명 -->
-					<div class="ui segment searched-result-area" id="page-name-area">
-						<c:forEach items="${pageList}" var="page">
-							<div class="ui raised link card">
-								<div class="content card-page-name" onclick="location.href='${pageContext.request.contextPath}/pages/${page.pageNo}'">
-									<i class="fas fa-feather" style="color: ${page.workspaceCoverCode};"></i>${page.workspaceName}
-									<span>/</span>
-									<i class="fas fa-sticky-note" style="color: ${page.pageCoverCode}"></i>${page.pageName}
+							</c:forEach>
+						</div>	
+					</c:if>
+					<!-- 2. 페이지명 검색 결과 -->
+					<c:if test="${searchedPageList != null}">
+						<div class="ui segment searched-result-area" id="searched-page-area">
+							<c:forEach items="${searchedPageList}" var="page">
+								<div class="ui raised link card">
+									<div class="content card-page-name" onclick="location.href='${pageContext.request.contextPath}/pages/${page.pageNo}'">
+										<i class="fas fa-feather" style="color: ${page.workspaceCoverCode};"></i>${page.workspaceName}
+										<span>/</span>
+										<i class="fas fa-sticky-note" style="color: ${page.pageCoverCode}"></i>${page.pageName}
+									</div>
 								</div>
-							</div>
-						</c:forEach>
-					</div>	
-					<div class="ui segment searched-result-area" id="search-result-workspace-name">
+							</c:forEach>
+						</div>	
+					</c:if>
+					<!-- 3. 포스트 검색 결과 -->
+					<c:if test="${searchedPostList != null}">
+						<div class="ui segment searched-result-area" id="searched-post-area">
+							<c:forEach items="${searchedPostList}" var="post">
+								<!-- 1. 텍스트 포스트 -->
+								<c:if test="${post.postSortCode == 'P1'}">
+									<div class="ui raised link card" onclick="location.href='${pageContext.request.contextPath}/pages/${post.pageNo}/searched-post/${post.postNo}'">
+										<div class="ui comments content">
+											<div class="meta">
+												<i class="fas fa-feather" style="color: ${post.workspaceCoverCode};"></i>${post.workspaceName}
+												<span>/</span>
+												<i class="fas fa-sticky-note" style="color: ${post.pageCoverCode}"></i>${post.pageName}
+												<span class="post-sort"> > 텍스트</span>
+											</div>
+											<div class="comment">
+												<c:if test="${post.profileRenamedFilename == 'default.jpg'}">
+													<a class="avatar"><img src="${pageContext.request.contextPath}/resources/images/profile/default.jpg" alt="사용자 프로필 이미지" class="img-writer"></a>
+												</c:if>
+												<c:if test="${post.profileRenamedFilename != 'default.jpg'}">
+													<a class="avatar"><img src="${pageContext.request.contextPath}/resources/upload/profile/${post.postWriter}/${post.profileRenamedFilename}" alt="사용자 프로필 이미지" class="img-writer"></a>
+												</c:if>
+												<div class="content">
+													<div class="author">${post.postWriter}
+														<div class="metadata"><span>${post.postDate}</span></div>
+													</div>
+													<p>${post.postContent}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</c:if>
+								<!-- 2. 이미지 포스트 -->
+								<c:if test="${post.postSortCode == 'P2'}">
+									<div class="ui raised link card" onclick="location.href='${pageContext.request.contextPath}/pages/${post.pageNo}/searched-post/${post.postNo}'">
+										<div class="ui comments content">
+											<div class="meta">
+												<i class="fas fa-feather" style="color: ${post.workspaceCoverCode};"></i>${post.workspaceName}
+												<span>/</span>
+												<i class="fas fa-sticky-note" style="color: ${post.pageCoverCode}"></i>${post.pageName}
+												<span class="post-sort"> > 이미지</span>
+											</div>
+											<div class="comment">
+												<c:if test="${post.profileRenamedFilename == 'default.jpg'}">
+													<a class="avatar"><img src="${pageContext.request.contextPath}/resources/images/profile/default.jpg" alt="사용자 프로필 이미지" class="img-writer"></a>
+												</c:if>
+												<c:if test="${post.profileRenamedFilename != 'default.jpg'}">
+													<a class="avatar"><img src="${pageContext.request.contextPath}/resources/upload/profile/${post.postWriter}/${post.profileRenamedFilename}" alt="사용자 프로필 이미지" class="img-writer"></a>
+												</c:if>
+												<div class="content">
+													<div class="author">${post.postWriter}
+														<div class="metadata"><span>${post.postDate}</span></div>
+													</div>
+													<div>
+														<div class="text">${post.postOriginalFilename}</div>
+														<span class="image main"><img src="${pageContext.request.contextPath}/resources/upload/page/${post.pageNo}/${post.postRenamedFilename}" alt="포스트 이미지" class="post-image"/></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</c:if>
+								<!-- 3. 테이블 포스트 -->
+								<c:if test="${post.postSortCode == 'P3'}">
+									<div class="ui raised link card" onclick="location.href='${pageContext.request.contextPath}/pages/${post.pageNo}/searched-post/${post.postNo}'">
+										<div class="ui comments content">
+											<div class="meta">
+												<i class="fas fa-feather" style="color: ${post.workspaceCoverCode};"></i>${post.workspaceName}
+												<span>/</span>
+												<i class="fas fa-sticky-note" style="color: ${post.pageCoverCode}"></i>${post.pageName}
+												<span class="post-sort"> > 테이블</span>
+											</div>
+											<div class="comment">
+												<c:if test="${post.profileRenamedFilename == 'default.jpg'}">
+													<a class="avatar"><img src="${pageContext.request.contextPath}/resources/images/profile/default.jpg" alt="사용자 프로필 이미지" class="img-writer"></a>
+												</c:if>
+												<c:if test="${post.profileRenamedFilename != 'default.jpg'}">
+													<a class="avatar"><img src="${pageContext.request.contextPath}/resources/upload/profile/${post.postWriter}/${post.profileRenamedFilename}" alt="사용자 프로필 이미지" class="img-writer"></a>
+												</c:if>
+												<div class="content">
+													<div class="author">${post.postWriter}
+														<div class="metadata"><span>${post.postDate}</span></div>
+													</div>
+													<div>${post.postContent}</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</c:if>
+							</c:forEach>
+						</div>	
+					</c:if>
+					
+					<div class="ui segment result-area" id="search-result-workspace-name">
 						<!-- 워크스페이스명/페이지명 -->
 						<div class="ui raised link card">
 							<div class="content card-ws-name">드림</div>
@@ -98,7 +200,7 @@
 										</div>
 										<div>
 											<div class="text">'0720_워크스페이스구현.jpg'</div>
-											<span class="image main"><img src="resources/images/spring.PNG" alt="" style="width: 30%;"/></span>
+											<span class="image main"><img src="${pageContext.request.contextPath}/resources/images/위영드림.jpg" alt="" style="width: 30%;"/></span>
 										</div>
 									</div>
 								</div>
@@ -169,14 +271,17 @@
 	<jsp:include page="/WEB-INF/views/common/modals.jsp"></jsp:include>
 	<!-- 공통스크립트 -->		
 	<jsp:include page="/WEB-INF/views/common/commonScript.jsp"></jsp:include>
+	<!-- 모달 기능 js -->
+	<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js"></script>	
 		
 	<script>
 
-		$(function(){
+		$(function() {
 			//워크스페이스명, 페이지명이 아닌 토글버튼만 보이기
 			$("#header-workspace-name li").not(".toggle").remove();
 	
-			$('.ui.dropdown').dropdown(); //semantic dropdown 활성화
+			//semantic dropdown 활성화
+			$('.ui.dropdown').dropdown();
 	
 			//semantic ui menu 활성화
 			$('.ui.pointing.menu').on('click', '.item', function() {
@@ -185,42 +290,19 @@
 				}
 			});
 	
-			//사이드바 각 메뉴 호버 시 관리, 추가 버튼 나타내기
-			$("#menu span").hover(function(){
-				$(this).find('i').css('visibility', 'visible');
-			});
-			$("#menu span").mouseleave(function(){
-				$(this).find('i').css('visibility', 'hidden');
-			});
-	
-			//사이드바 메뉴 클릭 시 모달 띄우기
-			//#1. 개인 워크스페이스 생성
-			$("#btn-add-p-workspace").on('click', function(){
-				$("#show-modal-add-p-ws").click();
-			});
-			//#2. 공유 워크스페이스 생성
-			$("#btn-add-s-workspace").on('click', function(){
-				$("#show-modal-add-s-ws").click();
-			});
-			//#3. 페이지 생성
-			$(".btn-add-page").on('click', function(){
-				$("#show-modal-add-page").click();
-			});
-			//#4. 워크스페이스 수정
-			$(".btn-update-ws").on('click', function(){
-				$("#show-modal-update-ws").click();
-			});
-			//#5. 페이지 수정
-			$(".btn-update-p").on('click', function(){
-				$("#show-modal-update-p").click();
-			});
-			//#6. 프로필 보기
-			$(".btn-show-profile").on('click', function(){
-				$("#show-modal-view-profile").click();
-			});
-			//#7. 이미지 클릭 시 프로필 보기
-			$(".img-writer").on('click', function(){
-				$("#show-modal-view-profile").click();
+			// 검색 결과의 처음 탭에 active 클래스 추가
+			$("#menu-tab").find("a.item").first().addClass("active");
+			
+			// 검색 결과의 처음 탭에 맞는 결과 띄우기
+			let result_area = $("#menu-tab").find("a.item").first().attr('id');
+			$(".searched-result-area").not("#"+result_area+"-area").css('display', 'none');
+			
+			// 탭 클릭 시 탭에 맞는 결과 띄우기
+			$("#menu-tab a.item").on('click', function() {
+				let area = $(this).attr('id');
+				
+				$("#"+area+"-area").css('display', 'block');
+				$(".searched-result-area").not("#"+area+"-area").css('display', 'none');
 			});
 	
 	

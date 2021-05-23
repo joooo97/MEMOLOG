@@ -17,6 +17,7 @@ var v_commentLevel = 1; // 코멘트 레벨 1로 초기화
 var v_commentRefNo; // 코멘트 참조 번호
 var v_commentRefWriter; // 참조 코멘트 작성자
 var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
+
 </script>
 </head>
 
@@ -203,6 +204,16 @@ var v_updateCommentNo; // 댓글 수정 시 수정할 댓글 번호 저장
 	
 <script>
 
+	// DOM 생성과 리소스 호출 완료 후 
+	window.onload = function() {
+		// 검색된 포스트를 조회하는 경우 스크롤 이동
+		if("${searchedPostNo}" != "") {
+			let offset = $("#post-${searchedPostNo}").offset(); // 포스트 태그의 위치를 가지고 있는 offset 객체 얻어오기 
+			
+			$("html").animate({scrollTop:offset.top}, 500);
+		}
+	}
+	
 	$(function() {
 		summernoteSetting(); //summernote 설정
 		viewPostBySort('first'); // 전체 포스트 불러오기

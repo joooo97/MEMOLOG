@@ -35,5 +35,9 @@ public class Post implements Serializable {
 	// 가상 컬럼
 	private int commentCount;
 	private String profileRenamedFilename;
+	private String workspaceName;
+	private String workspaceCoverCode;
+	private String pageName;
+	private String pageCoverCode;
 }
 

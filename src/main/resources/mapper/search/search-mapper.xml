@@ -20,6 +20,23 @@
 		<result column="workspace_cover_code" property="workspaceCoverCode"/>
 	</resultMap>
 	
+	<!-- 포스트 -->
+	<resultMap type="post" id="postMap">
+		<id column="post_no" property="postNo"/>
+		<result column="post_sort_code" property="postSortCode"/>
+		<result column="post_content" property="postContent"/>
+		<result column="post_original_filename" property="postOriginalFilename"/>
+		<result column="post_renamed_filename" property="postRenamedFilename"/>
+		<result column="post_writer" property="postWriter"/>
+		<result column="post_date" property="postDate"/>
+		<result column="workspace_name" property="workspaceName"/>
+		<result column="workspace_cover_code" property="workspaceCoverCode"/>
+		<result column="page_no" property="pageNo"/>
+		<result column="page_name" property="pageName"/>
+		<result column="page_cover_code" property="pageCoverCode"/>
+		<result column="profile_renamed_filename" property="profileRenamedFilename"/>
+	</resultMap>
+	
 	<!-- 워크스페이스명 검색 -->
 	<select id="selectWsListByKeyword" resultMap="workspaceMap">
 		select W.workspace_no, W.workspace_name, W.workspace_cover_code
@@ -35,6 +52,20 @@
 		                 left join page P on W.workspace_no = P.workspace_no
 		where WM.member_id = #{memberId} and page_name like '%'||#{keyword}||'%'
 		order by W.workspace_no, P.page_no
+	</select>
+	
+	<!-- 포스트 검색 -->
+	<select id="selectPostListByKeyword" resultMap="postMap">
+		select V.*, M.profile_renamed_filename
+		from (select post_no, post_sort_code, post_content, post_original_filename, post_renamed_filename, post_writer, post_date, 
+                    workspace_name, workspace_cover_code, P.page_no, page_name, page_cover_code
+		      from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
+		                       left join page P on W.workspace_no = P.workspace_no
+		                       left join post PO on P.page_no = PO.page_no
+		      where WM.member_id = #{memberId} and post_no is not null) V
+		      left join member M on V.post_writer = M.member_id
+		where post_content like '%'||#{keyword}||'%' or post_original_filename like '%'||#{keyword}||'%'
+		order by post_sort_code, post_no
 	</select>
 
 </mapper>

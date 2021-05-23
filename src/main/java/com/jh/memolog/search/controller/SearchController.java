@@ -16,8 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jh.memolog.member.model.vo.Member;
 import com.jh.memolog.page.model.vo.Page;
+import com.jh.memolog.page.model.vo.Post;
 import com.jh.memolog.search.model.service.SearchService;
 import com.jh.memolog.workspace.model.exception.WorkspaceException;
+import com.jh.memolog.workspace.model.service.WorkspaceService;
+import com.jh.memolog.workspace.model.vo.Favorites;
 import com.jh.memolog.workspace.model.vo.Workspace;
 
 @Controller
@@ -27,6 +30,9 @@ public class SearchController {
 	
 	@Autowired
 	SearchService searchService;
+	
+	@Autowired
+	WorkspaceService workspaceService;
 	
 	@GetMapping("/search/{keyword}")
 	public ModelAndView search(ModelAndView mav, HttpSession session, @PathVariable("keyword") String keyword) {
@@ -38,19 +44,34 @@ public class SearchController {
 		param.put("keyword", keyword);
 		
 		try {
-			// 1. 업무로직
-			// 1) 워크스페이스명 검색 결과
-			List<Workspace> workspaceList = searchService.selectWsListByKeyword(param);
-			// logger.debug("controller@wsList = {}", workspaceList);
+			// 업무로직
+			// 1. 좌측 사이드바 영역
+			// 1) 즐겨찾기 리스트
+			List<Favorites> favoritesList = workspaceService.selectAllFavorites(memberId);
+			// 2) 워크스페이스 리스트
+			List<Workspace> workspaceList = workspaceService.selectWorkspaceList(memberId);
+			// 3) 워크스페이스 + 페이지 리스트
+			List<Workspace> workspacePageList = workspaceService.selectWorkspacePageList(memberId);
+
 			
-			// 2) 페이지명 검색 결과
-			List<Page> pageList = searchService.selectPageListByKeyword(param);
-			// logger.debug("controller@pageList = {}", pageList);
+			// 2. 검색 결과 영역
+			// 1) 검색된 워크스페이스 목록
+			List<Workspace> searchedWsList = searchService.selectWsListByKeyword(param);
+			// 2) 검색된 페이지 목록
+			List<Page> searchedPageList = searchService.selectPageListByKeyword(param);
+			// 3) 검색된 포스트 목록
+			List<Post> searchedPostList = searchService.selectPostListByKeyword(param);
 			
-			// 2. 뷰모델 처리
-			mav.addObject("keyword", keyword);
+			// 뷰모델 처리
+			// 사이드바 영역
+			mav.addObject("favoritesList", favoritesList);
 			mav.addObject("workspaceList", workspaceList);
-			mav.addObject("pageList", pageList);
+			mav.addObject("workspacePageList", workspacePageList);
+			// 검색 결과 영역
+			mav.addObject("keyword", keyword);
+			mav.addObject("searchedWsList", searchedWsList.isEmpty() ? null : searchedWsList); // 검색된 워크스페이스 리스트
+			mav.addObject("searchedPageList", searchedPageList.isEmpty() ? null : searchedPageList); // 검색된 페이지 리스트
+			mav.addObject("searchedPostList", searchedPostList.isEmpty() ? null : searchedPostList); // 검색된 포스트 리스트
 			mav.setViewName("search/search");
 			
 		} catch(Exception e) {
