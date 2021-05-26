@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jh.memolog.member.model.vo.Member;
 import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.page.model.vo.Post;
-import com.jh.memolog.page.model.vo.PostComment;
 import com.jh.memolog.search.model.service.SearchService;
 import com.jh.memolog.workspace.model.exception.WorkspaceException;
 import com.jh.memolog.workspace.model.service.WorkspaceService;
@@ -53,6 +52,7 @@ public class SearchController {
 			List<Workspace> workspaceList = workspaceService.selectWorkspaceList(memberId);
 			// 3) 워크스페이스 + 페이지 리스트
 			List<Workspace> workspacePageList = workspaceService.selectWorkspacePageList(memberId);
+
 			
 			// 2. 검색 결과 영역
 			// 1) 검색된 워크스페이스 목록
@@ -61,8 +61,6 @@ public class SearchController {
 			List<Page> searchedPageList = searchService.selectPageListByKeyword(param);
 			// 3) 검색된 포스트 목록
 			List<Post> searchedPostList = searchService.selectPostListByKeyword(param);
-			// 4) 검색된 코멘트 목록
-			List<PostComment> searchedCommentList = searchService.selectCommentListByKeyword(param);
 			
 			// 뷰모델 처리
 			// 사이드바 영역
@@ -74,7 +72,6 @@ public class SearchController {
 			mav.addObject("searchedWsList", searchedWsList.isEmpty() ? null : searchedWsList); // 검색된 워크스페이스 리스트
 			mav.addObject("searchedPageList", searchedPageList.isEmpty() ? null : searchedPageList); // 검색된 페이지 리스트
 			mav.addObject("searchedPostList", searchedPostList.isEmpty() ? null : searchedPostList); // 검색된 포스트 리스트
-			mav.addObject("searchedCommentList", searchedCommentList.isEmpty() ? null : searchedCommentList); // 검색된 코멘트 리스트
 			mav.setViewName("search/search");
 			
 		} catch(Exception e) {

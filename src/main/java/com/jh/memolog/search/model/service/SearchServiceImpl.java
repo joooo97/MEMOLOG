@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.page.model.vo.Post;
-import com.jh.memolog.page.model.vo.PostComment;
 import com.jh.memolog.search.model.dao.SearchDAO;
+import com.jh.memolog.search.model.exception.SearchException;
 import com.jh.memolog.workspace.model.vo.Workspace;
 
 @Service
@@ -39,13 +39,6 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public List<Post> selectPostListByKeyword(Map<String, Object> param) {
 		List<Post> list = searchDAO.selectPostListByKeyword(param);
-		
-		return list;
-	}
-	
-	@Override
-	public List<PostComment> selectCommentListByKeyword(Map<String, Object> param) {
-		List<PostComment> list = searchDAO.selectCommentListByKeyword(param);
 		
 		return list;
 	}

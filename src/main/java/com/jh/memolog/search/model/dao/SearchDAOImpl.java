@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.page.model.vo.Post;
-import com.jh.memolog.page.model.vo.PostComment;
 import com.jh.memolog.workspace.model.vo.Workspace;
 
 @Repository
@@ -31,11 +30,6 @@ public class SearchDAOImpl implements SearchDAO {
 	@Override
 	public List<Post> selectPostListByKeyword(Map<String, Object> param) {
 		return sqlSession.selectList("search.selectPostListByKeyword", param);
-	}
-	
-	@Override
-	public List<PostComment> selectCommentListByKeyword(Map<String, Object> param) {
-		return sqlSession.selectList("search.selectCommentListByKeyword", param);
 	}
 
 }

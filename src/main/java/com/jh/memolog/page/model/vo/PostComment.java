@@ -32,9 +32,4 @@ public class PostComment implements Serializable{
 	
 	// 가상 컬럼
 	private String profileRenamedFilename;
-	// 코멘트 검색 결과에 사용
-	private String workspaceName;
-	private String workspaceCoverCode;
-	private String pageName;
-	private String pageCoverCode;
 }
