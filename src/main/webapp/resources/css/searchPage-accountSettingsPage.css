@@ -9,9 +9,12 @@
 .searched-result-area .card {width: 80%; margin: 0 auto; margin-bottom: 1rem;}
 .searched-result-area .card i {margin-right: .5rem;}
 .searched-result-area .card .comment {padding-bottom: 1rem;}
+#no-search-results-area {height: 25rem; background: rgb(248, 248, 248) !important;}
+#no-search-results-area div.content {line-height: 23rem; text-align: center; font-size: 23px; color: dimgray;}
+#no-search-results-area span {font-weight: bold; color: black;}
 div.card-ws-name, div.card-page-name {font-weight: bold; color: #595959;}
 div.card-ws-name span, div.card-page-name span {color: darkgray; margin: .6rem .5rem 0 .5rem;}
-#searched-post-area div.meta {font-weight: bold;}
+#searched-post-area div.meta, #searched-comment-area div.meta {font-weight: bold;}
 #searched-post-area span.post-sort {color: black;}
 #searched-post-area img.post-image {width: 40%;}
 

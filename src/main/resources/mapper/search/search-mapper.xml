@@ -37,6 +37,23 @@
 		<result column="profile_renamed_filename" property="profileRenamedFilename"/>
 	</resultMap>
 	
+	<!-- 코멘트 -->
+	<resultMap type="postComment" id="postCommentMap">
+		<id column="post_comment_no" property="postCommentNo" />
+		<result column="post_comment_date" property="postCommentDate" />
+		<result column="post_comment_content" property="postCommentContent" />
+		<result column="post_comment_writer" property="postCommentWriter" />
+		<result column="post_comment_level" property="postCommentLevel" />
+		<result column="post_comment_ref_writer" property="postCommentRefWriter" />
+		<result column="profile_renamed_filename" property="profileRenamedFilename" />
+		<result column="workspace_name" property="workspaceName"/>
+		<result column="workspace_cover_code" property="workspaceCoverCode"/>
+		<result column="page_name" property="pageName"/>
+		<result column="page_cover_code" property="pageCoverCode"/>
+		<result column="page_no" property="pageNo" />
+		<result column="post_no" property="postNo" />
+	</resultMap>
+	
 	<!-- 워크스페이스명 검색 -->
 	<select id="selectWsListByKeyword" resultMap="workspaceMap">
 		select W.workspace_no, W.workspace_name, W.workspace_cover_code
@@ -66,6 +83,19 @@
 		      left join member M on V.post_writer = M.member_id
 		where post_content like '%'||#{keyword}||'%' or post_original_filename like '%'||#{keyword}||'%'
 		order by post_sort_code, post_no
+	</select>
+	
+	<!-- 코멘트 검색 -->
+	<select id="selectCommentListByKeyword" resultMap="postCommentMap">
+		select post_comment_no, post_comment_date, post_comment_content, post_comment_writer, post_comment_level, post_comment_ref_writer, M.profile_renamed_filename,
+		      workspace_name, workspace_cover_code, page_name, page_cover_code, P.page_no, PO.post_no
+		from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
+		                 left join page P on W.workspace_no = P.workspace_no
+		                 left join post PO on P.page_no = PO.page_no
+		                 left join post_comment PC on PO.post_no = PC.post_no
+		                 left join member M on post_comment_writer = M.member_id
+		where WM.member_id = #{memberId} and post_comment_no is not null and post_comment_content like '%'||#{keyword}||'%'
+		order by page_no, post_no, post_comment_no
 	</select>
 
 </mapper>

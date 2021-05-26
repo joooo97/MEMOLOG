@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.page.model.vo.Post;
+import com.jh.memolog.page.model.vo.PostComment;
 import com.jh.memolog.workspace.model.vo.Workspace;
 
 public interface SearchService {
@@ -14,5 +15,7 @@ public interface SearchService {
 	List<Page> selectPageListByKeyword(Map<String, Object> param);
 
 	List<Post> selectPostListByKeyword(Map<String, Object> param);
+
+	List<PostComment> selectCommentListByKeyword(Map<String, Object> param);
 
 }

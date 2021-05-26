@@ -5,12 +5,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 
 <script>
-var contextPath = "${pageContext.request.contextPath}"; //contextPath 전역변수 (juhyunModal.js파일에서 사용)
+var contextPath = "${pageContext.request.contextPath}"; //contextPath 전역변수 (juhyunModal.js, comment.js파일에서 사용)
 var v_workspaceNo; // 특정 워크스페이스 번호 전역변수 (페이지 생성, 워크스페이스 수정 시 - leftSideBar.jsp/modal.jsp)
 var v_pageNo; // 특정 페이지 번호 전역변수 (페이지 수정 시 - leftSideBar.jsp/modal.jsp)
 var v_nowWorkspaceNo; // 현재 조회하고 있는 워크스페이스 번호
 var v_roleCode; // 현재 조회하고 있는 워크스페이스/페이지 내의 사용자 권한
-var v_memberId = "${memberLoggedIn.memberId}"; // juhyunModal.js 파일에서 사용
+var v_memberId = "${memberLoggedIn.memberId}"; // juhyunModal.js, comment.js 파일에서 사용
 
 // 현재 워크스페이스를 조회하고 있다면
 if("${workspace}" != "") {
