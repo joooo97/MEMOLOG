@@ -243,10 +243,6 @@ $(function() {
 	$("#btn-show-profile").on('click', function(){
 		$("#show-modal-view-profile").click();
 	});
-	//#7. 이미지 클릭 시 프로필 보기 모달 띄우기
-	$(".img-writer, a.author").on('click', function(){
-		$("#show-modal-view-profile").click();
-	});
 
 });
 

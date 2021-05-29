@@ -6,13 +6,46 @@
 
 <fmt:requestEncoding value="utf-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-
-	<!-- 검색 페이지에서만 필요한 css -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/juhyun.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/searchPage-accountSettingsPage.css" />
-
+<!-- 검색 페이지에서만 필요한 css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/juhyun.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/searchPage-accountSettingsPage.css" />
 </head>
 <body class="is-preload">
+
+	<!-- 코멘트 사이드바 -->
+	<div id="comments-bar" class="right ui sidebar vertical menu">
+		<div id="commentsbar-header" class="item">
+			<i id="btn-close-comments" class="close icon"></i>
+			<div><i class="comment alternate icon" style="margin-right: .5rem;"></i>코멘트<div class="ui label comment-cnt"></div></div>
+		</div>
+		<div id="comment-overflow">
+			<div class="item" style="overflow-y: hidden;">
+				<!-- 포스트 작성자 -->
+				<div class="ui comments post-writer" style="font-weight: bold;">
+					<div class="comment" id="commentBar-post-writer">
+						<a class="avatar"></a>
+						<div class="content">
+						</div>
+					</div>
+				</div><!-- /.post-writer -->
+				<!-- 포스트 내용 -->
+				<div id="comment-content" class="post-content">
+				</div>
+			</div>
+			<!-- 전체 포스트 코멘트 영역 -->
+			<div class="item ui minimal comments">
+			<div id="post-comment-area"></div> <!-- #post-comment-area -->
+			</div> <!-- div.ui.comments -->
+			
+			<div id="comment-summernote-area">
+				<div id="reply-area"></div>
+				<textarea class="comment-summernote summernote" name="editordata"></textarea>
+			</div>
+		</div>
+		<!-- /#comment-overflow -->
+	</div>
+	<!-- /#comments-bar -->
+
 	<!-- Wrapper -->
 	<div id="wrapper" class="pusher">
 		<!-- Main -->
@@ -34,7 +67,9 @@
 						<c:if test="${searchedPostList != null}">
 							<a class="item" id="searched-post">포스트</a>
 						</c:if>
-						<a class="item">코멘트</a>
+						<c:if test="${searchedCommentList != null}">
+							<a class="item" id="searched-comment">코멘트</a>
+						</c:if>
 					</div>
 					<!-- 검색 결과 영역 -->
 					<!-- 1. 워크스페이스명 검색 결과 -->
@@ -154,108 +189,50 @@
 							</c:forEach>
 						</div>	
 					</c:if>
-					
-					<div class="ui segment result-area" id="search-result-workspace-name">
-						<!-- 워크스페이스명/페이지명 -->
-						<div class="ui raised link card">
-							<div class="content card-ws-name">드림</div>
-						</div>
-						<div class="ui raised link card">
-							<div class="content card-page-name">츄잉검</div>
-						</div>
-						<!-- 포스트 -->
-						<!-- 1. 텍스트 -->
-						<div class="ui raised link card">
-							<div class="ui comments content">
-								<div class="meta">
-									<a>DEVELOP</a><span>/</span><a>SPRING FRAMEWORK</a><span style="font-weight: bold;">> 텍스트</span>
-								</div>
-								<div class="comment">
-									<a class="avatar"><img src="resources/images/위영드림.jpg" class="img-writer"></a>
-									<div class="content">
-										<div class="author">이주현
-											<div class="metadata"><span>07.25</span></div>
+					<!-- 4. 코멘트 검색 결과 -->
+					<c:if test="${searchedCommentList != null}">
+						<div class="ui segment searched-result-area" id="searched-comment-area">
+							<c:forEach items="${searchedCommentList}" var="c"> 
+								<div class="ui raised link card" onclick="showComment(${c.pageNo}, ${c.postNo});">
+									<div class="ui comments content">
+										<div class="meta">
+											<i class="fas fa-feather" style="color: ${c.workspaceCoverCode}"></i>${c.workspaceName}
+											<span>/</span>
+											<i class="fas fa-sticky-note" style="color: ${c.pageCoverCode}"></i> ${c.pageName}
 										</div>
-										<p>워크스페이스 구현 중 mapper파일에서 문제 발생하였다. 오늘까지 오류 해결 하기!!!!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- 2. 이미지 -->
-						<div class="ui raised link card">
-							<div class="ui comments content">
-								<div class="meta">
-									<a>DEVELOP</a>
-									<!-- <i class="fas fa-feather" style="color: rgb(243, 215, 224);"></i><a href="#" style="color: gray;"></a>DEVELOP</a> -->
-									<span>/</span>
-									<!-- <i class="fas fa-sticky-note" style="color: yellowgreen"></i><a href="#" style="color: gray;">SPRING FRAMEWORK</a> -->
-									<a>SPRING FRAMEWORK</a>
-									<span style="font-weight: bold;">> 이미지</span>
-								</div>
-								<div class="comment">
-									<a class="avatar"><img src="resources/images/위영드림.jpg" class="img-writer"></a>
-									<div class="content">
-										<div class="author">이주현
-											<div class="metadata"><span>07.20</span></div>
-										</div>
-										<div>
-											<div class="text">'0720_워크스페이스구현.jpg'</div>
-											<span class="image main"><img src="${pageContext.request.contextPath}/resources/images/위영드림.jpg" alt="" style="width: 30%;"/></span>
+										<div class="comment">
+											<c:if test="${c.profileRenamedFilename == 'default.jpg'}">
+												<a class="avatar"><img src="${pageContext.request.contextPath}/resources/images/profile/default.jpg" alt="사용자 프로필 이미지" class="img-writer"></a>
+											</c:if>
+											<c:if test="${c.profileRenamedFilename != 'default.jpg'}">
+												<a class="avatar"><img src="${pageContext.request.contextPath}/resources/upload/profile/${c.postCommentWriter}/${c.profileRenamedFilename}" alt="사용자 프로필 이미지" class="img-writer"></a>
+											</c:if>
+											<div class="content">
+												<a class="author">${c.postCommentWriter}</a>
+											<div class="metadata">
+												<div class="date">${c.postCommentDate}</div>
+											</div>
+											<div class="text">
+												<c:if test="${c.postCommentLevel == 3}">
+													<span style="color: royalblue;">@${c.postCommentRefWriter}&nbsp;</span>
+												</c:if>
+												${c.postCommentContent}
+											</div>
+										  </div>
 										</div>
 									</div>
 								</div>
+							</c:forEach> 
+						</div>	
+					</c:if>
+					<!-- 검색 결과가 존재하지 않을 때 -->
+					<c:if test="${searchedWsList == null && searchedPageList == null && searchedPostList == null && searchedCommentList == null}">
+						<div class="ui segment" id="no-search-results-area">
+							<div class="content">
+								<span>'${keyword}'</span> 와(과) 일치하는 검색결과가 없습니다.
 							</div>
-						</div>
-						<!-- 3. 코멘트 -->
-						<div class="ui raised link card">
-							<div class="ui comments content">
-								<div class="comment">
-								  <a class="avatar"><img src="${pageContext.request.contextPath }/resources/images/위영드림.jpg" class="img-writer"></a>
-								  <div class="content">
-									<a class="author">이주현</a>
-									<div class="metadata">
-									  <div class="date">2 days ago</div>
-									</div>
-									<div class="text">
-										아악!!
-									</div>
-								  </div>
-								</div>
-							</div>
-						</div>
-						<div class="ui raised link card">
-							<div class="ui comments content">
-								<div class="comment">
-								  <a class="avatar"><img src="${pageContext.request.contextPath }/resources/images/위영드림.jpg" class="img-writer"></a>
-								  <div class="content">
-									<a class="author">이주현</a>
-									<div class="metadata">
-									  <div class="date">2 days ago</div>
-									</div>
-									<div class="text">
-										아악!!
-									</div>
-								  </div>
-								</div>
-							</div>
-						</div>
-						<div class="ui raised link card">
-							<div class="ui comments content">
-								<div class="comment">
-								  <a class="avatar"><img src="${pageContext.request.contextPath }/resources/images/위영드림.jpg" class="img-writer"></a>
-								  <div class="content">
-									<a class="author">이주현</a>
-									<div class="metadata">
-									  <div class="date">2 days ago</div>
-									</div>
-									<div class="text">
-										아악!!
-									</div>
-								  </div>
-								</div>
-							</div>
-						</div>
-					</div>	
+						</div>	
+					</c:if>
 				</section>
 			</div>
 			<!-- /#main .inner -->
@@ -273,42 +250,49 @@
 	<jsp:include page="/WEB-INF/views/common/commonScript.jsp"></jsp:include>
 	<!-- 모달 기능 js -->
 	<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js"></script>	
+	<!-- 댓글 관련 기능 js -->
+	<script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
 		
 	<script>
-
-		$(function() {
-			//워크스페이스명, 페이지명이 아닌 토글버튼만 보이기
-			$("#header-workspace-name li").not(".toggle").remove();
+	let v_nowPageNo; // 코멘트 검색 시 필요한 페이지 번호
 	
-			//semantic dropdown 활성화
-			$('.ui.dropdown').dropdown();
-	
-			//semantic ui menu 활성화
-			$('.ui.pointing.menu').on('click', '.item', function() {
-				if(!$(this).hasClass('dropdown')) {
-					$(this).addClass('active').siblings('.item').removeClass('active');
-				}
-			});
-	
-			// 검색 결과의 처음 탭에 active 클래스 추가
-			$("#menu-tab").find("a.item").first().addClass("active");
-			
-			// 검색 결과의 처음 탭에 맞는 결과 띄우기
-			let result_area = $("#menu-tab").find("a.item").first().attr('id');
-			$(".searched-result-area").not("#"+result_area+"-area").css('display', 'none');
-			
-			// 탭 클릭 시 탭에 맞는 결과 띄우기
-			$("#menu-tab a.item").on('click', function() {
-				let area = $(this).attr('id');
-				
-				$("#"+area+"-area").css('display', 'block');
-				$(".searched-result-area").not("#"+area+"-area").css('display', 'none');
-			});
-	
-	
+	$(function() {
+		// 워크스페이스명, 페이지명이 아닌 토글버튼만 보이기
+		$("#header-workspace-name li").not(".toggle").remove();
+		
+		// semantic dropdown 활성화
+		$('.ui.dropdown').dropdown();
+		
+		// semantic ui menu 활성화
+		$('.ui.pointing.menu').on('click', '.item', function() {
+			if(!$(this).hasClass('dropdown')) {
+				$(this).addClass('active').siblings('.item').removeClass('active');
+			}
 		});
-	
-		//함수 영역
+		
+		// 검색 결과의 처음 탭에 active 클래스 추가
+		$("#menu-tab").find("a.item").first().addClass("active");
+		
+		// 검색 결과의 처음 탭에 맞는 결과 띄우기 (나머지 결과 영역 지우기)
+		let result_area = $("#menu-tab").find("a.item").first().attr('id');
+		$(".searched-result-area").not("#"+result_area+"-area").css('display', 'none');
+		
+		// 탭 클릭 시 탭에 맞는 결과 띄우기
+		$("#menu-tab a.item").on('click', function() {
+			let area = $(this).attr('id');
+			
+			$("#"+area+"-area").css('display', 'block');
+			$(".searched-result-area").not("#"+area+"-area").css('display', 'none');
+		});
+		
+		
+	});
+		
+	//함수 영역
+	function showComment(pageNo, postNo) {
+		v_nowPageNo = pageNo;
+		openCommentBar(postNo);
+	}
 		
 	
 	</script>
