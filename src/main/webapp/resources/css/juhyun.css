@@ -133,6 +133,7 @@ form.post-form {display: none;}
 
 /* 페이지 구역 */
 #page-name {height: 6rem; line-height: 6rem; font-size: 3rem; font-weight: 1000; padding-left: 3rem; margin-top: 1.5rem;}
+#page-writer {margin-bottom: 1rem; font-weight: 600; padding-left: 3.5rem; color: DARKGRAY;}
 #page-description {margin-bottom: 1rem; font-weight: 600; padding-left: 3.5rem; font-size: 1.1rem; color: gray;}
 .page-post-area {position: relative; padding: 0 2rem;}
 .page-post{padding: 1rem; border-radius: 0.2rem;}
@@ -223,7 +224,8 @@ i.btn-post-management:hover {background: rgb(241, 241, 241); color: black;}
   list-style: none;
   margin-bottom: 0;
   padding-left: 0 !important;
-  text-transform: uppercase; }
+/*   text-transform: uppercase;  */
+  }
   #menu ul span a, #menu ul span, #menu ul.opener2 a{
     border-bottom: 0;
     color: rgb(97, 96, 96);

@@ -113,6 +113,7 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 				<!-- Content -->
 				<section>
 					<div id="page-name"><i class="fas fa-sticky-note" style="color: ${page.pageCoverCode}; margin-right: 1rem;"></i>${page.pageName}</div>
+					<div id="page-writer">페이지 작성자: ${page.pageWriter}</div>
 					<div id="page-description"><p>${page.pageDesc}</p></div>
 					<hr>
 					
