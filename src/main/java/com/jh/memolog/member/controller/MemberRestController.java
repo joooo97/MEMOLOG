@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.jh.memolog.member.model.exception.MemberException;
 import com.jh.memolog.member.model.service.MemberService;
 import com.jh.memolog.member.model.vo.Member;
+import com.jh.memolog.page.model.service.PageService;
 
 
 // 해당 클래스 내에서 모델에 저장하는 키를 @SessionAttributes에 정의된 Key와 동일하게 저장하는 경우 (mav.addObject("memberLoggedIn", m);)
@@ -40,6 +42,9 @@ public class MemberRestController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	PageService pageService;
 	
 	@Autowired
 	BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -353,21 +358,35 @@ public class MemberRestController {
 	@DeleteMapping("/members/{memberId}")
 	public Map<String, Object> deleteMember(@PathVariable String memberId, HttpSession session) {
 		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> param = new HashMap<>();
 		
 		try {
-			// 계정 탈퇴
+			// 1. 탈퇴자가 고정한 포스트의 포스트 고정 정보 변경
+			// 1-1. 탈퇴자가 고정한 포스트의 번호 리스트
+			logger.debug("아아악 memberId= {}", memberId);
+			List<Integer> pinnedPostNoList = pageService.selectPinnedPostNoList(memberId);
+			logger.debug("고정된 포스트 목록 = {}", pinnedPostNoList);
+			
+			// 1-2. 포스트 고정 정보 변경 (post_pinned_yn = 'N', post_pinned_person = null)
+			if(!pinnedPostNoList.isEmpty()) {
+				param.put("postPinnedYn", "N");
+				param.put("postPinnedPerson", null);
+
+				// 고정된 포스트마다 고정 정보 변경해주기
+				for(int no : pinnedPostNoList) {
+					param.put("postNo", no);
+					pageService.updatePostPinnedYn(param);
+				}
+			}
+			
+			// 2. 계정 탈퇴
 			int result = memberService.deleteMember(memberId);
 			
-			// 프로필 이미지 폴더 및 파일 삭제
+			// 3. 탈퇴자의 프로필 이미지 폴더 및 파일 삭제
 			String saveDirectory = session.getServletContext().getRealPath("/resources/upload/profile/"+memberId);
 			File dir = new File(saveDirectory); // 폴더
 			// 폴더 내 파일 삭제
 			if(dir.exists()) deleteAllFiles(dir);
-			// 폴더 삭제
-			if(dir.delete()) 
-				logger.debug("폴더 삭제 성공: {}", dir.getName()); // 폴더 삭제
-			else
-				logger.debug("폴더 삭제 실패: {}", dir.getName()); // 폴더 삭제
 				
 			if(result > 0) {
 				session.invalidate();
