@@ -119,7 +119,6 @@ function checkInput() {
 										<input id="saveId" name="saveId" type="checkbox" tabindex="0" <%=saveId?"checked":"" %>>
 										<label>아이디 저장</label>
 	                                    </div>
-									<a href="#">비밀번호 찾기</a>
 	                                </div>
 	                                <button class="ui button" type="button" onclick="checkInput();">LOG IN</button>
 	                            </form>

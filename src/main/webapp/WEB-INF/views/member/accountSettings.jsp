@@ -124,8 +124,9 @@
 			
 	<script>
 	// 정규 표현식
-	var regName = /^[a-zA-Z가-힣]{2,}$/;
-	var regPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).{8,15}$/;
+	var regKorName = /^[가-힣]{2,}$/;
+	var regEngName = /^[a-zA-Z]{2,}$/;
+	var regPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).{8,15}$/;
 	//또는 var regPassword = /^(?=^.{8,15}$)(?=.*[a-zA-z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).*$/;
 	var regEmail = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+/;
 	var regPhone = /^\d{10,11}$/;
@@ -185,7 +186,7 @@
 		$("#update-profile-name").keyup(function() {
 			var name = $(this).val().trim();
 			
-			if(!regName.test(name)) {
+			if(!regKorName.test(name) && !regEngName.test(name)) {
 				$(this).css('border', '1px solid red');
 				$(this).next().css('display', 'block'); // 유효성 체크 메세지 띄우기
 			}
@@ -319,7 +320,7 @@
 		
 		// 2. 유효성 체크
 		var valid = false;
-		if(!regName.test(memberName.val().trim())) valid = false;
+		if(!regKorName.test(memberName.val().trim()) && !regEngName.test(memberName.val().trim())) valid = false;
 		else if(!regEmail.test(email.val().trim())) valid = false;
 		else if(!regPhone.test(phone.val().trim())) valid = false;
 		else valid = true;

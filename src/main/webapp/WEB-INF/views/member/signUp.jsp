@@ -19,8 +19,9 @@ span.ok {color: blue;}
 
 <script>
 // 정규 표현식
-var regName = /^[a-zA-Z가-힣]{2,}$/;
-var regPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).{8,15}$/;
+var regKorName = /^[가-힣]{2,}$/;
+var regEngName = /^[a-zA-Z]{2,}$/;
+var regPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).{8,15}$/;
 //var regPassword = /^(?=^.{8,15}$)(?=.*[a-zA-z])(?=.*[0-9])(?=.*[~!@#$%^&*()\-_+=]).*$/;
 var regEmail = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+/;
 var regPhone = /^\d{10,11}$/;
@@ -75,7 +76,7 @@ $(function(){
 	$("#memberName").keyup(function() {
 		var name = $(this).val().trim();
 		
-		if(!regName.test(name)){
+		if(!regKorName.test(name) && !regEngName.test(name)) {
 			$(this).css('border', '1px solid red');
 			$(this).next().css('display', 'block');
 		}
@@ -196,11 +197,17 @@ function signUpValidate(){
 	
 	// 2. 유효성 체크
 	if($("#idValid").val() == 0) valid = false;
-	else if(!regName.test(memberName)) valid = false;
+	else if(!regKorName.test(memberName) && !regEngName.test(memberName)) valid = false;
 	else if(!regPassword.test(password)) valid = false;
 	else if(!regEmail.test(email)) valid = false;
 	else if(!regPhone.test(phone)) valid = false;
 	else valid = true;
+	
+	if(password != cPassword) {
+		alert("비밀번호와 비밀번호 확인란이 일치하지 않습니다.");
+		$("#password2").focus();
+		return;
+	}
 	
 	if(!valid) {
 		alert("알맞은 형식의 정보를 입력해주세요.");

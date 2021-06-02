@@ -122,7 +122,7 @@ form.post-form {display: none;}
 .btn-close-post-form:hover {background: rgb(228, 140, 169); color: white;}
 
 /* 워크스페이스 페이지 */
-#workspace-name {height: 6rem; line-height: 6rem; font-size: 2.6rem; font-weight: 1000; padding-left: 5rem; margin-top: 1.5rem;}
+#workspace-name {height: 6rem; line-height: 6rem; font-size: 2.6rem; font-weight: 1000; padding-left: 5rem; margin-top: 1.5rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 #workspace-description {margin-bottom: 1rem; font-weight: 600; padding-left: 5.5rem; font-size: 1.2rem; color: gray;}
 #page-list {padding-left: 5.5rem; margin-top: 1.5rem; font-size: 1.1rem; width: 90%;}
 #page-list div {cursor: pointer; margin-bottom: .5rem; padding: .5rem;}
