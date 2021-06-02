@@ -624,13 +624,13 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 		
 			commonTag1 += "<div class='item btn-view-comment' onclick='openCommentBar("+post.postNo+");'>"
 						+ "<i class='comment alternate icon'></i>코멘트"
-						+ "<div class='ui label comment-cnt'>"+post.commentCount+"</div></div>"; //코멘트 숫자 적용해야 함!!!!!!!! [0]
+						+ "<div class='ui label comment-cnt'>"+post.commentCount+"</div></div>";
 			// 고정 메뉴
-			if(post.postPinnedYn == 'N'){ // 고정된 게시물이 아니라면 고정하기 메뉴 뜨기
+			if(post.postPinnedYn == 'N') { // 고정된 게시물이 아니라면 고정하기 메뉴 뜨기
 				commonTag1 += "<div class='item pin' onclick='pinPost(\"Y\", "+post.postNo+");'><i class='icon fas fa-thumbtack'></i>고정하기</div></div></div>"; // 첨부파일은 메뉴 더 추가!! [o]
 			} 
-			else { // 이미 고정된 게시물이고, 고정한 사람이 나일 경우만 고정해제 메뉴 뜨기
-				if("${memberLoggedIn.memberId}" == post.postPinnedPerson){
+			else { // 이미 고정된 게시물이고, 고정한 사람이 나일 경우 또는 관리자인 경우만 고정해제 메뉴 뜨기
+				if("${memberLoggedIn.memberId}" == post.postPinnedPerson || v_roleCode == "R1"){
 					commonTag1 += "<div class='item pin' onclick='pinPost(\"N\", "+post.postNo+");'><i class='icon fas fa-thumbtack'></i>고정해제</div></div></div>"
 				} 
 					commonTag1 += "</div></div><div class='icon-pin'><i class='fas fa-thumbtack'></i>Pinned by '"+post.postPinnedPerson+"'</div>";
@@ -675,19 +675,19 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 						   
 			$("div#all-post-area").append(postTag);
 			
-			// 고정된 포스트에만 적용
+			// 고정된 포스트에만 적용되는 css (포스트 관리버튼의 위치)
 			if(post.postPinnedYn == 'Y'){
 				$("#post-"+post.postNo+" i.btn-post-management").css('top', '2.5rem');
 			}
 			
 			// P2(첨부파일)만 추가
 			if(post.postSortCode == 'P2') {
-				// 포스트 타입이 첨부파일인 경우 다운로드 메뉴 추가
-				if($("div#post-"+post.postNo+" div.pin").length) {
+				// 포스트 타입이 첨부파일인 경우 다운로드 메뉴 추가 
+				if($("div#post-"+post.postNo+" div.pin").length) { // lengh: 요소 개수 반환
 					$("div#post-"+post.postNo+" div.pin").after("<div class='divider'></div><div class='item' onclick='fileDownload(\""+post.postOriginalFilename+"\", \""+post.postRenamedFilename+"\", "+post.postNo+");'><i class='download icon'></i>다운로드</div>");
 				}
 				else {
-					$("div#post-"+post.postNo+" div.btn-view-comment").after("<div class='divider'></div><div class='item'><i class='download icon'></i>다운로드</div>");
+					$("div#post-"+post.postNo+" div.btn-view-comment").after("<div class='divider'></div><div class='item' onclick='fileDownload(\""+post.postOriginalFilename+"\", \""+post.postRenamedFilename+"\", "+post.postNo+");'><i class='download icon'></i>다운로드</div>");
 				}
 				// 포스트 타입이 첨부파일인 경우 첨부파일 이름 추가
 				$("div#post-"+post.postNo+" div.metadata").after("<div class='text' style='font-weight: bold; color: gray;'>'"+post.postOriginalFilename+"'</div>");

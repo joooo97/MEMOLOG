@@ -177,7 +177,7 @@
 									<c:if test="${w.workspaceType == 'P'}">
 										<li>
 											<span class="opener opener2"><a href="#" class="hover-text">
-												<div btn-go-workspace">
+												<div class="btn-go-workspace">
 													<div class="ws-p-name" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
 													<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo }');"></i>
 													<div class="ui buttons btn-settings">
@@ -194,8 +194,8 @@
 												<c:forEach items="${workspacePageList}" var="wp" varStatus="wpvs">
 													<c:if test="${w.workspaceNo == wp.workspaceNo}">
 														<li><span><a href="#" class="hover-text">
-															<div class="btn-go-page" onclick="goPage(${wp.pageNo});">
-																<div class="ws-p-name">${wp.pageName}</div> 
+															<div class="btn-go-page">
+																<div class="ws-p-name"  onclick="goPage(${wp.pageNo});">${wp.pageName}</div> 
 																<div class="ui buttons btn-settings">
 																	<i class="ui dropdown fas fa-ellipsis-h">
 																		<div class="menu menu-settings">
