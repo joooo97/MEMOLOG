@@ -223,10 +223,10 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 			$(this).toggleClass('switch-on');	
 			
 			if($("#btn-switch").hasClass('switch-on')){
-				$("div.post-writer").css('display', 'inline-block');
+				$("div.page-post div.post-writer").css('display', 'inline-block');
 			}
 			else {
-				$("div.post-writer").css('display', 'none');
+				$("div.page-post div.post-writer").css('display', 'none');
 			}
 		});
 		
