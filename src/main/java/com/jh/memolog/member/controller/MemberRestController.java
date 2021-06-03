@@ -30,6 +30,7 @@ import com.jh.memolog.member.model.exception.MemberException;
 import com.jh.memolog.member.model.service.MemberService;
 import com.jh.memolog.member.model.vo.Member;
 import com.jh.memolog.page.model.service.PageService;
+import com.jh.memolog.workspace.model.service.WorkspaceService;
 
 
 // 해당 클래스 내에서 모델에 저장하는 키를 @SessionAttributes에 정의된 Key와 동일하게 저장하는 경우 (mav.addObject("memberLoggedIn", m);)
@@ -45,6 +46,9 @@ public class MemberRestController {
 	
 	@Autowired
 	PageService pageService;
+	
+	@Autowired
+	WorkspaceService workspaceService;
 	
 	@Autowired
 	BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -382,15 +386,48 @@ public class MemberRestController {
 				}
 			}
 			
-			// 2. 계정 탈퇴
-			int result = memberService.deleteMember(memberId);
-			
-			// 3. 탈퇴자의 프로필 이미지 폴더 및 파일 삭제
+			// 2. 탈퇴자의 프로필 이미지 폴더 및 파일 삭제
 			String saveDirectory = session.getServletContext().getRealPath("/resources/upload/profile/"+memberId);
 			File dir = new File(saveDirectory); // 폴더
-			// 폴더 내 파일 삭제
+			
+			// 2-1. 프로필 이미지 폴더 내 파일 삭제
 			if(dir.exists()) deleteAllFiles(dir);
+			// 2-2. 프로필 이미지 폴더 삭제
+			if(dir.delete())
+				logger.debug("프로필 이미지 폴더 삭제 성공: {}", dir.getName());
+			else
+				logger.debug("프로필 이미지 폴더 삭제 실패: {}", dir.getName());
 				
+			
+			// 3. 탈퇴자가 생성한 모든 워크스페이스의 각 페이지 폴더와 저장된 파일 삭제
+			// 3-1. 탈퇴자가 생성한 모든 워크스페이스 번호 리스트
+			List<Integer> workspaceNoList = workspaceService.selectWorkspaceNoList(memberId);
+			
+			if(!workspaceNoList.isEmpty()) {
+				for(int workspaceNo : workspaceNoList) {
+					// 3-2. 각 워크스페이스의  모든 페이지 번호 리스트
+					List<Integer> pageNoList = workspaceService.selectPageNoList(workspaceNo);
+					
+					for(int pageNo : pageNoList) {
+						String pageSaveDir = session.getServletContext().getRealPath("/resources/upload/page/"+pageNo);
+						File pageDir = new File(pageSaveDir); // 각 페이지 폴더
+						
+						// 3-3. 페이지 폴더 내 모든 파일 삭제
+						if(pageDir.exists()) deleteAllFiles(pageDir);
+						// 3-4. 페이지 폴더 삭제
+						if(pageDir.delete())
+							logger.debug("페이지 폴더 삭제 성공: {}", pageDir.getName());
+						else
+							logger.debug("페이지 폴더 삭제 실패: {}", pageDir.getName());
+					}
+				}
+			}
+			
+			
+			// 4. 계정 탈퇴
+			int result = memberService.deleteMember(memberId);
+			
+			// 탈퇴 완료 여부
 			if(result > 0) {
 				session.invalidate();
 				map.put("result", true);

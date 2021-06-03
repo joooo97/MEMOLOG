@@ -51,6 +51,10 @@ public interface WorkspaceService {
 
 	int insertWsFavorite(Map<String, Object> param);
 
+	List<Integer> selectWorkspaceNoList(String memberId);
+
+	List<Integer> selectPageNoList(int workspaceNo);
+
 
 
 

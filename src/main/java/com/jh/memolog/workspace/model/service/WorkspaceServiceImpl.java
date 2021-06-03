@@ -216,6 +216,21 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		return favoritesNo;
 	}
 
+	// 사용자가 생성한 워크스페이스 번호 리스트 조회
+	@Override
+	public List<Integer> selectWorkspaceNoList(String memberId) {
+		List<Integer> list = workspaceDAO.selectWorkspaceNoList(memberId);
+		
+		return list;
+	}
+
+	@Override
+	public List<Integer> selectPageNoList(int workspaceNo) {
+		List<Integer> list = workspaceDAO.selectPageNoList(workspaceNo);
+		
+		return list;
+	}
+
 
 
 

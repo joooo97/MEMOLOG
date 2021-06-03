@@ -218,6 +218,15 @@
 			select seq_favorites_no.currval from dual
 		</selectKey>
 	</insert>
-
+	
+	<!-- 사용자가 생성한 워크스페이스 번호 목록 -->
+	<select id="selectWorkspaceNoList" resultType="int">
+		select workspace_no from workspace where workspace_writer = #{memberId}
+	</select>
+	
+	<!-- 사용자가 생성한 워크스페이스의 페이지 번호 목록 -->
+	<select id="selectPageNoList" resultType="int">
+		select page_no from page where workspace_no = #{workspaceNo}
+	</select>
 
 </mapper>

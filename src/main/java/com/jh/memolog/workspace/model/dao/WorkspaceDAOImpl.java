@@ -119,5 +119,14 @@ public class WorkspaceDAOImpl implements WorkspaceDAO {
 		return sqlSession.insert("workspace.insertWsFavorite", param);
 	}
 
+	@Override
+	public List<Integer> selectWorkspaceNoList(String memberId) {
+		return sqlSession.selectList("workspace.selectWorkspaceNoList", memberId);
+	}
+
+	@Override
+	public List<Integer> selectPageNoList(int workspaceNo) {
+		return sqlSession.selectList("workspace.selectPageNoList", workspaceNo);
+	}
 
 }

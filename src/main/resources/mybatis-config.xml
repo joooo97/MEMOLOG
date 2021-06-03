@@ -7,4 +7,9 @@
   	<setting name="mapUnderscoreToCamelCase" value="true"></setting>
   	<setting name="jdbcTypeForNull" value="NULL"></setting>
   </settings>
+  
+   <typeAliases>
+  	<package name="com.jh.memolog"/>
+  </typeAliases>
+  
 </configuration>
