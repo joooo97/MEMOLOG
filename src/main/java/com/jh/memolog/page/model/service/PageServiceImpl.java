@@ -193,10 +193,10 @@ public class PageServiceImpl implements PageService {
 		return favoritesNo;
 	}
 
-	// 사용자가 고정한 포스트의 번호 리스트 조회 (공유 워크스페이스 멤버 나가기, 계정 탈퇴 시 사용)
+	// 사용자가 고정한 모든 포스트의 번호 리스트 조회 (계정 탈퇴 시 사용)
 	@Override
-	public List<Integer> selectPinnedPostNoList(String memberId) {
-		List<Integer> list = pageDAO.selectPinnedPostNoList(memberId);
+	public List<Integer> selectPinnedPostNoList(Map<String, Object> param) {
+		List<Integer> list = pageDAO.selectPinnedPostNoList(param);
 		
 		return list;
 	}

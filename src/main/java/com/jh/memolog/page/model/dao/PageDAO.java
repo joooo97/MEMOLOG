@@ -43,6 +43,6 @@ public interface PageDAO {
 
 	int insertPageFavorite(Map<String, Object> param);
 
-	List<Integer> selectPinnedPostNoList(String memberId);
+	List<Integer> selectPinnedPostNoList(Map<String, Object> param);
 
 }

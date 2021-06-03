@@ -103,7 +103,7 @@ public class PageDAOImpl implements PageDAO {
 	}
 
 	@Override
-	public List<Integer> selectPinnedPostNoList(String memberId) {
-		return sqlSession.selectList("page.selectPinnedPostNoList", memberId);
+	public List<Integer> selectPinnedPostNoList(Map<String, Object> param) {
+		return sqlSession.selectList("page.selectPinnedPostNoList", param);
 	}
 }

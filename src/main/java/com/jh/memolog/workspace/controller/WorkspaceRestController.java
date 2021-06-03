@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jh.memolog.member.model.exception.MemberException;
 import com.jh.memolog.member.model.vo.Member;
+import com.jh.memolog.page.model.service.PageService;
 import com.jh.memolog.page.model.vo.Page;
 import com.jh.memolog.workspace.model.exception.WorkspaceException;
 import com.jh.memolog.workspace.model.service.WorkspaceService;
@@ -34,6 +35,9 @@ public class WorkspaceRestController {
 	
 	@Autowired
 	WorkspaceService workspaceService;
+	
+	@Autowired
+	PageService pageService;
 	
 	//개인 워크스페이스 생성
 	@PostMapping("/workspaces")
@@ -246,11 +250,37 @@ public class WorkspaceRestController {
 		}
 	}
 	
-	// 특정 워크스페이스 멤버 삭제
+	// 워크스페이스 멤버 나가기 및 강퇴시키기
+	// - 관리자가 특정 멤버를 워크스페이스에서 강퇴시키기
+	// - 사용자가 워크스페이스에서 나가기
 	@DeleteMapping("/workspace-members/{workspaceMemberNo}")
-	public void deleteWorkspaceMember(@PathVariable("workspaceMemberNo") int workspaceMemberNo) {
+	public void deleteWorkspaceMember(@PathVariable("workspaceMemberNo") int workspaceMemberNo, @RequestBody String memberId) {
+		Map<String, Object> paramForPostNo = new HashMap<>();
+		Map<String, Object> paramForPin = new HashMap<>();
+		
 		try {
+			// 1. 사용자가 고정한 포스트들의 고정 해제
+			// 1-1. 사용자가 나갈 워크스페이스의 포스트 중 사용자가 고정한 포스트의 번호 리스트
+			paramForPostNo.put("memberId", memberId);
+			paramForPostNo.put("workspaceMemberNo", workspaceMemberNo);
+			List<Integer> pinnedPostNoList = pageService.selectPinnedPostNoList(paramForPostNo);
+			logger.debug("나갈 워크스페이스에서 사용자가 고정한 포스트 목록 = {}", pinnedPostNoList);
+			
+			// 2-2. 포스트 고정 해제
+			if(!pinnedPostNoList.isEmpty()) {
+				paramForPin.put("postPinnedYn", "N");
+				paramForPin.put("postPinnedPerson", null);
+
+				// 고정된 포스트마다 고정 정보 변경해주기
+				for(int no : pinnedPostNoList) {
+					paramForPin.put("postNo", no);
+					pageService.updatePostPinnedYn(paramForPin); // 포스트 고정 해제
+				}
+			}
+			
+			// 2. 공유 워크스페이스 멤버 나가기
 			workspaceService.deleteWorkspaceMember(workspaceMemberNo);
+			
 		} catch(Exception e) {
 			logger.error("워크스페이스 멤버 삭제 오류: ", e);
 			throw new WorkspaceException("워크스페이스 멤버 삭제 오류!", e);

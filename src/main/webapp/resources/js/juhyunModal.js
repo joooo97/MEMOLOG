@@ -91,7 +91,7 @@ function wsMemberList(data){
 		
 		// 사용자가 현재 워크스페이스의 관리자일 경우만 멤버 삭제 버튼 띄우기
 		if(v_roleCode == 'R1'){
-			commonTag += "<i class='delete icon' onclick='deleteWsMember("+member.workspaceMemberNo+");'></i></span>"; 
+			commonTag += "<i class='delete icon' onclick='deleteWsMember("+member.workspaceMemberNo+", \""+member.memberId+"\");'></i></span>"; 
 		} else {
 			commonTag += "</span>";
 		}
@@ -227,19 +227,24 @@ function updateWorkspaceMember() {
 }
 
 // 1-6. 워크스페이스 멤버 삭제
-function deleteWsMember(wsMemberNo){
+function deleteWsMember(wsMemberNo, memberId) {
 	if(!confirm("정말 삭제하시겠습니까?"))
 		return;
 	
 	$.ajax({
 		url: contextPath+"/workspace-members/"+wsMemberNo,
 		type: 'DELETE',
+		data: memberId,
 		success: data => {
 			console.log("워크스페이스 멤버 삭제 ajax 성공");
 			
-			// 멤버리스트에서 삭제된 멤버 제거
-//			$("#view-ws-member-list div.one-member.m."+wsMemberNo+"").remove();
 			viewWsMember();
+			
+			// 페이지에서 특정 멤버를 삭제시켰을 경우, 삭제된 멤버가 고정했던 포스트의 고정이 해제되었기 때문에 페이지가 새로고침되어야 함
+			if("${page}" != "") {
+				viewPostList(); // page.jsp의 포스트들을 불러오는 함수
+			}
+			
 		},
 		error: (x, s, e) => {
 			console.log("워크스페이스 멤버 삭제 ajax 요청 실패!", x, s, e);

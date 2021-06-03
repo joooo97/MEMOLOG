@@ -273,12 +273,15 @@ function hoverSideBarBtn() {
 
 // 공유 워크스페이스 멤버 나가기
 function leaveShareWorkspace(workspaceMemberNo) {
+	var memberId = "${memberLoggedIn.memberId}";
+	
 	if(!confirm("현재 공유 워크스페이스를 나가시겠습니까?"))
 		return;
 	
 	$.ajax({
 		url: '${pageContext.request.contextPath}/workspace-members/'+workspaceMemberNo,
 		type: 'DELETE',
+		data: memberId,
 		success: data => {
 			// 현재 조회중이던 공유 워크스페이스가 아닌 사용자가 속한 다른 공유 워크스페이스 조회
 			location.href = "${pageContext.request.contextPath}/workspaces";

@@ -212,7 +212,14 @@
 		from workspace W left join workspace_member WM on W.workspace_no = WM.workspace_no
 		                 left join page P on W.workspace_no = P.workspace_no
 		                 left join post PO on P.page_no = PO.page_no
-		where WM.member_id = #{memberId} and post_pinned_person = #{memberId}
+		<choose>
+			<when test="workspaceMemberNo == null">
+				where WM.member_id = #{memberId} and post_pinned_person = #{memberId}
+			</when>
+			<otherwise>
+				where workspace_member_no = #{workspaceMemberNo} and post_pinned_person = #{memberId}
+			</otherwise>
+		</choose>            
 		order by W.workspace_no, P.page_no, post_no
 	</select>
 	

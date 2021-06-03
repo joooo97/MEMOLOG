@@ -121,7 +121,7 @@
 	<!-- 모달 모음 - 1,2,3,4,5,6,7,9 필요 -->
 	<jsp:include page="/WEB-INF/views/common/modals.jsp"></jsp:include>	
 	<!-- 모달 / 상단바 우측 아이콘 기능 js -->
-	<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js?ver=1"></script>
+	<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js?"></script>
 	<!-- 공통스크립트 -->
 	<jsp:include page="/WEB-INF/views/common/commonScript.jsp"></jsp:include>	
 
