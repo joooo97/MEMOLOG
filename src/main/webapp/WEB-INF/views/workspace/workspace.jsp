@@ -196,7 +196,7 @@
 								  .attr("onclick", "deleteWsFavorite("+data.createdFavoriteNo+");");
 					
 					// 사이드바 내 즐겨찾기한 워크스페이스 목록에 추가
- 					var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#" class="hover-text">'
+ 					var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="javascript:void(0);" class="hover-text">'
 										   + '<div class="btn-go-workspace"><div class="ws-p-name" onclick="goWorkspace(${workspace.workspaceNo});">${workspace.workspaceName}</div>'
 										   + '<i class="plus square outline icon btn-add-page" onclick="addPage(\'${workspace.roleCode}\', \'${workspace.workspaceNo}\');"></i>'
 										   + '<div class="ui buttons btn-settings"><i class="ui dropdown fas fa-ellipsis-h" tabindex="0">'
@@ -214,11 +214,11 @@
 					createdFavoriteTag += '</div></i></div></div></a></span></li>';
 					$("#ul-ws-favorites").append(createdFavoriteTag);
 					
-					// 워크스페이스 호버 시 관리 버튼 나타내기
-					hoverSideBarBtn();
+					// 즐겨찾기 추가 된 워크스페이스 호버 시 관리 버튼 나타내기
+					hoverSideBarBtn(); // leftSideBar.jsp
 					
-					// 즐겨찾기 추가된 워크스페이스의 관리 메뉴 수동으로 띄워주고 닫아주기
-					viewSettingsMenu(data.createdFavoriteNo);
+					// 즐겨찾기 추가된 워크스페이스의 관리 버튼 클릭 시, 관리 메뉴 수동으로 띄워주고 닫아주기
+					viewSettingsMenu(data.createdFavoriteNo); // leftSideBar.jsp
 					
 				},
 				error: (x, s, e) => {

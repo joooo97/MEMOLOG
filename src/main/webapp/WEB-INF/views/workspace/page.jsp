@@ -852,7 +852,7 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
  					          .attr("onclick", "deletePageFavorite("+data.createdFavoriteNo+");");
  				
  				// 사이드바 내 즐겨찾기한 페이지 목록에 추가
-  				var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#" class="hover-text">'
+  				var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="javascript:void(0);" class="hover-text">'
 									   + '<div class="btn-go-page"><div class="ws-p-name" onclick="goPage(${page.pageNo});">${page.pageName}</div>'
 									   + '<div class="ui buttons btn-settings"><i class="ui dropdown fas fa-ellipsis-h"><div class="menu menu-settings transition">'
 									   + '<div class="item" onclick="deletePageFavorite('+data.createdFavoriteNo+');"><i class="star outline icon"></i>즐겨찾기 취소</div>';
@@ -868,10 +868,10 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
  				$("#ul-page-favorites").append(createdFavoriteTag);
  				
  				// 사이드바 내 워크스페이스, 페이지 호버 시 관리 버튼 나타내기
-				hoverSideBarBtn();
+				hoverSideBarBtn(); // leftSideBar.jsp
  				
  				// 즐겨찾기 추가된 페이지의 관리 메뉴 수동으로 띄워주고 닫아주기
- 				viewSettingsMenu(data.createdFavoriteNo);
+ 				viewSettingsMenu(data.createdFavoriteNo); // leftSideBar.jsp
  			},
  			error: (x, s, e) => {
  				console.log("페이지 즐겨찾기 추가 실패!", x, s, e);
