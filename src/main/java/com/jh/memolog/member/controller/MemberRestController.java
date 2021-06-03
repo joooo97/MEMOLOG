@@ -358,24 +358,27 @@ public class MemberRestController {
 	@DeleteMapping("/members/{memberId}")
 	public Map<String, Object> deleteMember(@PathVariable String memberId, HttpSession session) {
 		Map<String, Object> map = new HashMap<>();
-		Map<String, Object> param = new HashMap<>();
+		// 파라미터가 memberId 한 개 밖에 없지만, 워크스페이스 멤버를 나가는 경우에는 사용하는 쿼리문(selectPinnedPostNoList)에서 
+		// memberId와 workspaceMemberNo 두 개의 파라미터를 조회해야 하는 경우도 있기 때문에 Map으로 전달
+		Map<String, Object> paramForPostNo = new HashMap<>();
+		Map<String, Object> paramForPin = new HashMap<>();
 		
 		try {
-			// 1. 탈퇴자가 고정한 포스트의 포스트 고정 정보 변경
-			// 1-1. 탈퇴자가 고정한 포스트의 번호 리스트
-			logger.debug("아아악 memberId= {}", memberId);
-			List<Integer> pinnedPostNoList = pageService.selectPinnedPostNoList(memberId);
+			// 1. 탈퇴자가 고정한 모든 포스트들의 고정 해제
+			// 1-1. 탈퇴자가 고정한 모든 포스트의 번호 리스트
+			paramForPostNo.put("memberId", memberId);
+			List<Integer> pinnedPostNoList = pageService.selectPinnedPostNoList(paramForPostNo);
 			logger.debug("고정된 포스트 목록 = {}", pinnedPostNoList);
 			
-			// 1-2. 포스트 고정 정보 변경 (post_pinned_yn = 'N', post_pinned_person = null)
+			// 1-2. 포스트 고정 해제 (post_pinned_yn = 'N', post_pinned_person = null)
 			if(!pinnedPostNoList.isEmpty()) {
-				param.put("postPinnedYn", "N");
-				param.put("postPinnedPerson", null);
+				paramForPin.put("postPinnedYn", "N");
+				paramForPin.put("postPinnedPerson", null);
 
 				// 고정된 포스트마다 고정 정보 변경해주기
 				for(int no : pinnedPostNoList) {
-					param.put("postNo", no);
-					pageService.updatePostPinnedYn(param);
+					paramForPin.put("postNo", no);
+					pageService.updatePostPinnedYn(paramForPin);
 				}
 			}
 			
