@@ -7,11 +7,4 @@
   	<setting name="mapUnderscoreToCamelCase" value="true"></setting>
   	<setting name="jdbcTypeForNull" value="NULL"></setting>
   </settings>
-  
-   <typeAliases>
-  	<typeAlias type="com.jh.memolog.common.typehandler.StringArrayTypeHandler"
-  			   alias = "strArrTypeHandler" />
-  	<package name="com.jh.memolog"/>
-  </typeAliases>
-  
 </configuration>

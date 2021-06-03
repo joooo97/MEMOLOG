@@ -195,7 +195,7 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 		<!-- 모달 모음 - 모든 모달 필요 -->	
 		<jsp:include page="/WEB-INF/views/common/modals.jsp"></jsp:include>
 		<!-- 모달 / 상단바 우측 아이콘 기능 js -->
-		<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js?ver=2"></script>
+		<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js?"></script>
 		<!-- 공통스크립트 -->
 		<jsp:include page="/WEB-INF/views/common/commonScript.jsp"></jsp:include>	
 		<!-- 댓글 관련 기능 js -->

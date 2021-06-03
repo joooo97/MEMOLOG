@@ -76,22 +76,6 @@
 		where WM.member_id = V.member_id and V.member_id = #{memberId}
 		order by favorites_no
 	</select>
-	
-	<!-- 즐겨찾기 리스트 조회(W) -->
-<!-- 	<select id="selectWorkspaceFavoritesList" resultMap="favoritesMap">
-		select * 
-		from view_favoritesWsP 
-		where member_id = #{memberId} and favorites_type = 'W'
-		order by favorites_date
-	</select> -->
-	
-	<!-- 즐겨찾기 리스트 조회(P) -->
-<!-- 	<select id="selectPageFavoritesList" resultMap="favoritesMap">
-		select * 
-		from view_favoritesWsP 
-		where member_id = #{memberId} and favorites_type = 'P'
-		order by favorites_date
-	</select> -->
 
 	<!-- 워크스페이스 리스트 + 권한 코드 조회-->
 	<select id="selectWorkspaceList" resultMap="workspaceMap">
@@ -109,38 +93,6 @@
 		where WM.member_id = #{memberId} and page_no is not null
 		order by W.workspace_no, page_no
 	</select>
-	
-	<!-- 공유 워크스페이스 리스트 조회 -->
-<!-- 	<select id="selectSharedWorkspaceList" resultType="workspace">
-		select *
-		from workspace
-		where workspace_writer = #{memberId} and workspace_type = 'S'
-		order by workspace_date
-	</select> -->
-	
-	<!-- 개인 워크스페이스 리스트 조회 -->
-<!-- 	<select id="selectPrivateWorkspaceList" resultType="workspace">
-		select *
-		from workspace
-		where workspace_writer = #{memberId} and workspace_type = 'P'
-		order by workspace_date
-	</select> -->
-	
-	<!-- 공유 워크스페이스 + 페이지 리스트 조회 -->
-<!-- 	<select id="selectSWorkspacePageList" resultMap="workspaceMap">
-		select *
-		from view_workspacePage
-		where workspace_writer = #{memberId} and workspace_type = 'S'
-		order by page_date
-	</select> -->
-
-	<!-- 개인 워크스페이스 + 페이지 리스트  조회-->
-<!-- 	<select id="selectPWorkspacePageList" resultMap="workspaceMap">
-		select *
-		from view_workspacePage
-		where workspace_writer = #{memberId} and workspace_type = 'P'
-		order by page_date
-	</select> -->
 
 	<!-- 가장 처음 생성된 워크스페이스 조회 (by memberId, workspaceType) -->
  	<select id="selectFirstWorkspace" resultType="workspace">
@@ -152,17 +104,6 @@
 		where rownum = 1
 	</select>
 	
-	<!-- 가입 시 생성되는 기본 워크스페이스의 페이지 리스트 조회 -->
-<!-- 	<select id="selectDefaultWsPageList" resultType="page">
-		select *
-		from page
-		where workspace_no = (select W.workspace_no
-		                      from(select *
-		                           from workspace
-		                           where workspace_writer = #{memberId} 
-		                           order by workspace_date) W
-		                       where rownum = 1)
-	</select> -->
 	
 	<!-- 워크스페이스 생성 -->
 	<!-- selectKey로 생성된 워크스페이스 번호 조회 -->
