@@ -18,6 +18,12 @@ span.ok {color: blue;}
 </style>
 
 <script>
+// 로그인이 되어있는데 회원가입 페이지로 이동하려는 경우
+<c:if test="${memberLoggedIn != null}">
+	alert("잘못된 요청입니다.");
+	location.href="${pageContext.request.contextPath}/workspaces";
+</c:if>
+
 // 정규 표현식
 var regKorName = /^[가-힣]{2,}$/;
 var regEngName = /^[a-zA-Z]{2,}$/;
