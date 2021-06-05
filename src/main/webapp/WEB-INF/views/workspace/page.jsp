@@ -290,11 +290,12 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 		//1. 텍스트, 테이블 툴바
 		var textToolbar = [
 			// [groupName, [list of button]]
-			['font', ['style', 'bold', 'underline', 'strikethrough']],
+			['style', ['style']],
+			['font', ['bold', 'underline', 'strikethrough']],
 			['fontname', ['fontname']],
 			['fontsize', ['fontsize']],
 			['color', ['color']],
-			['para', ['paragraph']],
+			['para', ['ul', 'ol', 'paragraph']],
 			['height', ['height']],
 		];
 
