@@ -853,9 +853,9 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
  					          .attr("onclick", "deletePageFavorite("+data.createdFavoriteNo+");");
  				
  				// 사이드바 내 즐겨찾기한 페이지 목록에 추가
-  				var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="javascript:void(0);" class="hover-text">'
+  				var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#" class="hover-text">'
 									   + '<div class="btn-go-page"><div class="ws-p-name" onclick="goPage(${page.pageNo});">${page.pageName}</div>'
-									   + '<div class="ui buttons btn-settings"><i class="ui dropdown fas fa-ellipsis-h"><div class="menu menu-settings transition">'
+									   + '<div class="ui buttons btn-settings" id="btn-settings-'+data.createdFavoriteNo+'"><i class="ui dropdown fas fa-ellipsis-h"><div class="menu menu-settings transition">'
 									   + '<div class="item" onclick="deletePageFavorite('+data.createdFavoriteNo+');"><i class="star outline icon"></i>즐겨찾기 취소</div>';
 									   
 				// 사용자가 즐겨찾기한 페이지의 워크스페이스 관리자이거나 페이지 관리자라면 관리 버튼 띄우기

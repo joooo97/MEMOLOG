@@ -62,7 +62,7 @@
 										<ul class="opener2" id="ul-ws-favorites">
 											<c:forEach items="${favoritesList}" var="f" varStatus="vs">
 												<c:if test="${f.favoritesType == 'W'}">
-												<li id="favorites-${f.favoritesNo}"><span><a href="javascript:void(0);" class="hover-text">
+												<li id="favorites-${f.favoritesNo}"><span><a href="#" class="hover-text">
 													<div class="btn-go-workspace">
 														<div class="ws-p-name" onclick="goWorkspace(${f.workspaceNo});">${f.workspaceName}</div>
 														<i class="plus square outline icon btn-add-page" onclick="addPage('${f.roleCode}', '${f.workspaceNo }');"></i>
@@ -91,7 +91,7 @@
 										<ul class="opener2" id="ul-page-favorites">
 											<c:forEach items="${favoritesList}" var="f" varStatus="vs">
 												<c:if test="${f.favoritesType == 'P'}">
-												<li id="favorites-${f.favoritesNo}"><span><a href="javascript:void(0);" class="hover-text">
+												<li id="favorites-${f.favoritesNo}"><span><a href="#" class="hover-text">
 													<div class="btn-go-page">
 														<div class="ws-p-name" onclick="goPage(${f.pageNo});">${f.pageName}</div>
 														<div class="ui buttons btn-settings">
@@ -121,7 +121,7 @@
 									<c:forEach items="${workspaceList}" var="w" varStatus="wvs">
 									<c:if test="${w.workspaceType == 'S'}">
 										<li>
-											<span class="opener opener2"><a href="javascript:void(0);" class="hover-text">
+											<span class="opener opener2"><a href="#" class="hover-text">
 												<div class="btn-go-workspace">
 													<div class="ws-p-name" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
 													<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo}');"></i>
@@ -143,7 +143,7 @@
 											<ul class="opener2">
 												<c:forEach items="${workspacePageList}" var="wp" varStatus="wpvs">
 													<c:if test="${w.workspaceNo == wp.workspaceNo}">
-														<li><span><a href="javascript:void(0);" class="hover-text">
+														<li><span><a href="#" class="hover-text">
 															<div class="btn-go-page">
 																<div class="ws-p-name" onclick="goPage(${wp.pageNo});">${wp.pageName}</div>
 																<div class="ui buttons btn-settings">
@@ -176,7 +176,7 @@
 									<c:forEach items="${workspaceList}" var="w" varStatus="wvs">
 									<c:if test="${w.workspaceType == 'P'}">
 										<li>
-											<span class="opener opener2"><a href="javascript:void(0);" class="hover-text">
+											<span class="opener opener2"><a href="#" class="hover-text">
 												<div class="btn-go-workspace">
 													<div class="ws-p-name" onclick="goWorkspace(${w.workspaceNo});">${w.workspaceName}</div>
 													<i class="plus square outline icon btn-add-page" onclick="addPage('${w.roleCode}', '${w.workspaceNo }');"></i>
@@ -193,7 +193,7 @@
 											<ul class="opener2">
 												<c:forEach items="${workspacePageList}" var="wp" varStatus="wpvs">
 													<c:if test="${w.workspaceNo == wp.workspaceNo}">
-														<li><span><a href="javascript:void(0);" class="hover-text">
+														<li><span><a href="#" class="hover-text">
 															<div class="btn-go-page">
 																<div class="ws-p-name"  onclick="goPage(${wp.pageNo});">${wp.pageName}</div> 
 																<div class="ui buttons btn-settings">
@@ -250,24 +250,19 @@ $(function() {
 
 // 즐겨찾기 추가된 워크스페이스/페이지의 관리 버튼 클릭 시 관리 메뉴 수동으로 열고 닫기
 function viewSettingsMenu(createdFavoriteNo) {
-	var btn_settings = $("li#favorites-"+createdFavoriteNo+" .btn-settings"); // 즐겨찾기에 추가된 요소의 관리 버튼
-	var menu_settings = btn_settings.find("div.menu-settings"); // 즐겨찾기에 추가된 요소의 관리 메뉴
-	var btn_settings_id = "btn-settings-"+createdFavoriteNo+""; // 즐겨찾기에 추가된 요소의 관리 버튼에 생성해줄 id
+	// 즐겨찾기에 추가된 요소의 관리 메뉴
+	var menu_settings = $("#btn-settings-"+createdFavoriteNo).find("div.menu-settings");
 	
-	// 즐겨찾기에 추가된 요소의 관리 버튼에 id 추가
-	btn_settings.attr("id", btn_settings_id);
-	
-	// 관리 버튼 클릭 시 관리 메뉴(즐겨찾기 취소 / 수정 / 삭제)가 뜨지 않아 수동으로 띄워주기
- 	$("#sidebar").on('click', function(e) {
- 		var parent_id = $(e.target).parent('div').attr('id'); // 사이드바 내에서 클릭한 요소의 div 부모의 아이디
- 		
- 		// 즐겨찾기에 추가된 요소의 관리 버튼을 클릭한 경우 관리 메뉴 띄워주고 닫아주기(toggle)
- 		if(parent_id == btn_settings_id) {
- 			menu_settings.toggleClass('visible');
- 		}
- 		else { // 다른 요소를 클릭한 경우 관리 메뉴 닫아주기
- 			menu_settings.removeClass('visible');
- 		}
+	$("#sidebar").children().on('click', function(e) {
+		var parent_id = $(e.target).parent('div').attr('id'); // 클릭한 사이드바 내 요소의 div 부모의 아이디
+		
+		// 즐겨찾기에 추가된 요소의 관리 버튼을 클릭한 경우
+		if(parent_id == "btn-settings-"+createdFavoriteNo) {
+			menu_settings.toggleClass('visible'); // 관리 메뉴 띄워주고 닫아주기(toggle)
+		}
+		else { // 다른 요소를 클릭한 경우 관리 메뉴 닫아주기
+			menu_settings.removeClass('visible');
+		}
 	});
 	
 }
