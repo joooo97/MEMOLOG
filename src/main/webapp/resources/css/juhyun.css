@@ -65,8 +65,16 @@ div.post-content {margin-left: .4rem;}
 div.page-post-area.P2 div.file-area{border: 1.5px solid lightgray; border-radius: .5rem; width: 35%; padding: .5rem; text-align: center; margin-left: .3rem; font-weight: bold;}
 div.page-post-area.P2 div.file-area i{font-size: 2rem; margin-right: 1rem;}
 
-/* 텍스트 포스트, 텍스트 포스트 summernote - 인용구 css */
-div#all-post-area pre, form#form-add-text pre {	
+
+/* summernote */
+form.post-form {display: none;}
+.btn-submit-summernote {color: darkgray; background: white; border: 0; border-radius: 0.2rem; padding: 0.6rem; float: right; margin-top: 5px; margin-right: 5px; font-size: 1rem;}
+.btn-submit-summernote:hover {background: rgb(228, 140, 169); color: white;}
+.btn-close-post-form {cursor: pointer; color: darkgray; border-radius: 0.2rem; padding: 0.2rem 0.5rem; float: right; margin-top: 0.2rem; margin-right: 0.3rem; font-size: 1.1rem;}
+.btn-close-post-form:hover {background: rgb(228, 140, 169); color: white;}
+
+/* summernote 코드블록 css - 텍스트 포스트 내용, 텍스트 포스트 summernote, 포스트 수정 모달 summernote, 코멘트 사이드바의 포스트 내용  */
+div#all-post-area pre, form#form-add-text pre, div.modal-update-text-post pre, #comments-bar pre {	
 	display: block;
     padding: 9.5px;
     margin: 0 0 10px;
@@ -79,8 +87,8 @@ div#all-post-area pre, form#form-add-text pre {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-/* 텍스트 포스트, 텍스트 포스트 summernote - 코드 css */
-div#all-post-area blockquote, form#form-add-text blockquote {
+/* summernote 인용구 css - 텍스트 포스트 내용, 텍스트 포스트 summernote, 포스트 수정 모달 summernote, 코멘트 사이드바의 포스트 내용 */
+div#all-post-area blockquote, form#form-add-text blockquote, div.modal-update-text-post blockquote, #comments-bar blockquote {
 	border-left: 5px solid lightgray;
     background: white;
     padding: 10px 20px;
@@ -88,12 +96,6 @@ div#all-post-area blockquote, form#form-add-text blockquote {
     font-size: 17.5px;
 }
 
-/* summernote */
-form.post-form {display: none;}
-.btn-submit-summernote {color: darkgray; background: white; border: 0; border-radius: 0.2rem; padding: 0.6rem; float: right; margin-top: 5px; margin-right: 5px; font-size: 1rem;}
-.btn-submit-summernote:hover {background: rgb(228, 140, 169); color: white;}
-.btn-close-post-form {cursor: pointer; color: darkgray; border-radius: 0.2rem; padding: 0.2rem 0.5rem; float: right; margin-top: 0.2rem; margin-right: 0.3rem; font-size: 1.1rem;}
-.btn-close-post-form:hover {background: rgb(228, 140, 169); color: white;}
 
 /* 좌측 사이드바 */
 #sidebar{height: 100%;}

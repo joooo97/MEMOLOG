@@ -251,7 +251,7 @@ if("${page}" != "") {
 			</div>
 		</div>
 		<!-- #8-2 포스트 수정 모달 (텍스트) -->
-		<div class="modal fade" id="modal-update-post-P1">
+		<div class="modal fade modal-update-text-post" id="modal-update-post-P1">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
