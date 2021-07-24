@@ -190,7 +190,7 @@ i.btn-post-management:hover {background: rgb(241, 241, 241); color: black;}
 /* 포스트 작성자 */
 /* .post-writer {display: none; margin-bottom: 0 !important;} */
 /* .post-writer .img-writer{width: 2.3rem !important; height: 2.3rem !important; margin-top: -.2rem !important; margin-right: -.2rem !important; object-fit: cover;} */
-.post-writer {display: inline-block; margin-bottom: .5rem !important;}
+.post-writer {display: inline-block;}
 .img-writer{width: 2.3rem !important; height: 2.3rem !important; margin-top: -.2rem !important; margin-right: -.2rem !important; object-fit: cover;}
 
 /* 사이드바 */

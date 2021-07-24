@@ -294,13 +294,13 @@ public class PageRestController {
 	// 포스트 수정
 	// PutMapping -> 415 에러 또는 nullPoint 에러남
 	@PostMapping("/pages/{pageNo}/posts/{postNo}")
-	public void updatePost(@PathVariable("pageNo") int pageNo, @PathVariable("postNo") int postNo, Post post, @RequestParam(value="upFile", required=false) MultipartFile upFile, HttpSession session) {
+	public void updatePost(HttpSession session, @PathVariable("pageNo") int pageNo, @PathVariable("postNo") int postNo, Post post, 
+							@RequestParam(value="upFile", required=false) MultipartFile upFile, @RequestParam(value="fileYn", required=false) String fileYn) {
 		logger.debug("수정할 포스트: post = {}", post);
 		
 		try {
-			// 포스트 종류가 첨부파일(P2)일 경우
-			if(post.getPostSortCode().equals("P2")) {
-				
+			// 포스트 종류가 첨부파일(P2)이고 변경할 파일이 존재하는 경우만 파일 업로드
+			if(post.getPostSortCode().equals("P2") && fileYn.equals("Y")) {
 				// 1. 파일 업로드 처리
 				// 파일 저장 경로
 				String saveDirectory = session.getServletContext().getRealPath("/resources/upload/page/"+pageNo);

@@ -136,7 +136,10 @@
 	
 	<!-- 포스트 수정 -->
 	<update id="updatePost">
-		update post set post_content = #{postContent}, post_original_filename = #{postOriginalFilename}, post_renamed_filename = #{postRenamedFilename}, post_date = to_char(sysdate, 'MM.DD HH24:MI')
+		update post set post_content = #{postContent}, post_date = to_char(sysdate, 'MM.DD HH24:MI')
+		<if test="postOriginalFilename != null">
+			, post_original_filename = #{postOriginalFilename}, post_renamed_filename = #{postRenamedFilename}
+		</if>
 		where post_no = #{postNo}
 	</update>
 	

@@ -129,6 +129,10 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 							</form> 
 							<!-- 첨부파일 추가 -->
 							<form id="form-add-file" class="post-form">
+								<div class="form-group">
+								    <label for="exampleFormControlTextarea1">내용</label>
+								    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+								</div>
 								<div class="input-group">
 									<div class="custom-file">
 									  <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
@@ -195,11 +199,11 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 		<!-- 모달 모음 - 모든 모달 필요 -->	
 		<jsp:include page="/WEB-INF/views/common/modals.jsp"></jsp:include>
 		<!-- 모달 / 상단바 우측 아이콘 기능 js -->
-		<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js?"></script>
+		<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js?ver=1"></script>
 		<!-- 공통스크립트 -->
 		<jsp:include page="/WEB-INF/views/common/commonScript.jsp"></jsp:include>	
 		<!-- 댓글 관련 기능 js -->
-		<script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/js/comment.js?ver=1"></script>
 	
 <script>
 
@@ -524,10 +528,14 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 			return;
 		}
 		
+		var postContent = $("#exampleFormControlTextarea1").val().trim(); 
 		var upFile = $("#form-add-file input:file").prop('files')[0];
 		var formData = new FormData();
+		
+		if(postContent.length != 0) formData.append('postContent', postContent);
 		formData.append('postSortCode', 'P2');
 		formData.append('upFile', upFile);
+		
 		console.log(formData);
 		
 		$.ajax({
@@ -537,6 +545,9 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 			processData: false, // 파일 업로드 ajax 시 필수 속성
 			contentType: false, // 파일 업로드 ajax 시 필수 속성
 			success: data => {
+				// 내용 textarea 초기화
+				$("#exampleFormControlTextarea1").val('');
+				
 				// 파일초기화
 				var agent = navigator.userAgent.toLowerCase();
 				if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
@@ -658,6 +669,10 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 				var fileName = post.postRenamedFilename;
 				var ext = fileName.substring(fileName.lastIndexOf(".")+1); // 파일 확장자 
 				
+				// 내용이 있을 경우 내용 추가
+				if(post.postContent != null) 
+					commonTag2 += "<div style='margin-bottom: 1rem;'>"+post.postContent+"</div>";// 내용
+				
 				// 첨부파일이 이미지라면 이미지 띄우기
 				if(ext == 'jpg' || ext == 'JPG' || ext == 'png' || ext == 'PNG' || ext == 'jpeg' || ext == 'JPEG' || ext == 'gif' || ext == 'GIF'){
 					commonTag2 += "<span class='image main'><img src='${pageContext.request.contextPath}/resources/upload/page/"+post.pageNo+"/"+post.postRenamedFilename+"' alt='포스트 이미지' /></span></div>";
@@ -765,6 +780,9 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 					$("#modal-update-post-"+data.postSortCode+" div.note-placeholder").css('display', 'none');
 				}
 				else { // 첨부파일 포스트일 경우
+					// 내용 띄우기
+			    	$("#modal-update-post-"+data.postSortCode+" textarea").val(data.postContent);
+				
 					// 첨부파일명 전역변수에 저장
 					v_fileName = data.postOriginalFilename;
 					// 첨부파일 폼에 기존 첨부파일명 입력

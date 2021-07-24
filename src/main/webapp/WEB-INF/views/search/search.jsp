@@ -151,7 +151,10 @@
 														<div class="metadata"><span>${post.postDate}</span></div>
 													</div>
 													<div>
-														<div class="text">${post.postOriginalFilename}</div>
+														<div class="text" style="color: gray; font-size: small; font-weight: bold;">${post.postOriginalFilename}</div>
+														<c:if test="${post.postContent != ''}">
+															<div style="margin-bottom: .5rem;">${post.postContent}</div>
+														</c:if>
 														<span class="image main"><img src="${pageContext.request.contextPath}/resources/upload/page/${post.pageNo}/${post.postRenamedFilename}" alt="포스트 이미지" class="post-image"/></span>
 													</div>
 												</div>
@@ -251,7 +254,7 @@
 	<!-- 모달 기능 js -->
 	<script src="${pageContext.request.contextPath }/resources/js/juhyunModal.js"></script>	
 	<!-- 댓글 관련 기능 js -->
-	<script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/comment.js?ver=1"></script>
 		
 	<script>
 	let v_nowPageNo; // 코멘트 검색 시 필요한 페이지 번호

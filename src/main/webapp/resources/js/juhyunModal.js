@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
 	// <상단 메뉴>
 	moreMenu(); // 더보기 메뉴 (...) 활성화
 	$('.ui.dropdown').dropdown(); // semantic dropdown 활성화
@@ -464,24 +464,24 @@ function updatePageAjax(pageNo) {
 // #8-1. 첨부파일 포스트 수정 모달
 // PutMapping -> 테이블/텍스트는 잘 되지만 파일때문에 415 or nullPoint 에러나서 POST로 변경
 function updateFilePost(postNo, fileName) {
-	// 파일을 변경하지 않았을 때
-	if($("#modal-update-post-P2 .custom-file-label").text() == fileName) {
-		viewPostList();
-		$("#modal-update-post-P2 button.close").click(); // 모달 닫기
-		return;
-	}
-	else {
+	var postContent = $("#modal-update-post-P2 textarea").val().trim();
+	var upFile = $("#modal-update-post-P2 input:file").prop('files')[0];
+	var formData = new FormData();
+	
+	// 기존 첨부 파일 변경 시
+	if($("#modal-update-post-P2 .custom-file-label").text() != fileName) {
+		// 파일을 선택하지 않았다면
 		if($("#modal-update-post-P2 input:file").prop('files')[0] === undefined) {
 			alert("파일을 선택하지 않으셨습니다.");
 			return;
 		}
-	}
+		formData.append('upFile', upFile);
+		formData.append('fileYn', 'Y'); 
+	} else formData.append('fileYn', 'N');
 	
-	var upFile = $("#modal-update-post-P2 input:file").prop('files')[0];
-	var formData = new FormData();
+	formData.append('postContent', postContent);
 	formData.append('postNo', postNo);
 	formData.append('postSortCode', 'P2');
-	formData.append('upFile', upFile);
 	console.log(formData);
 	
 	$.ajax({

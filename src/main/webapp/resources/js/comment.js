@@ -113,13 +113,19 @@ function commentBarAjax(postNo) {
 				 var fileName = data.post.postRenamedFilename;
 				 var ext = fileName.substring(fileName.lastIndexOf(".")+1); // 파일 확장자
 				 
-					// 첨부파일이 이미지라면 이미지 띄우기
-					if(ext == 'jpg' || ext == 'JPG' || ext == 'png' || ext == 'PNG' || ext == 'jpeg' || ext == 'JPEG' || ext == 'gif' || ext == 'GIF'){
-						$("#comment-content").html("<img src='"+contextPath+"/resources/upload/page/"+data.post.pageNo+"/"+data.post.postRenamedFilename+"'>");
-					}
-					else { // 이미지가 아니라면 파일 아이콘 표시 
-						$("#comment-content").html("<div class='file-area'><i class='far fa-file-alt'></i>"+"'"+data.post.postOriginalFilename+"'"+"</div>");
-					}
+				 $("#comment-content").html("");
+				 // 내용이 있다면 내용 띄우기
+				 if(data.post.postContent != null) {
+					 $("#comment-content").append("<div style='margin-bottom: .5rem;'>"+data.post.postContent+"</div>");
+				 }
+				 
+				 // 첨부파일이 이미지라면 이미지 띄우기
+				 if(ext == 'jpg' || ext == 'JPG' || ext == 'png' || ext == 'PNG' || ext == 'jpeg' || ext == 'JPEG' || ext == 'gif' || ext == 'GIF') {
+					 $("#comment-content").append("<img src='"+contextPath+"/resources/upload/page/"+data.post.pageNo+"/"+data.post.postRenamedFilename+"'>");
+				 }
+				 else { // 이미지가 아니라면 파일 아이콘 표시 
+					 $("#comment-content").append("<div class='file-area'><i class='far fa-file-alt'></i>"+"'"+data.post.postOriginalFilename+"'"+"</div>");
+				 }
 			 }
 			 
 			 $("#post-comment-area").html(""); // 포스트 코멘트 내용 초기화

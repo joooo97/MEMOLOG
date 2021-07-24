@@ -234,6 +234,10 @@ if("${page}" != "") {
 					</div>
 					<div class="modal-body">
 						<div class="name">
+							<div class="form-group">
+							    <label for="p2-update-content">내용</label>
+							    <textarea class="form-control" id="p2-update-content" rows="3"></textarea>
+							</div>
 							<div>첨부파일</div>
 							<div class="input-group">
 								<div class="custom-file">
