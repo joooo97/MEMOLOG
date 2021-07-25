@@ -226,5 +226,9 @@
 		order by W.workspace_no, P.page_no, post_no
 	</select>
 	
+	<!-- 즐겨찾기 해제할 페이지 번호 조회 -->
+	<select id="selectPageNoByFavoritesNo" resultType="int">
+		select page_no from favorites where favorites_no = #{favoritesNo}
+	</select>
 
 </mapper>

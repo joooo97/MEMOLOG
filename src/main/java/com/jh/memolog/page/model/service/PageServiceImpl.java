@@ -201,5 +201,13 @@ public class PageServiceImpl implements PageService {
 		return list;
 	}
 
+	// 즐겨찾기 해제할 페이지 번호 조회
+	@Override
+	public int selectPageNoByFavoritesNo(int favoritesNo) {
+		int pageNo = pageDAO.selectPageNoByFavoritesNo(favoritesNo);
+		
+		return pageNo;
+	}
+
 	
 }

@@ -45,4 +45,6 @@ public interface PageDAO {
 
 	List<Integer> selectPinnedPostNoList(Map<String, Object> param);
 
+	int selectPageNoByFavoritesNo(int favoritesNo);
+
 }

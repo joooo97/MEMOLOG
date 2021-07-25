@@ -528,5 +528,22 @@ public class PageRestController {
 		
 		return map;
 	}
+	
+	// 즐겨찾기 해제할 페이지 번호 조회
+	@GetMapping("/page-no/{favoritesNo}")
+	public Map<String, Object> selectPageNoByFavoritesNo(@PathVariable(value="favoritesNo") int favoritesNo) {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			int pageNo = pageService.selectPageNoByFavoritesNo(favoritesNo);
+			map.put("pageNo", pageNo);
+			
+		} catch(Exception e) {
+			logger.error("즐겨찾기 해제할 페이지 번호 조회 오류: ", e);
+			throw new PageException("즐겨찾기 해제할 페이지 번호 조회 오류", e);
+		}
+		
+		return map;
+	}
 
 }

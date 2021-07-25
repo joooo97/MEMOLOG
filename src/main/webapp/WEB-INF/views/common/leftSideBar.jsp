@@ -233,10 +233,12 @@ $(function() {
 	// 사이드바 메뉴 클릭 시 모달 띄우기
 	//#1. 개인 워크스페이스 생성 모달 띄우기
 	$("#btn-add-p-workspace").on('click', function(){
+		$("#modal-add-p-ws input").val(''); // 초기화
 		$("#show-modal-add-p-ws").click();
 	});
 	//#2. 공유 워크스페이스 생성 모달 띄우기
 	$("#btn-add-s-workspace").on('click', function(){
+		$("#modal-add-s-ws input").val(''); // 초기화
 		$("#show-modal-add-s-ws").click();
 	});
 	//#6. 프로필 보기 모달 띄우기
@@ -312,6 +314,7 @@ function addPage(roleCode, workspaceNo) {
 		// 전역변수에 워크스페이스 번호 저장
 		v_workspaceNo = workspaceNo;
 		// 페이지 생성 모달 열기
+		$("#modal-add-page input").val(''); // 초기화
 		$("#show-modal-add-page").click();
 	}
 }
@@ -398,6 +401,102 @@ function search() {
 	}
 	
 	location.href = '${pageContext.request.contextPath}/search/'+keyword;
+}
+	
+// 즐겨찾기 해제할 ws 번호 조회
+function selectWsNoByFavoritesNo(favoritesNo) {	
+	let ws_no;
+	
+	$.ajax({
+		url: '${pageContext.request.contextPath}/workspace-no/'+favoritesNo,
+		type: 'GET',
+		dataType: 'json',
+		async: false, // 비동기 -> 동기로 변경 (Ajax를 통해 값을 리턴받는 경우 기본적으로 비동기 방식이기 때문에  Undefined가 반환됨)
+		success: data => {
+			console.log("즐겨찾기 해제 할 워크스페이스의 번호: " + data.workspaceNo);
+			ws_no = data.workspaceNo;
+		},
+		error: (x, s, e) => {
+			console.log("즐겨찾기 해제 할 워크스페이스의 번호 조회 실패!", x, s, e);
+		}
+	});
+	
+	return ws_no;
+}	
+	
+// 사이드바 내에서 워크스페이스 즐겨찾기 해제
+function deleteWsFavorite(favoritesNo) {
+	// 1. 즐겨찾기 해제할 워크스페이스의 번호 조회
+	let ws_no = selectWsNoByFavoritesNo(favoritesNo);
+	
+	// 2. 현재 조회 중인 ws를 해제하는 경우
+	if(v_now_area == 'ws' && v_nowWorkspaceNo == ws_no) {
+		deleteNowWsFavorite(favoritesNo);
+		return;
+	}
+	
+	// 3. 즐겨찾기 해제
+	$.ajax({
+		url: '${pageContext.request.contextPath}/favorites/'+favoritesNo,
+		type: 'DELETE',
+		success: data => {
+			console.log("워크스페이스 즐겨찾기 해제 성공!");
+			
+			// 사이드바 내 워크스페이스 즐겨찾기 리스트에서 제외
+			$("li#favorites-"+favoritesNo+"").remove();
+		},
+		error: (x, s, e) => {
+			console.log("워크스페이스 즐겨찾기 해제 실패!", x, s, e);
+		}
+	});
+}
+
+// 즐겨찾기 해제할 page 번호 조회
+function selectPageNoByFavoritesNo(favoritesNo) {
+	let page_no;
+	
+	$.ajax({
+		url: '${pageContext.request.contextPath}/page-no/'+favoritesNo,
+		type: 'GET',
+		dataType: 'json',
+		async: false, // 비동기 -> 동기로 변경 (Ajax를 통해 값을 리턴받는 경우 기본적으로 비동기 방식이기 때문에  Undefined가 반환됨)
+		success: data => {
+			console.log("즐겨찾기 해제할 페이지의 번호: " + data.pageNo);
+			page_no = data.pageNo;
+		},
+		error: (x, s, e) => {
+			console.log("즐겨찾기 해제할 페이지 번호 조회 실패!", x, s, e);
+		}
+	});
+	
+	return page_no;
+}
+
+// 페이지 즐겨찾기 해제
+function deletePageFavorite(favoritesNo) {
+	// 1. 즐겨찾기 해제할 페이지의 번호 조회
+	let page_no = selectPageNoByFavoritesNo(favoritesNo);
+	
+	// 2. 현재 조회 중인 page를 해제하는 경우
+	if(v_now_area == 'page' && v_nowPageNo == page_no) {
+		deleteNowPageFavorite(favoritesNo);
+		return;
+	}
+	
+	// 3. 즐겨찾기 해제
+	$.ajax({
+		url: '${pageContext.request.contextPath}/favorites/'+favoritesNo,
+		type: 'DELETE',
+		success: data => {
+			console.log("페이지 즐겨찾기 해제 성공!");
+			
+			// 사이드바 내 페이지 즐겨찾기 리스트에서 제외
+			$("li#favorites-"+favoritesNo+"").remove();
+		},
+		error: (x, s, e) => {
+			console.log("페이지 즐겨찾기 해제 실패!", x, s, e);
+		}
+	});
 }
 
 </script>

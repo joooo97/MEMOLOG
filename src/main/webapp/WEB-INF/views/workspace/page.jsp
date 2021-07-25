@@ -13,7 +13,7 @@
 var v_nowPageNo = "${page.pageNo}"; // 포스트 추가, 조회, 수정 / 댓글 관련 기능을 위한 현재 페이지 번호 전역변수
 var v_nowPostNo; // 포스트 수정 / 포스트 댓글 사이드 바 조회를 위한 포스트 번호
 var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
-
+let v_now_area = "page"; // 현재 조회 중인 곳: page (사이드 바 내에서 즐겨찾기 해제 시 사용)
 </script>
 </head>
 
@@ -31,7 +31,7 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 			<!-- <li><i id="btn-bell" class="fas fa-bell"></i></li> -->
 		<c:choose>
 			<c:when test="${page.PFavoriteYn == 'Y'}">
-				<li><i id="btn-star" class="fas fa-star" onclick="deletePageFavorite(${page.favoritesNo});"></i></li>
+				<li><i id="btn-star" class="fas fa-star" onclick="deleteNowPageFavorite(${page.favoritesNo});"></i></li>
 			</c:when>
 			<c:otherwise>
 				<li><i id="btn-star" class="far fa-star" onclick="addPageFavorite(${page.workspaceNo}, ${page.pageNo});"></i></li>
@@ -836,15 +836,15 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 	}
 	
  	
- 	// 페이지 즐겨찾기 해제
- 	function deletePageFavorite(favoritesNo) {
+  	// 현재 조회 중인 페이지를 즐겨찾기에서 해제
+ 	function deleteNowPageFavorite(favoritesNo) {
  		$.ajax({
  			url: '${pageContext.request.contextPath}/favorites/'+favoritesNo,
  			type: 'DELETE',
  			success: data => {
  				console.log("페이지 즐겨찾기 해제 성공!");
  				
- 				// 즐겨찾기 표시 해제
+ 				// 상단 별 모양의 즐겨찾기 표시 해제
  				$("#btn-star").attr("class", "far fa-star")
  							  .attr("onclick", "addPageFavorite("+v_nowWorkspaceNo+", "+v_nowPageNo+");");
  				// 사이드바 내 페이지 즐겨찾기 리스트에서 제외
@@ -857,7 +857,7 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
  		});
  	}
  	
- 	// 페이지 즐겨찾기 추가
+ 	// 현재 조회중인 페이지를 즐겨찾기에 추가
  	function addPageFavorite(workspaceNo, pageNo) {
  		$.ajax({
  			url: '${pageContext.request.contextPath}/page-favorites',
@@ -868,7 +868,7 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
  				
  				// 상단에 즐겨찾기 표시 (data.createdFavoriteNo: 생성된 즐겨찾기 번호)
  				$("#btn-star").attr("class", "fas fa-star")
- 					          .attr("onclick", "deletePageFavorite("+data.createdFavoriteNo+");");
+ 					          .attr("onclick", "deleteNowPageFavorite("+data.createdFavoriteNo+");");
  				
  				// 사이드바 내 즐겨찾기한 페이지 목록에 추가
   				var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#" class="hover-text">'

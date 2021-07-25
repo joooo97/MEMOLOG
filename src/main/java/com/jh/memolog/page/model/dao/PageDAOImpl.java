@@ -106,4 +106,9 @@ public class PageDAOImpl implements PageDAO {
 	public List<Integer> selectPinnedPostNoList(Map<String, Object> param) {
 		return sqlSession.selectList("page.selectPinnedPostNoList", param);
 	}
+
+	@Override
+	public int selectPageNoByFavoritesNo(int favoritesNo) {
+		return sqlSession.selectOne("page.selectPageNoByFavoritesNo", favoritesNo);
+	}
 }
