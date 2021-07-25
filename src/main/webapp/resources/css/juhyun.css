@@ -62,8 +62,8 @@ nav#header-icons{position: fixed; z-index: 11000; right: 1rem; height: 2.8rem;}
 
 /* 포스트 */
 div.post-content {margin-left: .4rem;}
-div.page-post-area.P2 div.file-area{border: 1.5px solid lightgray; border-radius: .5rem; width: 35%; padding: .5rem; text-align: center; margin-left: .3rem; font-weight: bold;}
-div.page-post-area.P2 div.file-area i{font-size: 2rem; margin-right: 1rem;}
+div.file-area{border: 1.5px solid lightgray; border-radius: .5rem; width: 50%; padding: .5rem; text-align: center; margin-left: .3rem; font-weight: bold;}
+div.file-area i{font-size: 2rem; margin-right: 1rem;}
 
 
 /* summernote */
@@ -161,7 +161,7 @@ div.comment-management .comment-menu {transform: unset !important; left: -7.2rem
 #page-description {margin-bottom: 1rem; font-weight: 600; padding-left: 3.5rem; font-size: 1.1rem; color: gray;}
 .page-post-area {position: relative; padding: 0 2rem;}
 .page-post{padding: 1rem; border-radius: 0.2rem;}
-img.page-post-img {width: auto;}
+img.page-post-img {width: auto; max-width: 100%;}
 
 /* 포스트 호버 시 */
 .page-post-area:hover .page-post{background: rgb(241, 241, 241);}

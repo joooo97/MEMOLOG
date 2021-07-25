@@ -9,6 +9,28 @@
 <!-- 검색 페이지에서만 필요한 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/juhyun.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/searchPage-accountSettingsPage.css" />
+<script>
+let v_r_file_name;
+let v_o_file_name;
+let v_post_no;
+let v_post_page_no;
+
+function showFile(rFileName, oFileName, postNo, pageNo) {
+	let ext = rFileName.substring(rFileName.lastIndexOf(".") + 1); // 파일 확장자
+	let divId = $('#searched-file-'+postNo);
+	let tag;
+	
+	// 첨부파일이 이미지일 경우 이미지를, 그 외의 경우 파일 아이콘 표시
+	if(ext == 'jpg' || ext == 'JPG' || ext == 'png' || ext == 'PNG' || ext == 'jpeg' || ext == 'JPEG' || ext == 'gif' || ext == 'GIF') {
+		tag = "<span class='image main'><img src='${pageContext.request.contextPath}/resources/upload/page/"+pageNo+"/"+rFileName+"' alt='포스트 이미지' class='post-image'/></span>";
+	} else {
+		tag = "<div class='file-area'><i class='far fa-file-alt'></i>"+"'"+oFileName+"'"+"</div>";
+	}
+	
+	divId.append(tag);
+			
+}
+</script>
 </head>
 <body class="is-preload">
 
@@ -129,7 +151,7 @@
 										</div>
 									</div>
 								</c:if>
-								<!-- 2. 이미지 포스트 -->
+								<!-- 2. 첨부파일 포스트 -->
 								<c:if test="${post.postSortCode == 'P2'}">
 									<div class="ui raised link card" onclick="location.href='${pageContext.request.contextPath}/pages/${post.pageNo}/searched-post/${post.postNo}'">
 										<div class="ui comments content">
@@ -137,7 +159,7 @@
 												<i class="fas fa-feather" style="color: ${post.workspaceCoverCode};"></i>${post.workspaceName}
 												<span>/</span>
 												<i class="fas fa-sticky-note" style="color: ${post.pageCoverCode}"></i>${post.pageName}
-												<span class="post-sort"> > 이미지</span>
+												<span class="post-sort"> > 첨부파일</span>
 											</div>
 											<div class="comment">
 												<c:if test="${post.profileRenamedFilename == 'default.jpg'}">
@@ -155,7 +177,17 @@
 														<c:if test="${post.postContent != ''}">
 															<div style="margin-bottom: .5rem;">${post.postContent}</div>
 														</c:if>
-														<span class="image main"><img src="${pageContext.request.contextPath}/resources/upload/page/${post.pageNo}/${post.postRenamedFilename}" alt="포스트 이미지" class="post-image"/></span>
+														<div id="searched-file-${post.postNo}">
+<%-- 															<span class="image main"><img src="${pageContext.request.contextPath}/resources/upload/page/${post.pageNo}/${post.postRenamedFilename}" alt="포스트 이미지" class="post-image"/></span>
+ --%>														</div>
+														<script>
+												 			v_r_file_name = '${post.postRenamedFilename}';
+												 			v_o_file_name = '${post.postOriginalFilename}';
+												 			v_post_no = '${post.postNo}';
+												 			v_post_page_no = '${post.pageNo}';
+												 			
+															showFile(v_r_file_name, v_o_file_name, v_post_no, v_post_page_no);
+														</script>
 													</div>
 												</div>
 											</div>
@@ -298,6 +330,7 @@
 		openCommentBar(postNo);
 	}
 		
+
 	
 	</script>
 
