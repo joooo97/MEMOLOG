@@ -167,7 +167,8 @@
 							return;
 
 					// Deactivate.
-						$sidebar.addClass('inactive');
+						// 다른 영역 클릭 시 사이드 바 자동 닫힘
+						//$sidebar.addClass('inactive');
 
 				});
 
