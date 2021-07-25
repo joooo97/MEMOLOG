@@ -675,7 +675,7 @@ var v_fileName; // 첨부파일 포스트 수정을 위한 파일명
 				
 				// 첨부파일이 이미지라면 이미지 띄우기
 				if(ext == 'jpg' || ext == 'JPG' || ext == 'png' || ext == 'PNG' || ext == 'jpeg' || ext == 'JPEG' || ext == 'gif' || ext == 'GIF'){
-					commonTag2 += "<span class='image main'><img src='${pageContext.request.contextPath}/resources/upload/page/"+post.pageNo+"/"+post.postRenamedFilename+"' alt='포스트 이미지' /></span></div>";
+					commonTag2 += "<span class='image main'><img src='${pageContext.request.contextPath}/resources/upload/page/"+post.pageNo+"/"+post.postRenamedFilename+"' alt='포스트 이미지' class='page-post-img' /></span></div>";
 				}
 				else { // 이미지가 아니라면 파일 아이콘 표시 
 					commonTag2 += "<div class='file-area'><i class='far fa-file-alt'></i>"+"'"+post.postOriginalFilename+"'"+"</div></div>";

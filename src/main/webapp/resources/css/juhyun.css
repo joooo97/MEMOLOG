@@ -161,6 +161,7 @@ div.comment-management .comment-menu {transform: unset !important; left: -7.2rem
 #page-description {margin-bottom: 1rem; font-weight: 600; padding-left: 3.5rem; font-size: 1.1rem; color: gray;}
 .page-post-area {position: relative; padding: 0 2rem;}
 .page-post{padding: 1rem; border-radius: 0.2rem;}
+img.page-post-img {width: auto;}
 
 /* 포스트 호버 시 */
 .page-post-area:hover .page-post{background: rgb(241, 241, 241);}
@@ -190,7 +191,7 @@ i.btn-post-management:hover {background: rgb(241, 241, 241); color: black;}
 /* 포스트 작성자 */
 /* .post-writer {display: none; margin-bottom: 0 !important;} */
 /* .post-writer .img-writer{width: 2.3rem !important; height: 2.3rem !important; margin-top: -.2rem !important; margin-right: -.2rem !important; object-fit: cover;} */
-.post-writer {display: inline-block;}
+.post-writer {display: inline-block; margin-bottom: .5rem !important;}
 .img-writer{width: 2.3rem !important; height: 2.3rem !important; margin-top: -.2rem !important; margin-right: -.2rem !important; object-fit: cover;}
 
 /* 사이드바 */
