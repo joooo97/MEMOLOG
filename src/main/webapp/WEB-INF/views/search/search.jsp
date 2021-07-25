@@ -258,6 +258,7 @@
 		
 	<script>
 	let v_nowPageNo; // 코멘트 검색 시 필요한 페이지 번호
+	let v_now_area = "search"; // 현재 조회 중인 곳: search (사이드 바 내에서 즐겨찾기 해제 시 사용)
 	
 	$(function() {
 		// 워크스페이스명, 페이지명이 아닌 토글버튼만 보이기

@@ -20,7 +20,7 @@ import com.jh.memolog.workspace.model.vo.WorkspaceMember;
 public class WorkspaceServiceImpl implements WorkspaceService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WorkspaceServiceImpl.class);
-
+ 
 	@Autowired
 	WorkspaceDAO workspaceDAO;
 	
@@ -231,7 +231,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		return list;
 	}
 
-
+	// 즐겨찾기 해제할 워크스페이스 번호 조회
+	@Override
+	public int selectWsNoByFavoritesNo(int favoritesNo) {
+		int workspaceNo = workspaceDAO.selectWsNoByFavoritesNo(favoritesNo);
+		
+		return workspaceNo;
+	}
 
 
 }

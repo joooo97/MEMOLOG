@@ -55,6 +55,8 @@ public interface WorkspaceDAO {
 
 	List<Integer> selectPageNoList(int workspaceNo);
 
+	int selectWsNoByFavoritesNo(int favoritesNo);
+
 
 
 

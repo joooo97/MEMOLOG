@@ -323,4 +323,19 @@ public class WorkspaceRestController {
 		return map;
 	}
 
+	// 즐겨찾기 해제할 워크스페이스 번호 조회
+	@GetMapping("/workspace-no/{favoritesNo}")
+	public Map<String, Object> selectWsNoByFavoritesNo(@PathVariable(value="favoritesNo") int favoritesNo) {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			int workspaceNo = workspaceService.selectWsNoByFavoritesNo(favoritesNo);
+			map.put("workspaceNo", workspaceNo);
+		} catch(Exception e) {
+			logger.error("즐겨찾기 해제할 워크스페이스 번호 조회 오류: ", e);
+			throw new WorkspaceException("즐겨찾기 해제할 워크스페이스 번호 조회 오류!", e);
+		}
+		
+		return map;
+	}
 }

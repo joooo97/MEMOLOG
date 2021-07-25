@@ -55,6 +55,8 @@ public interface WorkspaceService {
 
 	List<Integer> selectPageNoList(int workspaceNo);
 
+	int selectWsNoByFavoritesNo(int favoritesNo);
+
 
 
 

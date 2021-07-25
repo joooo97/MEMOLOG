@@ -9,6 +9,10 @@
 
 <!-- workspace, page 페이지만 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/juhyun.css" />
+
+<script>
+let v_now_area = "ws"; // 현재 조회 중인 곳: ws (사이드 바 내에서 즐겨찾기 해제 시 사용)
+</script>
 </head>
 
 <body class="is-preload">
@@ -24,7 +28,7 @@
 		</c:if>
 		<!-- <li><i id="btn-bell" class="fas fa-bell"></i></li> -->
 		<c:if test="${workspace != null && workspace.wsFavoriteYn == 'Y'}">
-			<li><i id="btn-star" class="fas fa-star" onclick="deleteWsFavorite(${workspace.favoritesNo});"></i></li>
+			<li><i id="btn-star" class="fas fa-star" onclick="deleteNowWsFavorite(${workspace.favoritesNo});"></i></li>
 		</c:if>
 		<c:if test="${workspace != null && workspace.wsFavoriteYn == 'N' }">
 			<li><i id="btn-star" class="far fa-star" onclick="addWsFavorite(${workspace.workspaceNo});"></i></li>
@@ -161,15 +165,15 @@
 			}); 
 		}
 		
-		// 워크스페이스 즐겨찾기 해제
-		function deleteWsFavorite(favoritesNo) {
+  		// 현재 조회 중인 워크스페이스를 즐겨찾기에서 해제
+		function deleteNowWsFavorite(favoritesNo) {
 			$.ajax({
 				url: '${pageContext.request.contextPath}/favorites/'+favoritesNo,
 				type: 'DELETE',
 				success: data => {
-					console.log("워크스페이스 즐겨찾기 해제 성공!");
+					console.log("현재 조회 중인 워크스페이스 즐겨찾기 해제 성공!");
 					
-					// 즐겨찾기 표시 해제
+					// 상단 별 모양의 즐겨찾기 표시 해제
 					$("#btn-star").attr("class", "far fa-star")
 								  .attr("onclick", "addWsFavorite("+v_nowWorkspaceNo+");");
 	 				// 사이드바 내 워크스페이스 즐겨찾기 리스트에서 제외
@@ -182,7 +186,7 @@
 			});
 		}
 		
-		// 워크스페이스 즐겨찾기 추가
+		// 현재 조회 중인 워크스페이스를 즐겨찾기에 추가
 		function addWsFavorite(workspaceNo) {
 			$.ajax({
 				url: '${pageContext.request.contextPath}/workspace-favorites',
@@ -191,9 +195,9 @@
 				success: data => {
 					console.log("워크스페이스 즐겨찾기 추가 성공!");
 					
-					// 즐겨찾기 표시 (data.createdFavoriteNo: 생성된 즐겨찾기 번호)
+					// 상단 별 모양의 즐겨찾기 표시 (data.createdFavoriteNo: 생성된 즐겨찾기 번호)
 					$("#btn-star").attr("class", "fas fa-star")
-								  .attr("onclick", "deleteWsFavorite("+data.createdFavoriteNo+");");
+								  .attr("onclick", "deleteNowWsFavorite("+data.createdFavoriteNo+");");
 					
 					// 사이드바 내 즐겨찾기한 워크스페이스 목록에 추가
  					var createdFavoriteTag = '<li id="favorites-'+data.createdFavoriteNo+'"><span><a href="#" class="hover-text">'
@@ -226,6 +230,8 @@
 				}
 			});
 		}
+		
+
 	
 	</script>
 

@@ -129,4 +129,9 @@ public class WorkspaceDAOImpl implements WorkspaceDAO {
 		return sqlSession.selectList("workspace.selectPageNoList", workspaceNo);
 	}
 
+	@Override
+	public int selectWsNoByFavoritesNo(int favoritesNo) {
+		return sqlSession.selectOne("workspace.selectWsNoByFavoritesNo", favoritesNo);
+	}
+
 }

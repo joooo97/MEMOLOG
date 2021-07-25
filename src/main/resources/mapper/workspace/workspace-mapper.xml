@@ -228,5 +228,11 @@
 	<select id="selectPageNoList" resultType="int">
 		select page_no from page where workspace_no = #{workspaceNo}
 	</select>
+	
+	<!-- 즐겨찾기 해제할 워크스페이스 번호 조회 -->
+	<select id="selectWsNoByFavoritesNo" resultType="int">
+		select workspace_no from favorites where favorites_no = #{favoritesNo}
+	</select>
+
 
 </mapper>
